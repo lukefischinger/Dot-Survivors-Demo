@@ -60,10 +60,5 @@ public class PlayerMovement : MonoBehaviour
         myPlayerInput.Disable();
     }
 
-    public void SetSpeed(float multiplier)
-    {
-        speed = multiplier;
-    }
-
  
 }

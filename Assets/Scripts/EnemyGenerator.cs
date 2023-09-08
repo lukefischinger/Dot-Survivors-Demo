@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+// generates enemies at an increasing rate throughout a run
 public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField] GameObject prefabEnemy;
