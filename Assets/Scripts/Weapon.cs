@@ -5,9 +5,9 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 { 
     float rate = 1.5f;
-    float damage = 10;
+    float damage = 40;
     float speed;
-    float hitCount = 10;
+    float hitCount = 100;
     
     [SerializeField] GameObject projectilePrefab;
     

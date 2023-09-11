@@ -3,6 +3,8 @@ using UnityEngine;
 public class ProjectileCollisions : MonoBehaviour
 {
 
+    [SerializeField] GameObject damagePrefab;
+
     // set by weapon upon firing
     float hitCount;
 
@@ -11,11 +13,13 @@ public class ProjectileCollisions : MonoBehaviour
 
     Weapon weapon;
     GameObject lastEnemy;
+    Transform canvasTransform;
 
     private void Awake()
     {
         coolDownRemaining = 0;
         weapon = GameObject.FindGameObjectWithTag("Player").GetComponent<Weapon>();
+        canvasTransform = GameObject.Find("Canvas").transform;
     }
 
 
@@ -35,7 +39,6 @@ public class ProjectileCollisions : MonoBehaviour
         if (collision.gameObject != lastEnemy)
         {
             HitEnemy(collision);
-            Debug.Log("Trigger");
 
         }
     }
@@ -52,16 +55,22 @@ public class ProjectileCollisions : MonoBehaviour
     {
         if(hitCount <= 0 || collision.gameObject.tag != "Enemy")
         {
-            Debug.Log(hitCount);
             return;
         }
 
         coolDownRemaining = coolDown;
         hitCount--;
 
+        // apply damage to the collided enemy
         lastEnemy = collision.gameObject;
-        lastEnemy.GetComponent<Enemy>().Damage(weapon.GetDamage());
-        Debug.Log(collision.gameObject.tag);
+        float damage = weapon.GetDamage();
+        lastEnemy.GetComponent<Enemy>().Damage(damage);
+
+        // display damage
+        Damage damageUI = Instantiate(damagePrefab).GetComponent<Damage>();
+        damageUI.transform.SetParent(canvasTransform, false);
+        damageUI.SetDamage(damage, lastEnemy.transform.position, Color.white);
+
 
         if (hitCount <= 0)
         {

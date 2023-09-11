@@ -9,11 +9,15 @@ public class Enemy : MonoBehaviour
 
     Transform myTransform, playerTransform;
     Rigidbody2D myRigidbody;
+    Pool enemyPool;
+    EnemyGenerator enemyGenerator;
 
     private void Awake() {
         myTransform = transform;
         myRigidbody = GetComponent<Rigidbody2D>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        enemyPool = GameObject.Find("EnemyGenerator").GetComponent<Pool>();
+        enemyGenerator = enemyPool.GetComponent<EnemyGenerator>();
     }
 
 
@@ -35,7 +39,7 @@ public class Enemy : MonoBehaviour
 
     // called when health <= 0
     private void Kill() {
-        Destroy(gameObject);
+        enemyPool.ReturnPooledObject(gameObject);
     }
 
     // returns the damage inflicted by this enemy on the player

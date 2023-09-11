@@ -5,7 +5,7 @@ public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField] GameObject prefabEnemy;
 
-
+    Pool enemyPool;
     Camera cam;
 
     // variables for determining when a new enemy should be created
@@ -17,13 +17,15 @@ public class EnemyGenerator : MonoBehaviour
 
     // constants determined through trial and error
     const float exponent = 1.2f;
-    const float rateMultiplier = 0.02f;
+    const float rateMultiplier = 10f; //0.02f;
     const float rateConstant = 1.2f;
 
-    private void Start() {
+    private void Awake() {
         CalculateRate();
         lastEnemyTime = -rate;
         cam = Camera.main;
+
+        enemyPool = GetComponent<Pool>();
     }
 
     private void Update() {
@@ -50,15 +52,21 @@ public class EnemyGenerator : MonoBehaviour
     
             // create the calculated number of enemies in random locations around the border of the screen
             for(int i = 0; i < numberPerInterval; i++) {
-                GameObject enemy = Instantiate(prefabEnemy);
-                enemy.transform.position = GetRandomSpawnLocation();
-                enemy.GetComponent<Enemy>().enabled = true;
+
+                GameObject enemy = enemyPool.GetPooledObject();
+                if (enemy != null) {
+                    enemy.transform.position = GetRandomSpawnLocation();
+                }
+
+
             }
 
             lastEnemyTime = Time.time;
         }
 
     }
+
+
 
     // returns a random position in world space on the edge of the screen
     public Vector3 GetRandomSpawnLocation() {
