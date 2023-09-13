@@ -38,7 +38,6 @@ public class Pool : MonoBehaviour
         if (firstAvailable == count)
             return null;
         else {
-            Debug.Log(firstAvailable);
             pool[firstAvailable].SetActive(true);
             return pool[firstAvailable++];
         }

@@ -8,15 +8,15 @@ public class Damage : MonoBehaviour
     [SerializeField] float timeToDestroy;
     float timeElapsed;
     TextMeshProUGUI text;
+    Transform myTransform;
 
-    // Start is called before the first frame update
     void Awake()
     {
         timeElapsed = 0;
         text = GetComponent<TextMeshProUGUI>();
+        myTransform = transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(timeElapsed > timeToDestroy)
@@ -34,8 +34,8 @@ public class Damage : MonoBehaviour
         timeElapsed = 0;
         text.text = "" + Mathf.Round(damage * 10f) / 10f;
         text.color = color;
-        transform.position = position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0) ;
-        transform.localScale = Vector3.one * size;
+        myTransform.position = position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0) ;
+        myTransform.localScale = Vector3.one * size;
 
     }
 }

@@ -1,8 +1,7 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 // player component
-// tracks player max and current health, and communicartes this information with the player health bar display
+// tracks player max and current health, and communicates this information with the player health bar display
 public class HealthManager : MonoBehaviour
 {
     [SerializeField] float maxHealth;
@@ -43,7 +42,11 @@ public class HealthManager : MonoBehaviour
 
     public float GetMaxHealth() { return maxHealth;}
 
-    public void SetMaxHealth(float maxHealth) { this.maxHealth = maxHealth; }
+    public void SetMaxHealth(float maxHealth) {
+        float increase = maxHealth - this.maxHealth;
+        this.maxHealth = maxHealth;
+        Heal(increase);
+    }
 
     void SetHealthBar() {
         healthBar.SetFillValue(currentHealth / maxHealth);

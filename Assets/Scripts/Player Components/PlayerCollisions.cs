@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 // player component
 // Manages player collisions, e.g. with enemies
 public class PlayerCollisions : MonoBehaviour

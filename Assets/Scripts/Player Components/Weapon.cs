@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] GameObject projectilePrefab;
     
     float timeLastFired;
+    float damageMultiplier;
     
     void Update()
     {
@@ -42,5 +43,9 @@ public class Weapon : MonoBehaviour
     // returns damage done by the player to an enemy
     public float GetDamage() {
         return damage * RandomDamageMultiplier();
+    }
+
+    public void SetDamageMultiplier(float value) {
+        damageMultiplier = value;
     }
 }

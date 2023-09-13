@@ -45,7 +45,7 @@ public class EnemyGenerator : MonoBehaviour
 
     void CreateEnemies() {
         if(timeElapsed > lastEnemyTime + rate) {
-            // if rate is small enough, we may need to generate multiple enemies per Update
+            // if rate is small enough, we need to generate multiple enemies per Update
             float trueNumberPerInterval = (timeElapsed - lastEnemyTime) / rate + enemyCarryOver;
             numberPerInterval = Mathf.FloorToInt(trueNumberPerInterval);
             enemyCarryOver = trueNumberPerInterval - numberPerInterval;
@@ -71,8 +71,8 @@ public class EnemyGenerator : MonoBehaviour
     // returns a random position in world space on the edge of the screen
     public Vector3 GetRandomSpawnLocation() {
         int t = Random.Range(0, 2);     // 0 => randomize the y coord, 1 => randomize the x coord
-        int q = Random.Range(0, 2);     // the value of the unrandomized coord--i.e., 0 is left/bottom, 1 is right/top
-        float r = Random.value;         // the position of the randomized coord
+        int q = Random.Range(0, 2);     // the value of the unrandomized coord--0 is left/bottom, 1 is right/top
+        float r = Random.value;         // the value of the randomized coord
 
         Vector3 screenPosition = new Vector3((t * r + (1f - t) * q) * Screen.width, ((1f - t) * r + t * q) * Screen.height, 0f);
         Vector3 positionCreated = cam.ScreenToWorldPoint(screenPosition);

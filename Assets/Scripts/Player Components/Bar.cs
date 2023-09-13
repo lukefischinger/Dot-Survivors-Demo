@@ -5,18 +5,21 @@ public class Bar : MonoBehaviour
 {
 
     [SerializeField] Color color;
-    [SerializeField] Vector3 scale;
+    Vector3 scale;
 
-    float percentFull = 1;
+    float percentFull = 0;
     Transform parentTransform;
     RectTransform myRectTransform, fillTransform, emptyTransform;
 
-    private void Start()
+    private void Awake()
     {
         parentTransform = transform.parent;
+
         emptyTransform = transform.GetChild(0).GetComponent<RectTransform>();
         fillTransform = transform.GetChild(1).GetComponent<RectTransform>();
         myRectTransform = GetComponent<RectTransform>();
+
+        myRectTransform.SetParent(parentTransform, false);
 
         fillTransform.GetComponent<SpriteRenderer>().color = this.color;
         emptyTransform.GetComponent<SpriteRenderer>().color = Color.white;
@@ -27,6 +30,11 @@ public class Bar : MonoBehaviour
     {
         percentFull = current;
         UpdateDisplay();
+    }
+    
+    public void SetScale(Vector3 value) {
+        scale = value;
+        myRectTransform.localScale = scale;
     }
 
     private void UpdateDisplay()

@@ -1,46 +1,40 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
 
-  
+    [SerializeField] float speed = 1000;
+
     public PlayerInput myPlayerInput;
     Vector2 moveInput;
+
     Rigidbody2D myRigidbody;
-    Collider2D myCollider;
-    [SerializeField] float speed = 1000;
     Transform myTransform;
 
-    
-    void Awake()
-    {
+    float speedMultiplier = 1;
+
+    void Awake() {
         myPlayerInput = new PlayerInput();
         myRigidbody = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<Collider2D>();
         myTransform = GetComponent<Transform>();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         Move();
     }
 
 
-    private void Update()
-    {
+    private void Update() {
         UpdateInputs();
     }
 
 
-    void UpdateInputs()
-    {
+    void UpdateInputs() {
         moveInput = myPlayerInput.Player.Move.ReadValue<Vector2>();
     }
 
-    void Move()
-    {
-        myRigidbody.velocity = speed * moveInput * Time.deltaTime;
+    void Move() {
+        myRigidbody.velocity = speed * speedMultiplier * moveInput * Time.deltaTime;
 
         // set player rotation only when moveInput changes to something nonzero
         if (moveInput != Vector2.zero) {
@@ -49,16 +43,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void SetSpeedMultiplier(float value) {
+        speedMultiplier = value;
+    }
 
-    private void OnEnable()
-    {
+
+    private void OnEnable() {
         myPlayerInput.Enable();
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
         myPlayerInput.Disable();
     }
 
- 
+
 }
