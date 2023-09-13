@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField] GameObject prefabEnemy;
+    ObjectManager objects;
 
     Pool enemyPool;
     Camera cam;
@@ -17,15 +18,17 @@ public class EnemyGenerator : MonoBehaviour
 
     // constants determined through trial and error
     const float exponent = 1.2f;
-    const float rateMultiplier = 10f; //0.02f;
+    const float rateMultiplier = 0.02f;
     const float rateConstant = 1.2f;
 
     private void Awake() {
+        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+
         CalculateRate();
         lastEnemyTime = -rate;
         cam = Camera.main;
 
-        enemyPool = GetComponent<Pool>();
+        enemyPool = objects.enemyPool.GetComponent<Pool>();
     }
 
     private void Update() {

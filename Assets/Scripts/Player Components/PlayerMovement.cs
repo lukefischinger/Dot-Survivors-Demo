@@ -18,14 +18,9 @@ public class PlayerMovement : MonoBehaviour {
         myTransform = GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void FixedUpdate() {
-        Move();
-    }
-
-
-    private void Update() {
         UpdateInputs();
+        Move();
     }
 
 

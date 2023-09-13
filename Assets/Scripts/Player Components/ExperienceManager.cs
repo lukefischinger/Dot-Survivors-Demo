@@ -1,19 +1,29 @@
 using UnityEngine;
 
-public class ExperienceManager : MonoBehaviour
-{
+// player component
+// tracks current experience and threshold needed for next level up
+// passes information to the ExperienceBar for display
+// upon level up, alerts the RunManager object to generate a new UpgradeSelection
+public class ExperienceManager : MonoBehaviour {
+
+    ObjectManager objects;
+
     int experience = 0;
     int level = 0;
     Bar experienceBar;
     RectTransform canvasRect;
 
     private void Awake() {
-        canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
-        
-        experienceBar = canvasRect.GetComponentInChildren<Bar>();
-        experienceBar.SetFillValue(0);
+        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+
+        canvasRect = objects.canvas.GetComponent<RectTransform>();
+
+        experienceBar = objects.experienceBar.GetComponent<Bar>();
+    }
+
+    private void Start() {
         experienceBar.SetScale(new Vector3(canvasRect.rect.width, canvasRect.rect.height / 40, 0));
-        Debug.Log(canvasRect.rect.width);
+        experienceBar.SetFillValue(0);
     }
 
     public void AddExperience(int exp) {
@@ -26,7 +36,7 @@ public class ExperienceManager : MonoBehaviour
         }
         else {
             experience += exp;
-            experienceBar.SetFillValue(experience / levelThreshold);
+            experienceBar.SetFillValue((float)experience / levelThreshold);
         }
     }
 
@@ -37,5 +47,6 @@ public class ExperienceManager : MonoBehaviour
     void LevelUp() {
         level++;
         experience = 0;
+        // alert the RunManager it is time to create a new UpgradeSelection
     }
 }

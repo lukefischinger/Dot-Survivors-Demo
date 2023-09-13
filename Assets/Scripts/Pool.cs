@@ -6,9 +6,10 @@ using UnityEngine;
 // have many instances created and destroyed throughout a run
 public class Pool : MonoBehaviour
 {
+    
     [SerializeField] GameObject prefab;
     [SerializeField] int count;
-
+    ObjectManager objects;
 
     List<GameObject> pool;
     Dictionary<GameObject, int> objToIndex;
@@ -17,6 +18,8 @@ public class Pool : MonoBehaviour
     int firstAvailable;
 
     private void Awake() {
+        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+
         myTransform = transform;
         
         pool = new List<GameObject>();
@@ -25,7 +28,7 @@ public class Pool : MonoBehaviour
         for(int i = 0; i < count; i++) {
             pool.Add(Instantiate(prefab));
             objToIndex.Add(pool[i], i);
-            pool[i].transform.parent = myTransform;
+            pool[i].transform.SetParent(myTransform, false);
             pool[i].SetActive(false);
         }
 

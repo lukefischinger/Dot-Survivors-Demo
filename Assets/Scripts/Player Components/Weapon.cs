@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
     float hitCount = 100;
     
     [SerializeField] GameObject projectilePrefab;
+    ObjectManager objects;
     
     float timeLastFired;
     float damageMultiplier;

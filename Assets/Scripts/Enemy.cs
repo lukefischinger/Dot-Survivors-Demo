@@ -4,18 +4,25 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] float health;
     [SerializeField] float damage;
+    
+    ObjectManager objects;
 
     const int baseSpeed = 140;
+    const float experienceProbability = 0.3f;
 
     Transform myTransform, playerTransform;
     Rigidbody2D myRigidbody;
-    Pool enemyPool;
+    Pool enemyPool, experiencePool;
 
     private void Awake() {
+        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+
         myTransform = transform;
         myRigidbody = GetComponent<Rigidbody2D>();
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        enemyPool = GameObject.Find("EnemyGenerator").GetComponent<Pool>();
+        playerTransform = objects.player.transform;
+        enemyPool = objects.enemyPool.GetComponent<Pool>();
+        experiencePool = objects.experiencePool.GetComponent<Pool>();
+
     }
 
 
@@ -37,12 +44,19 @@ public class Enemy : MonoBehaviour
 
     // called when health <= 0
     private void Kill() {
+        if (Random.value < experienceProbability) {
+            Transform experience = experiencePool.GetPooledObject().transform;
+            experience.transform.position = myTransform.position;
+        }
+
         enemyPool.ReturnPooledObject(gameObject);
+
     }
 
     // returns the damage inflicted by this enemy on the player
     public float GetDamage() {
         return damage;
     }
+
 
 }

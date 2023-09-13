@@ -1,10 +1,11 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
+// used both for the player health bar and for the experience bar
 public class Bar : MonoBehaviour
 {
 
     [SerializeField] Color color;
+
     Vector3 scale;
 
     float percentFull = 0;
@@ -23,6 +24,7 @@ public class Bar : MonoBehaviour
 
         fillTransform.GetComponent<SpriteRenderer>().color = this.color;
         emptyTransform.GetComponent<SpriteRenderer>().color = Color.white;
+
     }
 
 
@@ -37,12 +39,14 @@ public class Bar : MonoBehaviour
         myRectTransform.localScale = scale;
     }
 
+    // update the display to reflect the current value of percentFull
     private void UpdateDisplay()
     {
         fillTransform.localScale = new Vector3(percentFull, 1, 0);
         emptyTransform.localScale = new Vector3(1 - percentFull, 1, 0);
         fillTransform.anchoredPosition = new Vector3(-0.5f + 0.5f * percentFull, 0, 0);
         emptyTransform.anchoredPosition = new Vector3(0.5f * percentFull, 0, 0);
+
 
     }
 
