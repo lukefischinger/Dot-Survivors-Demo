@@ -4,6 +4,8 @@ using UnityEngine;
 public class StateManager : MonoBehaviour
 {
 
+    [SerializeField] GameObject upgradeSelectionPrefab;
+
     public enum State {
         Running,
         Paused,
@@ -45,5 +47,11 @@ public class StateManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+
+    public void CreateUpgradeSelection() {
+        state = State.Upgrading;
+        Instantiate(upgradeSelectionPrefab);
     }
 }

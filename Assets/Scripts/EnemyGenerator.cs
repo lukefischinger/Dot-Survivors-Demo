@@ -18,7 +18,7 @@ public class EnemyGenerator : MonoBehaviour
 
     // constants determined through trial and error
     const float exponent = 1.2f;
-    const float rateMultiplier = 0.02f;
+    const float rateMultiplier = 5;//0.02f;
     const float rateConstant = 1.2f;
 
     private void Awake() {

@@ -675,6 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd7a9a97502d2b24b9bf586c891ee692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeSelectionPrefab: {fileID: 7641776998979405118, guid: 33bac94c8bbdd904d85b4bc407c5817d, type: 3}
   state: 0
   previousState: 0
 --- !u!114 &1191078320

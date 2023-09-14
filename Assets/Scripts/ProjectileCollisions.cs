@@ -14,7 +14,6 @@ public class ProjectileCollisions : MonoBehaviour {
 
     Weapon weapon;
     GameObject lastEnemy;
-    Transform canvasTransform;
     Pool damagePool;
 
     private void Awake() {
@@ -22,7 +21,6 @@ public class ProjectileCollisions : MonoBehaviour {
 
         coolDownRemaining = 0;
         weapon = objects.player.GetComponent<Weapon>();
-        canvasTransform = objects.canvas.transform;
         damagePool = objects.damagePool.GetComponent<Pool>();
     }
 
@@ -60,13 +58,9 @@ public class ProjectileCollisions : MonoBehaviour {
         // apply damage to the collided enemy
         lastEnemy = collision.gameObject;
         float damage = weapon.GetDamage();
-        lastEnemy.GetComponent<Enemy>().Damage(damage);
+        lastEnemy.GetComponent<Enemy>().Damage(damage, Color.white);
 
-        // display damage
-        Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
-        damageUI.SetDamage(damage, lastEnemy.transform.position, Color.white);
-
-
+        
         if (hitCount <= 0) {
             Destroy(gameObject);
         }

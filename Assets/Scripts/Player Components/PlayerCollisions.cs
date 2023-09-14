@@ -38,11 +38,9 @@ public class PlayerCollisions : MonoBehaviour
             hitCooldownRemaining = hitCooldown;
             
             float damage = collision.collider.GetComponent<Enemy>().GetDamage();
-            health.Damage(damage);
+            health.Damage(damage, Color.red);
             
-            // display damage
-            Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
-            damageUI.SetDamage(damage, collision.transform.position, Color.red);
+            
         }
     }
 

@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
 
     Transform myTransform, playerTransform;
     Rigidbody2D myRigidbody;
-    Pool enemyPool, experiencePool;
+    Pool enemyPool, experiencePool, damagePool;
 
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
         playerTransform = objects.player.transform;
         enemyPool = objects.enemyPool.GetComponent<Pool>();
         experiencePool = objects.experiencePool.GetComponent<Pool>();
+        damagePool = objects.damagePool.GetComponent<Pool>();
 
     }
 
@@ -36,9 +37,16 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void Damage(float damage) {
+    public void Damage(float damage, Color color) {
+        
         health -= damage;
-        if(health <= 0)
+
+        // display damage
+        Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
+        damageUI.SetDamage(damage, myTransform.position, color);
+
+
+        if (health <= 0)
             Kill(); 
     }
 

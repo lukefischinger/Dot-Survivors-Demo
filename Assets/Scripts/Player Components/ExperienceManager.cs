@@ -12,9 +12,11 @@ public class ExperienceManager : MonoBehaviour {
     int level = 0;
     Bar experienceBar;
     RectTransform canvasRect;
+    StateManager stateManager;
 
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+        stateManager = objects.GetComponent<StateManager>();
 
         canvasRect = objects.canvas.GetComponent<RectTransform>();
 
@@ -30,9 +32,9 @@ public class ExperienceManager : MonoBehaviour {
         int levelThreshold = CalculateLevelThreshold();
 
         if (experience + exp >= levelThreshold) {
-            LevelUp();
             if (experience + exp > levelThreshold)
                 AddExperience(experience + exp - levelThreshold);
+            LevelUp();
         }
         else {
             experience += exp;
@@ -47,6 +49,9 @@ public class ExperienceManager : MonoBehaviour {
     void LevelUp() {
         level++;
         experience = 0;
+
         // alert the RunManager it is time to create a new UpgradeSelection
+        stateManager.CreateUpgradeSelection();
+
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 // manages the various player attributes which are upgradeable
 public class AttributeManager : MonoBehaviour {
     private static readonly float[] healths = new float[] { 200, 240, 280, 350 };
-    private static readonly float[] speeds = new float[] { 300, 360, 420, 510 };
+    private static readonly float[] speeds = new float[] { 1f, 1.2f, 1.4f, 1.7f };
     private static readonly float[] healings = new float[] { 0, 1, 2, 4 };
     private static readonly float[] armors = new float[] { 0, 2f, 4f, 6f };
     private static readonly float[] damageMultipliers = new float[] { 1, 1.2f, 1.4f, 1.7f };
@@ -54,28 +54,21 @@ public class AttributeManager : MonoBehaviour {
         }
     }
 
-    // returns a list containing the names of all upgradeable attributes
+
+    // returns a sorted dictionary containing the names of all upgradeable attributes, paired with their next level
     // attributes are upgradeable if they are not yet max level
-    public List<string> GetAvailableUpgrades() {
-        List<string> returnList = new List<string>();
+    public SortedList<string, int> GetAvailableUpgradeLevels() {
+        SortedList<string, int> result = new SortedList<string, int>();
         foreach (string attributeName in attributeNames) {
             if (IsUpgradeable(attributeName)) {
-                returnList.Add(attributeName);
+                result.Add(attributeName, Level(attributeName) + 1);
             }
         }
 
-        return (returnList);
+        return result;
     }
 
-    // returns a list containing the current levels for all non-max-level attributes
-    public List<int> GetAvailableAttributeLevels() {
-        List<int> returnList = new List<int>();
-        foreach (string attributeName in GetAvailableUpgrades()) {
-            returnList.Add(Level(attributeName));
-        }
-
-        return returnList;
-    }
+ 
 
     // returns the current level of the given attribute
     int Level(string attributeName) {
