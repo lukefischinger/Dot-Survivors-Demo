@@ -34,20 +34,23 @@ public class UpgradeSelection : MonoBehaviour {
         transform.SetParent(canvasTransform, false);
 
         upgradeTextTypes = PopulateUpgradeTextsArray(upgradeTexts);
+        SortedList<string, int> upgradeSelections = AddQueuedUpgradeChoices();
+        upgradeSelections = AddRandomUpgradeChoice(upgradeSelections);
+        BuildUpgradeSelection(upgradeSelections);
 
     }
 
     void Start() {
 
-        SortedList<string, int> upgradeSelections = AddQueuedUpgradeChoices();
-        upgradeSelections = AddRandomUpgradeChoice(upgradeSelections);
-        BuildUpgradeSelection(upgradeSelections);
+        
     }
 
     // places chosen upgrades in Upgrade prefabs and then places these objects on the screen with the appropriate descriptive text
     void BuildUpgradeSelection(SortedList<string, int> selectedUpgrades) {
 
         int numUpgrades = selectedUpgrades.Count;
+        if (numUpgrades == 0)
+            Kill();
 
         for (int i = 0; i < numUpgrades; i++) {
             string upgradeType = selectedUpgrades.Keys[i];
@@ -98,10 +101,13 @@ public class UpgradeSelection : MonoBehaviour {
         string upgradeChoice = upgradeChoices[i].GetComponentInChildren<TextMeshProUGUI>().text;
         ApplyUpgrade(upgradeChoice);
 
-        stateManager.state = StateManager.State.Running;
-        Destroy(gameObject);
+        Kill();
     }
 
+    void Kill() {
+        stateManager.CompleteUpgrade();
+        Destroy(gameObject);
+    }
 
     void ApplyUpgrade(string choice) {
         attributeManager.ApplyUpgrade(choice);
@@ -196,14 +202,5 @@ public class UpgradeSelection : MonoBehaviour {
 
     void BuildQueue(List<string> available) {
         upgradeQueue.upgradeNames = ShuffleList(available);
-    }
-
-    // cleans the queue in case something
-    void CleanQueue(List<string> available) {
-        foreach (string upgradeName in upgradeQueue.upgradeNames) {
-            if (!available.Contains(upgradeName)) {
-                upgradeQueue.upgradeNames.Remove(upgradeName);
-            }
-        }
     }
 }

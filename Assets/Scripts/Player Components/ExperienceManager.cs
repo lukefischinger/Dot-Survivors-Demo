@@ -14,19 +14,16 @@ public class ExperienceManager : MonoBehaviour {
     RectTransform canvasRect;
     StateManager stateManager;
 
-    private void Awake() {
+    private void Start() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
         stateManager = objects.GetComponent<StateManager>();
 
         canvasRect = objects.canvas.GetComponent<RectTransform>();
 
         experienceBar = objects.experienceBar.GetComponent<Bar>();
+        experienceBar.SetScale(new Vector3(canvasRect.rect.width, canvasRect.rect.height / 35, 0));
     }
 
-    private void Start() {
-        experienceBar.SetScale(new Vector3(canvasRect.rect.width, canvasRect.rect.height / 40, 0));
-        experienceBar.SetFillValue(0);
-    }
 
     public void AddExperience(int exp) {
         int levelThreshold = CalculateLevelThreshold();
@@ -51,7 +48,7 @@ public class ExperienceManager : MonoBehaviour {
         experience = 0;
 
         // alert the RunManager it is time to create a new UpgradeSelection
-        stateManager.CreateUpgradeSelection();
+        stateManager.AddUpgrade();
 
     }
 }

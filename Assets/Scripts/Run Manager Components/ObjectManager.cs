@@ -12,6 +12,7 @@ public class ObjectManager : MonoBehaviour {
         enemyPool, 
         experiencePool,
         damagePool,
-        experienceBar;
+        experienceBar,
+        pause;
 
 }

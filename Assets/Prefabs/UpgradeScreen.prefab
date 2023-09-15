@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7641776998979405113}
   - component: {fileID: 7641776998979405112}
   - component: {fileID: 3724748642770609343}
+  - component: {fileID: 6246968079247347464}
   m_Layer: 5
   m_Name: UpgradeScreen
   m_TagString: Untagged
@@ -156,3 +157,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8585f582cb229a74eb8a12395f4ef333, type: 2}
   - {fileID: 11400000, guid: 1cabb02268280dc4f9b291f8bec07c4a, type: 2}
   upgradeQueue: {fileID: 11400000, guid: 4e2758029d7337f4eb3cc4b178e2194c, type: 2}
+--- !u!114 &6246968079247347464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641776998979405118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68465301b554ae14ab7665e70366af13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

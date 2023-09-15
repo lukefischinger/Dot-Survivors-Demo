@@ -14,12 +14,21 @@ public class StateManager : MonoBehaviour
 
     public State state = State.Running;
     public State previousState = State.Running;
-    bool pause;
+    bool pause, upgradeActive;
 
+    ObjectManager objects;
     PlayerInput uiInput;
+    int upgradesQueued = 0;
+    GameObject upgradeSelection, pauseMenu;
 
     private void Start() {
-        uiInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().myPlayerInput;
+        objects = GetComponent<ObjectManager>();
+        uiInput = objects.player.GetComponent<PlayerMovement>().myPlayerInput;
+        pauseMenu = objects.pause;
+    }
+
+    private void Update() {
+        UpdateState();
     }
 
     private void UpdateState() {
@@ -27,31 +36,76 @@ public class StateManager : MonoBehaviour
 
         switch (state) {
             case State.Running:
-                Time.timeScale = 1;
-                if (pause) {
-                    state = State.Paused;
-                    previousState = State.Running;
-                }
+                Running();
                 break;
             case State.Upgrading:
-                Time.timeScale = 0;
-                
-                // fill in
+                Upgrading();
                 break;
             case State.Paused:
-                Time.timeScale = 0;
-                
-
-                // fill in
+                Paused();
                 break;
             default:
                 break;
         }
     }
 
+    void Running() {
+        Time.timeScale = 1;
+        if (pause) {
+            state = State.Paused;
+            previousState = State.Running;
+        }
+    }
 
-    public void CreateUpgradeSelection() {
+    // if there is no active upgrade screen, create one
+    private void Upgrading() {
+        Time.timeScale = 0;
+
+        if(pause) {
+            state = State.Paused;
+            previousState = State.Upgrading;
+            upgradeSelection.SetActive(false);
+        } else if(!upgradeActive){
+            if (upgradesQueued > 0) {
+                CreateUpgradeSelection();
+            }
+        } else if(upgradeSelection != null && !upgradeSelection.activeInHierarchy)
+            upgradeSelection.SetActive(true);
+    }
+
+    private void Paused() {
+        Time.timeScale = 0;
+        
+        if(!pauseMenu.activeInHierarchy)
+            pauseMenu.SetActive(true);
+
+        if (pause) {
+            state = previousState;
+            pauseMenu.SetActive(false);
+        }
+    }
+
+    void CreateUpgradeSelection() {
         state = State.Upgrading;
-        Instantiate(upgradeSelectionPrefab);
+        upgradeActive = true;
+        upgradeSelection = Instantiate(upgradeSelectionPrefab);
+    }
+
+    // if multiple level ups occur at the same time, we want to ensure the upgrade selection objects are made in sequence rather than simultaneously
+    // to do this, the experience manager adds an upgrade to the queue, and the state manager creates the upgrade selections at the appropriate times
+    public void AddUpgrade() {
+        upgradesQueued++;
+        state = State.Upgrading;
+    }
+
+    public void CompleteUpgrade() {
+        upgradesQueued = Mathf.Max(upgradesQueued - 1, 0);
+        upgradeActive = false;
+        upgradeSelection = null;
+
+        if(upgradesQueued == 0) {
+            previousState = state;
+            state = State.Running;
+        }
     }
 }

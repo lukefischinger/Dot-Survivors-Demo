@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Experience
+  - MenuButton
   layers:
   - Default
   - TransparentFX
