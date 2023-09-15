@@ -754,14 +754,6 @@ PrefabInstance:
       propertyPath: m_text
       value: quit to main menu
       objectReference: {fileID: 0}
-    - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 8882960848676559458, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_Name
       value: Quit
@@ -850,6 +842,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_Navigation.m_WrapAround
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1554394314}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitToMainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
 --- !u!1 &968797199
@@ -914,8 +926,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
+  m_sharedMaterial: {fileID: 1352819754179511101, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -978,7 +990,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &968797202
@@ -1126,14 +1138,6 @@ PrefabInstance:
       propertyPath: m_text
       value: options
       objectReference: {fileID: 0}
-    - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 8882960848676559458, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_Name
       value: Options
@@ -1222,6 +1226,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_Navigation.m_WrapAround
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
 --- !u!1 &1554394311
@@ -1233,7 +1245,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1554394312}
-  - component: {fileID: 1554394313}
+  - component: {fileID: 1554394314}
   m_Layer: 5
   m_Name: Pause Menu
   m_TagString: Untagged
@@ -1264,7 +1276,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1554394313
+--- !u!114 &1554394314
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1273,7 +1285,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1554394311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68465301b554ae14ab7665e70366af13, type: 3}
+  m_Script: {fileID: 11500000, guid: 849f616289341e049885e3baf3d4bc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1758710240
@@ -1390,14 +1402,6 @@ PrefabInstance:
       propertyPath: m_text
       value: unpause
       objectReference: {fileID: 0}
-    - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 8882960848676559458, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_Name
       value: Unpause
@@ -1485,6 +1489,26 @@ PrefabInstance:
     - target: {fileID: 8882960848676559459, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_Navigation.m_WrapAround
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1554394314}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Unpause
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960848676559460, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}

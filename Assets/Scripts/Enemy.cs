@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     const int baseSpeed = 140;
     const float experienceProbability = 0.3f;
 
+    float currentHealth;
+
     Transform myTransform, playerTransform;
     Rigidbody2D myRigidbody;
     Pool enemyPool, experiencePool, damagePool;
@@ -23,6 +25,8 @@ public class Enemy : MonoBehaviour
         enemyPool = objects.enemyPool.GetComponent<Pool>();
         experiencePool = objects.experiencePool.GetComponent<Pool>();
         damagePool = objects.damagePool.GetComponent<Pool>();
+
+        Reset();
 
     }
 
@@ -38,21 +42,21 @@ public class Enemy : MonoBehaviour
 
 
     public void Damage(float damage, Color color) {
-        
-        health -= damage;
+
+        currentHealth -= damage;
 
         // display damage
         Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
         damageUI.SetDamage(damage, myTransform.position, color);
 
 
-        if (health <= 0)
-            Kill(); 
+        if (currentHealth <= 0)
+            Kill(true); 
     }
 
     // called when health <= 0
-    private void Kill() {
-        if (Random.value < experienceProbability) {
+    private void Kill(bool canDropExperience) {
+        if (canDropExperience && Random.value < experienceProbability) {
             Transform experience = experiencePool.GetPooledObject().transform;
             experience.transform.position = myTransform.position;
         }
@@ -64,6 +68,10 @@ public class Enemy : MonoBehaviour
     // returns the damage inflicted by this enemy on the player
     public float GetDamage() {
         return damage;
+    }
+
+    public void Reset() {
+        currentHealth = health;
     }
 
 

@@ -8,7 +8,7 @@ public class Damage : MonoBehaviour {
 
     float timeElapsed;
 
-    TextMeshProUGUI text;
+    TextMeshPro text;
     Transform myTransform;
     ObjectManager objects;
     Pool damagePool;
@@ -19,7 +19,7 @@ public class Damage : MonoBehaviour {
         damagePool = objects.damagePool.GetComponent<Pool>();
 
         timeElapsed = 0;
-        text = GetComponent<TextMeshProUGUI>();
+        text = GetComponent<TextMeshPro>();
         myTransform = transform;
 
     }

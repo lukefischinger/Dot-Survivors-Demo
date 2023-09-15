@@ -1,8 +1,7 @@
 using UnityEngine;
 
 // generates enemies at an increasing rate throughout a run
-public class EnemyGenerator : MonoBehaviour
-{
+public class EnemyGenerator : MonoBehaviour {
     [SerializeField] GameObject prefabEnemy;
     ObjectManager objects;
 
@@ -43,32 +42,33 @@ public class EnemyGenerator : MonoBehaviour
         timeElapsed = Time.time; // connect this to future runtime variable that accounts for pauses
 
         enemiesPerSecond = rateMultiplier * Mathf.Pow(timeElapsed, exponent) + rateConstant;
-        rate = 1 / enemiesPerSecond;     
+        rate = 1 / enemiesPerSecond;
     }
 
     void CreateEnemies() {
-        if(timeElapsed > lastEnemyTime + rate) {
+        if (timeElapsed > lastEnemyTime + rate) {
             // if rate is small enough, we need to generate multiple enemies per Update
             float trueNumberPerInterval = (timeElapsed - lastEnemyTime) / rate + enemyCarryOver;
             numberPerInterval = Mathf.FloorToInt(trueNumberPerInterval);
             enemyCarryOver = trueNumberPerInterval - numberPerInterval;
-    
+
             // create the calculated number of enemies in random locations around the border of the screen
-            for(int i = 0; i < numberPerInterval; i++) {
-
-                GameObject enemy = enemyPool.GetPooledObject();
-                if (enemy != null) {
-                    enemy.transform.position = GetRandomSpawnLocation();
-                }
-
-
+            for (int i = 0; i < numberPerInterval; i++) {
+                CreateEnemy();
             }
 
             lastEnemyTime = Time.time;
         }
 
     }
+    void CreateEnemy() {
+        GameObject enemy = enemyPool.GetPooledObject();
+        if (enemy != null) {
+            enemy.transform.position = GetRandomSpawnLocation();
+            enemy.GetComponent<Enemy>().Reset();
 
+        }
+    }
 
 
     // returns a random position in world space on the edge of the screen
@@ -82,5 +82,7 @@ public class EnemyGenerator : MonoBehaviour
         positionCreated.z = 0;
         return (positionCreated);
     }
+
+    
 
 }

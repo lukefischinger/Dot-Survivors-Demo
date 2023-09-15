@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7641776998979405113}
   - component: {fileID: 7641776998979405112}
   - component: {fileID: 3724748642770609343}
-  - component: {fileID: 6246968079247347464}
   m_Layer: 5
   m_Name: UpgradeScreen
   m_TagString: Untagged
@@ -70,8 +69,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Select an Upgrade
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
+  m_sharedMaterial: {fileID: 1352819754179511101, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -95,7 +94,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
+  m_fontSize: 1.05
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -134,7 +133,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &3724748642770609343
@@ -156,16 +155,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1adfd847b2183af41bc8e7d6cc8cbfe7, type: 2}
   - {fileID: 11400000, guid: 8585f582cb229a74eb8a12395f4ef333, type: 2}
   - {fileID: 11400000, guid: 1cabb02268280dc4f9b291f8bec07c4a, type: 2}
+  - {fileID: 11400000, guid: 1887c126cd49fbd4eb76c18f9d494734, type: 2}
   upgradeQueue: {fileID: 11400000, guid: 4e2758029d7337f4eb3cc4b178e2194c, type: 2}
---- !u!114 &6246968079247347464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7641776998979405118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68465301b554ae14ab7665e70366af13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

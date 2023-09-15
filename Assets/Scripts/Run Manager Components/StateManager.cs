@@ -80,8 +80,7 @@ public class StateManager : MonoBehaviour
             pauseMenu.SetActive(true);
 
         if (pause) {
-            state = previousState;
-            pauseMenu.SetActive(false);
+            Unpause();
         }
     }
 
@@ -107,5 +106,10 @@ public class StateManager : MonoBehaviour
             previousState = state;
             state = State.Running;
         }
+    }
+
+    public void Unpause() {
+        state = previousState;
+        pauseMenu.SetActive(false);
     }
 }
