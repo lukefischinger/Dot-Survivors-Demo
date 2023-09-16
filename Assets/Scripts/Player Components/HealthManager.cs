@@ -4,13 +4,13 @@ using UnityEngine;
 // tracks player max and current health, and communicates this information with the player health bar display
 public class HealthManager : MonoBehaviour {
 
-    [SerializeField] float maxHealth;
 
     ObjectManager objects;
     Bar healthBar;
     Pool damagePool;
     Transform myTransform;
 
+    float maxHealth;
     float currentHealth;
     float currentArmor = 0;
     float currentHealing = 0;
@@ -22,11 +22,14 @@ public class HealthManager : MonoBehaviour {
         damagePool = objects.damagePool.GetComponent<Pool>();
         currentHealth = maxHealth;
         healthBar = transform.GetChild(0).GetComponent<Bar>();
-        SetHealthBar();
         myTransform = transform;
     }
 
-    private void Update() {
+    private void Start() {
+        SetHealthBar();
+    }
+
+    private void FixedUpdate() {
         PeriodicHealing();
     }
 
@@ -49,13 +52,13 @@ public class HealthManager : MonoBehaviour {
     }
 
     public void Heal(float healAmount) {
-        currentHealth += healAmount;
-        currentHealth = Mathf.Min(currentHealth, maxHealth);
+        float actualHeal = Mathf.Min(maxHealth - currentHealth, healAmount);
+        currentHealth += actualHeal;
         SetHealthBar();
 
         // display healing
         Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
-        damageUI.SetDamage(healAmount, myTransform.position, Color.green);
+        damageUI.SetDamage(actualHeal, myTransform.position, Color.green);
 
     }
 
@@ -67,10 +70,17 @@ public class HealthManager : MonoBehaviour {
 
     public float GetMaxHealth() { return maxHealth; }
 
-    public void SetMaxHealth(float maxHealth) {
-        float increase = maxHealth - this.maxHealth;
-        this.maxHealth = maxHealth;
-        Heal(increase);
+    public void SetMaxHealth(float maxHealth, bool displayHeal = true) {
+        if (displayHeal) {
+            float increase = maxHealth - this.maxHealth;
+            this.maxHealth = maxHealth;
+            Heal(increase);
+        }
+        else {
+            currentHealth += maxHealth - this.maxHealth;
+            this.maxHealth = maxHealth;
+        }
+        
     }
 
     public void SetArmor(float value) {

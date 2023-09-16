@@ -4,15 +4,18 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour {
 
     [SerializeField]
-    public GameObject 
-        player, 
+    public GameObject
+        player,
         followCamera,
         canvas,
-        EnemyGenerator, 
-        enemyPool, 
+        EnemyGenerator,
+        enemyPool,
         experiencePool,
         damagePool,
         experienceBar,
-        pause;
+        pauseScreen,
+        upgradeScreen,
+        eventSystem,
+        clock;
 
 }

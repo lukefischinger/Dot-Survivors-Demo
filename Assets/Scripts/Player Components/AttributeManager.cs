@@ -32,6 +32,7 @@ public class AttributeManager : MonoBehaviour {
         playerMovement = GetComponent<PlayerMovement>();
         weapon = GetComponent<Weapon>();
         SetWeaponValues();
+        healthManager.SetMaxHealth(GetAttributeValue("Health"), false);
     }
 
     public void ApplyUpgrade(string attributeName) {

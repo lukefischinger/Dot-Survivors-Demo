@@ -24,6 +24,7 @@ public class Bar : MonoBehaviour
 
         fillTransform.GetComponent<SpriteRenderer>().color = this.color;
         emptyTransform.GetComponent<SpriteRenderer>().color = Color.white;
+        UpdateDisplay();
 
     }
 

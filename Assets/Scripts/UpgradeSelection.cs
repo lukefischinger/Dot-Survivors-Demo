@@ -8,7 +8,6 @@ using System.Linq;
 
 public class UpgradeSelection : MonoBehaviour {
 
-    [SerializeField] GameObject prefabUpgrade;
     [SerializeField] UpgradeText[] upgradeTexts;
     [SerializeField] UpgradeQueue upgradeQueue;
     string[] upgradeTextTypes;
@@ -30,22 +29,24 @@ public class UpgradeSelection : MonoBehaviour {
         stateManager = objects.GetComponent<StateManager>();
         attributeManager = player.GetComponent<AttributeManager>();
         canvasTransform = objects.canvas.transform;
-
         transform.SetParent(canvasTransform, false);
-
-        upgradeTextTypes = PopulateUpgradeTextsArray(upgradeTexts);
-        SortedList<string, int> upgradeSelections = AddQueuedUpgradeChoices();
-        upgradeSelections = AddRandomUpgradeChoice(upgradeSelections);
-        BuildUpgradeSelection(upgradeSelections);
-
-    }
-
-    void Start() {
-
         
+        PopulateUpgradeChoices();
+        EraseAll();
+        upgradeTextTypes = PopulateUpgradeTextsArray(upgradeTexts);
     }
 
-    // places chosen upgrades in Upgrade prefabs and then places these objects on the screen with the appropriate descriptive text
+    // the upgrade menu is enabled and then re-disabled for each upgrade selection throughout a run
+    // only repopulate if the upgrade selection buttons are blank
+    private void OnEnable() {
+        if (IsBlank()) {
+            SortedList<string, int> upgradeSelections = AddQueuedUpgradeChoices();
+            upgradeSelections = AddRandomUpgradeChoice(upgradeSelections);
+            BuildUpgradeSelection(upgradeSelections);
+        }
+    }
+
+    // populates the existing menu buttons with the appropriate descriptive text
     void BuildUpgradeSelection(SortedList<string, int> selectedUpgrades) {
 
         int numUpgrades = selectedUpgrades.Count;
@@ -60,24 +61,44 @@ public class UpgradeSelection : MonoBehaviour {
 
         }
 
+        // disable any unused upgrade objects
+        for (int i = numUpgrades; i < 3; i++) {
+            upgradeChoices[i].SetActive(false);
+        }
+
     }
 
-
+    // fills in the text for a single upgrade choice button
     void PlaceUpgradeChoice(int i, string upgradeType, int upgradeLevel) {
-        upgradeChoices.Add(Instantiate(prefabUpgrade));
-        upgradeChoices[i].transform.SetParent(transform, false);
-        upgradeChoices[i].transform.localPosition = CalculatePosition(i);
-
-        upgradeChoices[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = upgradeType;
-        upgradeChoices[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GetUpgradeText(upgradeType, upgradeLevel);
-
-        int j = i;
-        upgradeChoices[i].GetComponent<Button>().onClick.AddListener(delegate { TaskOnClick(j); });
+        SetUpgradeText(i, upgradeType, GetUpgradeText(upgradeType, upgradeLevel));
     }
 
-    Vector3 CalculatePosition(int index) {
-        return new Vector3(0, 200 - index * 200);
+    void SetUpgradeText(int i, string title, string description) {
+        upgradeChoices[i].SetActive(true);
+        upgradeChoices[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = title;
+        upgradeChoices[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = description;
     }
+
+    void EraseAll() {
+        for (int i = 0; i < 3; i++) {
+            SetUpgradeText(i, "", "");
+        }
+    }
+
+    bool IsBlank() {
+        return upgradeChoices.Count > 0 && upgradeChoices[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text == "";
+    }
+
+    // populates the list upgradeChoices for later use, and adds button listeners
+    void PopulateUpgradeChoices() {
+        for (int i = 0; i < 3; i++) {
+            upgradeChoices.Add(transform.GetChild(i).gameObject);
+
+            int j = i;
+            upgradeChoices[i].GetComponent<Button>().onClick.AddListener(delegate { TaskOnClick(j); });
+        }
+    }
+
 
 
     // called once in Awake to faciliate retrieval of upgrade description text in stored in scriptable objects
@@ -106,7 +127,7 @@ public class UpgradeSelection : MonoBehaviour {
 
     void Kill() {
         stateManager.CompleteUpgrade();
-        Destroy(gameObject);
+        EraseAll();
     }
 
     void ApplyUpgrade(string choice) {

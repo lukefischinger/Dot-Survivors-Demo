@@ -5,8 +5,10 @@ public class EnemyGenerator : MonoBehaviour {
     [SerializeField] GameObject prefabEnemy;
     ObjectManager objects;
 
+    Clock clock;
     Pool enemyPool;
     Camera cam;
+
 
     // variables for determining when a new enemy should be created
     float timeElapsed;
@@ -16,12 +18,13 @@ public class EnemyGenerator : MonoBehaviour {
     float enemyCarryOver = 0;
 
     // constants determined through trial and error
-    const float exponent = 1.2f;
-    const float rateMultiplier = 5;//0.02f;
+    const float exponent = 1.25f;
+    const float rateMultiplier = 0.03f;
     const float rateConstant = 1.2f;
 
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+        clock = objects.clock.GetComponent<Clock>();
 
         CalculateRate();
         lastEnemyTime = -rate;
@@ -39,7 +42,7 @@ public class EnemyGenerator : MonoBehaviour {
     // updates "rate" field with the rate at which enemies are generated
     // rate increases over time
     void CalculateRate() {
-        timeElapsed = Time.time; // connect this to future runtime variable that accounts for pauses
+        timeElapsed = Time.time - clock.timeAwake; // connect this to future runtime variable that accounts for pauses
 
         enemiesPerSecond = rateMultiplier * Mathf.Pow(timeElapsed, exponent) + rateConstant;
         rate = 1 / enemiesPerSecond;
@@ -57,7 +60,7 @@ public class EnemyGenerator : MonoBehaviour {
                 CreateEnemy();
             }
 
-            lastEnemyTime = Time.time;
+            lastEnemyTime = Time.time - clock.timeAwake;
         }
 
     }

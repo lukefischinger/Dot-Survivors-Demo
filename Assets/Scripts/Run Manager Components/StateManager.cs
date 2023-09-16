@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 // manages the state of the run
 public class StateManager : MonoBehaviour
@@ -20,11 +21,14 @@ public class StateManager : MonoBehaviour
     PlayerInput uiInput;
     int upgradesQueued = 0;
     GameObject upgradeSelection, pauseMenu;
+    EventSystem eventSystem;
 
     private void Start() {
         objects = GetComponent<ObjectManager>();
         uiInput = objects.player.GetComponent<PlayerMovement>().myPlayerInput;
-        pauseMenu = objects.pause;
+        pauseMenu = objects.pauseScreen;
+        upgradeSelection = objects.upgradeScreen;
+        eventSystem = objects.eventSystem.GetComponent<EventSystem>();
     }
 
     private void Update() {
@@ -87,7 +91,9 @@ public class StateManager : MonoBehaviour
     void CreateUpgradeSelection() {
         state = State.Upgrading;
         upgradeActive = true;
-        upgradeSelection = Instantiate(upgradeSelectionPrefab);
+        eventSystem.firstSelectedGameObject = upgradeSelection.transform.GetChild(0).gameObject;
+        upgradeSelection.SetActive(true);
+        
     }
 
     // if multiple level ups occur at the same time, we want to ensure the upgrade selection objects are made in sequence rather than simultaneously
@@ -100,7 +106,8 @@ public class StateManager : MonoBehaviour
     public void CompleteUpgrade() {
         upgradesQueued = Mathf.Max(upgradesQueued - 1, 0);
         upgradeActive = false;
-        upgradeSelection = null;
+        upgradeSelection.SetActive(false);
+        eventSystem.firstSelectedGameObject = pauseMenu.transform.GetChild(2).GetChild(0).gameObject;
 
         if(upgradesQueued == 0) {
             previousState = state;
