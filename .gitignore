@@ -10,12 +10,15 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Tt]emp/[Uu]nityLockfile
+/[Ww]eb[Gg][Ll] [Bb]uilds/
 /Library/CurrentLayout-default.dwlt
 /Library/ArtifactDB
 /Library/InspectorExpandedItems.asset
 /Library/SourceAssetDB
 /Library/StateCache/
 /Temp/
+/webgl_sharing
+/connectwebgl.zip
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

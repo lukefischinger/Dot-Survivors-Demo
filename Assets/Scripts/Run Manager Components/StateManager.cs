@@ -21,14 +21,12 @@ public class StateManager : MonoBehaviour
     PlayerInput uiInput;
     int upgradesQueued = 0;
     GameObject upgradeSelection, pauseMenu;
-    EventSystem eventSystem;
 
     private void Start() {
         objects = GetComponent<ObjectManager>();
         uiInput = objects.player.GetComponent<PlayerMovement>().myPlayerInput;
         pauseMenu = objects.pauseScreen;
         upgradeSelection = objects.upgradeScreen;
-        eventSystem = objects.eventSystem.GetComponent<EventSystem>();
     }
 
     private void Update() {
@@ -91,7 +89,6 @@ public class StateManager : MonoBehaviour
     void CreateUpgradeSelection() {
         state = State.Upgrading;
         upgradeActive = true;
-        eventSystem.firstSelectedGameObject = upgradeSelection.transform.GetChild(0).gameObject;
         upgradeSelection.SetActive(true);
         
     }
@@ -107,7 +104,6 @@ public class StateManager : MonoBehaviour
         upgradesQueued = Mathf.Max(upgradesQueued - 1, 0);
         upgradeActive = false;
         upgradeSelection.SetActive(false);
-        eventSystem.firstSelectedGameObject = pauseMenu.transform.GetChild(2).GetChild(0).gameObject;
 
         if(upgradesQueued == 0) {
             previousState = state;

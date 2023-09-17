@@ -23,7 +23,7 @@ public class Experience : MonoBehaviour {
 
     void FixedUpdate() {
         if (IsPlayerClose()) {
-            float magnitude = movementMultiplier * Mathf.Min(5, Mathf.Max(1, (player.transform.position - transform.position).magnitude));
+            float magnitude = movementMultiplier * Mathf.Min(5, Mathf.Max(2.5f, (player.transform.position - transform.position).magnitude));
             myRigidbody.velocity = (player.transform.position - transform.position).normalized * magnitude * Time.deltaTime * 500f;
         }
     }

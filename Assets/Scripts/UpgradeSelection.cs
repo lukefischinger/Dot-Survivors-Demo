@@ -32,6 +32,7 @@ public class UpgradeSelection : MonoBehaviour {
         transform.SetParent(canvasTransform, false);
         
         PopulateUpgradeChoices();
+        upgradeQueue.upgradeNames.Clear();
         EraseAll();
         upgradeTextTypes = PopulateUpgradeTextsArray(upgradeTexts);
     }
@@ -44,6 +45,8 @@ public class UpgradeSelection : MonoBehaviour {
             upgradeSelections = AddRandomUpgradeChoice(upgradeSelections);
             BuildUpgradeSelection(upgradeSelections);
         }
+
+        upgradeChoices[0].GetComponent<Button>().Select();
     }
 
     // populates the existing menu buttons with the appropriate descriptive text
@@ -142,9 +145,7 @@ public class UpgradeSelection : MonoBehaviour {
         availableUpgradeLevels = attributeManager.GetAvailableUpgradeLevels();
         if (availableUpgradeLevels.Count == 0) return result;
 
-        // add queued choices to the result list
-        int max = 2;
-        string next;
+        
         bool queueRebuilt = false;
 
         // build the upgrade queue from all available upgrades if it is empty
@@ -153,6 +154,8 @@ public class UpgradeSelection : MonoBehaviour {
             queueRebuilt = true;
         }
 
+        int max = 2;
+        string next;
         while (upgradeQueue.upgradeNames.Count > 0 && max > 0) {
             max--;
             next = upgradeQueue.upgradeNames[0];

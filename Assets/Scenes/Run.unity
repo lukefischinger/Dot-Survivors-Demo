@@ -336,10 +336,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UpgradeScreen
       objectReference: {fileID: 0}
-    - target: {fileID: 7641776998979405118, guid: 33bac94c8bbdd904d85b4bc407c5817d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7641776998979405119, guid: 33bac94c8bbdd904d85b4bc407c5817d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -542,7 +538,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1842,7 +1838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebaa5c7bf498eef40aa9b19f222f07a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
 --- !u!114 &1793663736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1906,7 +1901,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1793663732}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 10
+    OrthographicSize: 12
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0

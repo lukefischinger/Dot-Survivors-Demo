@@ -19,6 +19,7 @@ public class Projectile : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         timeInstantiated = Time.time;
+        OtherAwake();
 
     }
 
@@ -39,6 +40,8 @@ public class Projectile : MonoBehaviour
         this.speed = speed;
     }
 
+
+    protected virtual void OtherAwake() {}
 
 }
 
