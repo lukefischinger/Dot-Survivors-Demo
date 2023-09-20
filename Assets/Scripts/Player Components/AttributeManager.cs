@@ -13,15 +13,33 @@ public class AttributeManager : MonoBehaviour {
 
     // weapon attributes (circle)
     // unlike the attributes above, all weapon attributes are determined by a single weapon level from 0 to 6
-    private static readonly float[] ratesCircle = new float[] { 2f, 1.6f, 1.28f, 1.024f, 0.8192f, 0.65536f, 0.524288f };
-    private static readonly float[] speedsCircle = new float[] { 500f, 550f, 600f, 650f, 700f, 750f, 800f };
+    private static readonly float[] ratesCircle = new float[] { 2f, 1.6f, 1.3f, 1.05f, 0.85f, 0.7f, 0.6f };
     private static readonly float[] hitCountsCircle = new float[] { 10f, 20f, 30f, 40f, 50f, 75f, 100f };
 
-    private static readonly string[] attributeNames = new string[] { "Health", "Speed", "Healing", "Armor", "Damage", "Weapon", "Weapon", "Weapon" };
-    private static readonly int[] maxAttributeLevels = new int[] { 3, 3, 3, 3, 3, 6, 6, 6 };
+    // red attributes
+    private static readonly float[] redDamageMultiplier = new float[] { 0.5f, 1f, 1f, 1f, 1f, 1.25f, 1.25f, 1.25f };
+    private static readonly float[] redCriticalChance = new float[] { 0.1f, 0.1f, 0.2f, 0.2f, 0.3f, 0.3f, 0.4f, 0.4f };
+    private static readonly float[] redExplosionSize = new float[] { 0f, 0f, 0f, 0.25f, 0.25f, 0.25f, 0.25f, 0.5f };
+    private static readonly int[] redChainNumber = new int[] { 0, 0, 0, 1, 1, 1, 1, 1 };
 
-    float[][] attributes = new float[][] { healths, speeds, healings, armors, damageMultipliers, ratesCircle, speedsCircle, hitCountsCircle };
-    int[] attributeLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+    // yellow attributes
+    private static readonly float[] yellowDamageMultiplier = new float[] { 0.5f, 1f, 1f, 1.5f, 1.5f, 1.5f, 2.5f, 2.5f };
+    private static readonly int[] yellowSpreadNumber = new int[] { 3, 3, 5, 5, 8, 8, 10, 10 };
+    private static readonly float[] yellowTickLength = new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.1f };
+    private static readonly float[] yellowDuration = new float[] { 5f, 5f, 5f, 5f, 5f, 7f, 7f, 7f };
+
+    // summary of all upgrade names/categories and max levels
+    private static readonly string[] attributeNames = new string[] { "Health", "Speed", "Healing", "Armor", "Damage", 
+                                                                     "Weapon", "Weapon", 
+                                                                     "Red", "Red", "Red", 
+                                                                     "Yellow", "Yellow", "Yellow", "Yellow" };
+    private static readonly int[] maxAttributeLevels = new int[] { 3, 3, 3, 3, 3, 
+                                                                   6, 6, 
+                                                                   7, 7, 7,
+                                                                   7, 7, 7, 7};
+
+    float[][] attributes = new float[][] { healths, speeds, healings, armors, damageMultipliers, ratesCircle, hitCountsCircle };
+    int[] attributeLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1 };
 
     HealthManager healthManager;
     PlayerMovement playerMovement;
@@ -56,6 +74,12 @@ public class AttributeManager : MonoBehaviour {
                 break;
             case "Weapon":
                 SetWeaponValues();
+                break;
+            case "Red":
+                SetRedValues();
+                break;
+            case "Yellow":
+                SetYellowValues();
                 break;
 
             default:
@@ -124,6 +148,26 @@ public class AttributeManager : MonoBehaviour {
         }
 
         weapon.SetRateSpeedAndHitCount(attributeValues);
+    }
+
+    void SetRedValues() {
+        int level = Level("Red");
+        
+        weapon.isRedActive = true;
+        weapon.activeRedCriticalChance = redCriticalChance[level];
+        weapon.activeRedDamageMultiplier = redDamageMultiplier[level];
+        weapon.activeRedExplosionSize = redExplosionSize[level];
+        weapon.activeRedChainNumber = redChainNumber[level];
+    }
+
+    void SetYellowValues() {
+        int level = Level("Yellow");
+        
+        weapon.isYellowActive = true;
+        weapon.activeYellowSpreadNumber = yellowSpreadNumber[level];
+        weapon.activeYellowTickLength = yellowTickLength[level];
+        weapon.activeYellowDamageMultiplier = yellowDamageMultiplier[level];
+        weapon.activeYellowDuration = yellowDuration[level];
     }
 
 }

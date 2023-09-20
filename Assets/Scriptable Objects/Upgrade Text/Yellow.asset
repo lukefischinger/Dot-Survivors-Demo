@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19f7b77e4ab70e141a0ab0f957f49809, type: 3}
-  m_Name: Circle
+  m_Name: Yellow
   m_EditorClassIdentifier: 
-  upgradeType: Weapon
+  upgradeType: Yellow
   upgradeTextByLevel:
-  - basic circle
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
+  - Add yellow to projectiles. Yellow clings to enemies, causing damage and spreading
+    to other enemies.
+  - +50% base yellow damage
+  - +5 spread
+  - +50% base yellow damage
+  - +5 spread
+  - +40% duration
+  - +5 spread
+  - -50% cooldown between yellow damage

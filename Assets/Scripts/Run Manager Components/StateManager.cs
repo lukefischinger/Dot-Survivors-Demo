@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-// manages the state of the run
+// manages the state of the run (running, upgrading, or paused)
 public class StateManager : MonoBehaviour
 {
 

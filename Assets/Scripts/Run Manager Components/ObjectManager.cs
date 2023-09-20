@@ -12,10 +12,16 @@ public class ObjectManager : MonoBehaviour {
         enemyPool,
         experiencePool,
         damagePool,
+        explosionPool,
+        parasitePool,
         experienceBar,
         pauseScreen,
         upgradeScreen,
         eventSystem,
         clock;
+
+    [SerializeField] public Color parasiteDamageColor,
+                    basicDamageColor,
+                    redDamageColor;
 
 }

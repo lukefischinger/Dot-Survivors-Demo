@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // player component
 // tracks player max and current health, and communicates this information with the player health bar display
@@ -43,8 +44,9 @@ public class HealthManager : MonoBehaviour {
         SetHealthBar();
 
         // display damage
-        Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
-        damageUI.SetDamage(actualDamage, myTransform.position, color);
+        GameObject damageUI = damagePool.GetPooledObject();
+        if(damageUI != null)
+            damageUI.GetComponent<Damage>().SetDamage(actualDamage, myTransform.position, color);
 
         if (currentHealth <= 0) {
             Kill();
@@ -57,13 +59,14 @@ public class HealthManager : MonoBehaviour {
         SetHealthBar();
 
         // display healing
-        Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
-        damageUI.SetDamage(actualHeal, myTransform.position, Color.green);
+        GameObject damageUI = damagePool.GetPooledObject();
+        if(damageUI != null) 
+            damageUI.GetComponent<Damage>().SetDamage(actualHeal, myTransform.position, Color.green);
 
     }
 
     void Kill() {
-        Destroy(gameObject);
+        SceneManager.LoadScene(0);
     }
 
     public float GetHealth() { return currentHealth; }

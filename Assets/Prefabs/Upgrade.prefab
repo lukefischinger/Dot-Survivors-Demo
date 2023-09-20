@@ -69,7 +69,7 @@ MonoBehaviour:
   m_text: Upgrade
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
-  m_sharedMaterial: {fileID: 1352819754179511101, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
+  m_sharedMaterial: {fileID: -3767063617978151608, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -372,7 +372,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
-  m_sharedMaterial: {fileID: 1352819754179511101, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
+  m_sharedMaterial: {fileID: -3767063617978151608, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

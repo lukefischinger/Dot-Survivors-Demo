@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19f7b77e4ab70e141a0ab0f957f49809, type: 3}
-  m_Name: Circle
+  m_Name: Red
   m_EditorClassIdentifier: 
-  upgradeType: Weapon
+  upgradeType: Red
   upgradeTextByLevel:
-  - basic circle
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
+  - Add red to projectiles. Red projectiles inflict an additional hit on impact and
+    increase critical hit chance by 10%.,
+  - +50% base red damage
+  - +10% critical hit chance
+  - Red projectiles explode on impact
+  - +10% critical hit chance
+  - +25% base red damage
+  - +10% critical hit chance
+  - +100% explosion size

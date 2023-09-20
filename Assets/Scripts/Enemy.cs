@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
 
     const int baseSpeed = 140;
     const float experienceProbability = 0.3f;
+    const float criticalDamageSizeMultiplier = 2f;
 
     float currentHealth;
 
@@ -41,13 +42,14 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void Damage(float damage, Color color) {
+    public void Damage(float damage, Color color, bool isCritical = false) {
 
         currentHealth -= damage;
 
         // display damage
-        Damage damageUI = damagePool.GetPooledObject().GetComponent<Damage>();
-        damageUI.SetDamage(damage, myTransform.position, color);
+        GameObject damageUI = damagePool.GetPooledObject();
+        if(damageUI != null)
+            damageUI.GetComponent<Damage>().SetDamage(damage, myTransform.position, color, isCritical ? criticalDamageSizeMultiplier : 1f);
 
 
         if (currentHealth <= 0)
@@ -57,10 +59,11 @@ public class Enemy : MonoBehaviour
     // called when health <= 0
     private void Kill(bool canDropExperience) {
         if (canDropExperience && Random.value < experienceProbability) {
-            Transform experience = experiencePool.GetPooledObject().transform;
-            experience.transform.position = myTransform.position;
+            GameObject experience = experiencePool.GetPooledObject();
+            if(experience != null)
+                experience.transform.position = myTransform.position;
         }
-
+        KillParasite();
         enemyPool.ReturnPooledObject(gameObject);
 
     }
@@ -72,6 +75,20 @@ public class Enemy : MonoBehaviour
 
     public void Reset() {
         currentHealth = health;
+        KillParasite();
+    }
+
+    public bool HasParasite() {
+        if (transform.childCount == 0) return false;
+
+        Transform child = transform.GetChild(0);
+        return child != null && child.tag == "Parasite";
+    }
+
+    void KillParasite() {
+        if(HasParasite()) {
+            GetComponentInChildren<Parasite>().Kill();
+        }
     }
 
 

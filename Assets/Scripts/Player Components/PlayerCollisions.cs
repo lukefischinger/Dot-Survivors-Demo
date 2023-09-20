@@ -2,13 +2,12 @@ using UnityEngine;
 
 // player component
 // Manages player collisions, e.g. with enemies and experience
-public class PlayerCollisions : MonoBehaviour
-{
+public class PlayerCollisions : MonoBehaviour {
 
     [SerializeField] GameObject damagePrefab;
     ObjectManager objects;
 
-    float hitCooldownRemaining, 
+    float hitCooldownRemaining,
           hitCooldown = 0.3f;
     HealthManager health;
     Transform canvasTransform;
@@ -24,28 +23,30 @@ public class PlayerCollisions : MonoBehaviour
         damagePool = objects.damagePool.GetComponent<Pool>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnTriggerEnter2D(Collider2D collision) {
         ProcessEnemyHit(collision);
         ProcessExperience(collision);
     }
-    void OnCollisionStay2D(Collision2D collision) {
+
+    private void OnTriggerStay2D(Collider2D collision) {
         if (hitCooldownRemaining <= 0)
             ProcessEnemyHit(collision);
+
     }
 
-    void ProcessEnemyHit(Collision2D collision) {
+    void ProcessEnemyHit(Collider2D collision) {
         if (collision.gameObject.tag == "Enemy") {
             hitCooldownRemaining = hitCooldown;
-            
-            float damage = collision.collider.GetComponent<Enemy>().GetDamage();
+
+            float damage = collision.GetComponent<Enemy>().GetDamage();
             health.Damage(damage, Color.red);
-            
-            
+
+
         }
     }
 
-    void ProcessExperience(Collision2D collision) {
-        if(collision.gameObject.tag == "Experience") {
+    void ProcessExperience(Collider2D collision) {
+        if (collision.gameObject.tag == "Experience") {
             GetComponent<ExperienceManager>().AddExperience(collision.gameObject.GetComponent<Experience>().experienceAmount);
             experiencePool.ReturnPooledObject(collision.gameObject);
         }

@@ -14,6 +14,7 @@ public class Damage : MonoBehaviour {
     Pool damagePool;
 
 
+
     void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
         damagePool = objects.damagePool.GetComponent<Pool>();
@@ -36,7 +37,7 @@ public class Damage : MonoBehaviour {
 
     public void SetDamage(float damage, Vector3 position, Color color, float size = 1f) {
         timeElapsed = 0;
-        text.text = "" + Mathf.Round(damage);
+        text.text = "" + ((damage < 1f) ? Mathf.Round(damage * 10) / 10 : Mathf.Round(damage));
         text.color = color;
         myTransform.position = position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0);
         myTransform.localScale = Vector3.one * size;

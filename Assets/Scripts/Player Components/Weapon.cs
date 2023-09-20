@@ -4,35 +4,60 @@ using UnityEngine;
 // player component
 // creates projectiles of a specified type at a specified interval
 public class Weapon : MonoBehaviour {
-    float rate = 1.5f;
     float damage = 10;
-    float speed;
-    float hitCount = 100;
 
     [SerializeField] GameObject projectilePrefab;
 
+    ProjectileCircle projectile;
+    ProjectileCollisions projectileCollisions;
     float timeLastFired;
     float damageMultiplier = 1f;
+
+    // basic upgradeable weapon attributes
+    public float rate = 1.5f;
+    public float hitCount = 100;
+
+    // upgradeable red values
+    public bool isRedActive = false;
+    public float activeRedCriticalChance;
+    public float activeRedDamageMultiplier;
+    public float activeRedExplosionSize;
+    public int activeRedChainNumber = 0;
+
+    // upgradeable yellow values
+    public bool isYellowActive = false;
+    public int activeYellowSpreadNumber;
+    public float activeYellowDamageMultiplier;
+    public float activeYellowTickLength;
+    public float activeYellowDuration;
+
+    private void Awake() {
+        isYellowActive = false;
+        isRedActive = false;
+
+        projectile = Instantiate(projectilePrefab).GetComponent<ProjectileCircle>();
+        projectileCollisions = projectile.GetComponent<ProjectileCollisions>();
+    }
 
     void Update() {
         Fire();
     }
 
 
-    // fire projectiles
+    // fire projectiles at set interval
     private void Fire() {
         if (Time.time > timeLastFired + rate) {
             Vector3 startPosition = transform.position;
-            Projectile projectile = Instantiate(projectilePrefab).GetComponent<Projectile>();
-            ProjectileCollisions projectileCollisions = projectile.GetComponent<ProjectileCollisions>();
-            projectile.SetProperties(speed, startPosition, Vector2.up);
+
+            projectile.Reset(startPosition);
             projectileCollisions.SetProperties(hitCount);
+            projectile.gameObject.SetActive(true);
 
             timeLastFired = Time.time;
         }
     }
 
-    private float RandomDamageMultiplier() {
+    public float RandomDamageMultiplier() {
         return Random.Range(0.8f, 1.2f);
     }
 
@@ -46,8 +71,7 @@ public class Weapon : MonoBehaviour {
     }
 
     public void SetRateSpeedAndHitCount(List<float> attributes) {
-        this.rate = attributes[0];
-        this.speed = attributes[1];
-        this.hitCount = attributes[2];
+        rate = attributes[0];
+        hitCount = attributes[1];
     }
 }

@@ -9,13 +9,17 @@ public class ProjectileCircle : Projectile {
     float timeOffset = 0.05f;
 
     protected override void OtherAwake() {
-        transform.localScale = Vector3.one;
         myCollider = GetComponent<CircleCollider2D>();
+
     }
 
+    public void OtherSet() {
+        myCollider.radius = 0;
+    }
 
     private void FixedUpdate() {
         Move();
+        UpdateTimeToDestroy();
     }
 
 

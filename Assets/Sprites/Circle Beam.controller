@@ -39,7 +39,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 7832286498064366637}
-    m_Position: {x: 374.16138, y: 459.8625, z: 0}
+    m_Position: {x: 20, y: 450, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -57,7 +57,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Circle Beam 0
+  m_Name: Circle Beam
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
