@@ -1,18 +1,18 @@
 using UnityEngine;
 
-// Added to "host" enemies as children when they are hit by Yellow projectiles
+// lives as a child of each enemy (the "host")
+// activated when the enemy is hit by a Yellow projectile
 // Inflicts damage over time on the host enemy, and can add additional parasites to nearby enemies
 public class Parasite : MonoBehaviour {
 
     ObjectManager objects;
-    Pool parasitePool;
     Weapon weapon;
 
     SpriteRenderer mySpriteRenderer;
     CircleCollider2D myCollider;
     Transform host, myTransform;
     Enemy hostEnemy;
-    
+    Animator myAnimator;
 
     int spreadNumber;
     float damageMultiplier;
@@ -25,22 +25,24 @@ public class Parasite : MonoBehaviour {
 
     const float damageRatioPerTick = 0.1f;
 
+    bool areComponentsEnabled = false;
+
     private void Awake() {
         myTransform = transform;
+        host = myTransform.parent;
+        hostEnemy = host.GetComponent<Enemy>();
+
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
-        parasitePool = objects.parasitePool.GetComponent<Pool>();
         weapon = objects.player.GetComponent<Weapon>();
         myCollider = GetComponent<CircleCollider2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
+        myAnimator = GetComponent<Animator>();
     }
 
-    public void Attach(Transform hostTransform) {
-        host = hostTransform;
-        myTransform.SetParent(host);
-        myTransform.localPosition = Vector3.zero;
-        hostEnemy = host.GetComponent<Enemy>();
-    }
 
+    private void Update() {
+        UpdateDelay();
+    }
 
     public void SetValues(int spreadNumber, float damageMultiplier, float tickLength, float duration, float delay) {
         this.spreadNumber = spreadNumber;
@@ -52,6 +54,8 @@ public class Parasite : MonoBehaviour {
         timeElapsed = 0;
         myCollider.enabled = false;
         mySpriteRenderer.enabled = false;
+        myAnimator.enabled = false;
+        areComponentsEnabled = false;
     }
 
     private void FixedUpdate() {
@@ -60,10 +64,25 @@ public class Parasite : MonoBehaviour {
             return;
         }
 
-        mySpriteRenderer.enabled = true;
-        myCollider.enabled = true;
+        
+
         UpdateTimeToDestroy();
         UpdateTick();
+    }
+
+    void UpdateDelay() {
+        if (delay > 0) {
+            delay -= Time.deltaTime;
+        }
+        else if (!areComponentsEnabled) {
+            mySpriteRenderer.enabled = true;
+            myCollider.enabled = true;
+            myAnimator.enabled = true;
+
+            float offset = (Time.time - Mathf.Floor(Time.time));
+            myAnimator.Play("Enemy Effect", 0, offset);
+            areComponentsEnabled = true;
+        }
     }
 
     void UpdateTimeToDestroy() {
@@ -80,7 +99,7 @@ public class Parasite : MonoBehaviour {
         }
 
         if (tickRemaining <= 0) {
-            hostEnemy.Damage(damageMultiplier * damageRatioPerTick * weapon.GetDamage(), objects.parasiteDamageColor);
+            hostEnemy.Damage(damageMultiplier * damageRatioPerTick * weapon.GetDamage(), objects.yellowDamageColor);
             tickRemaining += tickLength;
         }
         else {
@@ -89,11 +108,8 @@ public class Parasite : MonoBehaviour {
     }
 
     public void Kill() {
-        myTransform.SetParent(parasitePool.transform);
-        hostEnemy = null;
-        parasitePool.ReturnPooledObject(gameObject);
+        gameObject.SetActive(false);
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision) {
         ProcessEnemyCollision(collision);
@@ -103,21 +119,18 @@ public class Parasite : MonoBehaviour {
         ProcessEnemyCollision(collision);
     }
 
+    // no need to check if the collision is with an enemy,
+    // as the projectile layer only has physics interactions with the enemy layer
     void ProcessEnemyCollision(Collider2D collision) {
         if (spreadNumber == 0) {
             myCollider.enabled = false;
             return;
         }
-        if (collision.gameObject.tag == "Enemy" && !collision.GetComponent<Enemy>().HasParasite()) {
 
-            GameObject parasiteObj = parasitePool.GetPooledObject();
-            if (parasiteObj == null)
-                return;
-
-            //spreadNumber--;
-            Parasite parasite = parasiteObj.GetComponent<Parasite>();
-            parasite.Attach(collision.transform);
-            parasite.SetValues(spreadNumber - 1, damageMultiplier, tickLength, duration, tickLength);
+        Parasite enemyParasite = collision.GetComponent<Enemy>().parasite;
+        if (!enemyParasite.gameObject.activeInHierarchy) {
+            enemyParasite.gameObject.SetActive(true);
+            enemyParasite.SetValues(spreadNumber - 1, damageMultiplier, tickLength, duration, tickLength);
 
             if (spreadNumber == 0) {
                 myCollider.enabled = false;

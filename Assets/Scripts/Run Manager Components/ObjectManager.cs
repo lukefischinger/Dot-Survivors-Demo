@@ -13,15 +13,21 @@ public class ObjectManager : MonoBehaviour {
         experiencePool,
         damagePool,
         explosionPool,
-        parasitePool,
         experienceBar,
         pauseScreen,
         upgradeScreen,
         eventSystem,
         clock;
 
-    [SerializeField] public Color parasiteDamageColor,
+    [SerializeField] public Color yellowDamageColor,
                     basicDamageColor,
-                    redDamageColor;
+                    redDamageColor,
+                    blueDamageColor;
 
+
+    [SerializeField] RunInformation runInformation;
+
+    private void Awake() {
+        runInformation.ClearAll();
+    }
 }

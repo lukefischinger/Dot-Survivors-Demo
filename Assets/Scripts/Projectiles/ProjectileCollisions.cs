@@ -7,47 +7,46 @@ public class ProjectileCollisions : MonoBehaviour {
     // set by weapon upon firing
     float hitCount;
 
-    protected float coolDownRemaining = 0;
-    protected float coolDown = 0.4f;
-
     Weapon weapon;
     Enemy lastEnemy;
     Projectile projectile;
     
     RedCollisions red;
     YellowCollisions yellow;
+    BlueCollisions blue;
 
     bool isBasicActive = true;
 
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
 
-        coolDownRemaining = 0;
         weapon = objects.player.GetComponent<Weapon>();
         projectile = GetComponent<Projectile>();
         red = GetComponent<RedCollisions>();
         yellow = GetComponent<YellowCollisions>();
+        blue = GetComponent<BlueCollisions>();
     }
-
-
-    private void FixedUpdate() {
-        coolDownRemaining -= Time.deltaTime;
-    }
-
 
     public void SetProperties(float hitCount, bool isBasicActive = true) {
+        // set basic properties
         this.hitCount = hitCount;
-        
-        // set red properties if active
-        if(red != null && weapon.isRedActive) {
-            red.SetValues(weapon.activeRedDamageMultiplier, weapon.activeRedCriticalChance, weapon.activeRedExplosionSize, weapon.activeRedChainNumber);
-        }
-
-        if(yellow != null && weapon.isYellowActive) {
-            yellow.SetValues(weapon.activeYellowSpreadNumber, weapon.activeYellowDamageMultiplier, weapon.activeYellowTickLength, weapon.activeYellowDuration);
-        }
-
         this.isBasicActive = isBasicActive;
+
+        // set red properties if active
+        if (red != null && weapon.isRedActive) {
+            red.SetValues(weapon.redDamageMultiplier, weapon.redCriticalChance, weapon.redExplosionSize, weapon.redChainNumber);
+        }
+
+        // set yellow properties if active
+        if(yellow != null && weapon.isYellowActive) {
+            yellow.SetValues(weapon.yellowSpreadNumber, weapon.yellowDamageMultiplier, weapon.yellowTickLength, weapon.yellowDuration);
+        }
+
+        // set blue properties if active
+        if(blue != null && weapon.isBlueActive) {
+            blue.SetValues(weapon.blueDamage, weapon.blueSpeedModifier, weapon.blueDuration, weapon.blueDamageDelay, weapon.isBlueCountTrigger);
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -59,7 +58,6 @@ public class ProjectileCollisions : MonoBehaviour {
             return;
         }
 
-        coolDownRemaining = coolDown;
         hitCount--;
 
         // apply base damage to the collided enemy
@@ -74,6 +72,10 @@ public class ProjectileCollisions : MonoBehaviour {
         // call Hit method in YellowCollisions component, if no parasite present
         if(yellow != null && weapon.isYellowActive && lastEnemy.gameObject.activeInHierarchy && !lastEnemy.HasParasite())
             yellow.Hit(lastEnemy);
+
+        // call Hit method in BlueCollisions component, if no chill present
+        if(blue != null && weapon.isBlueActive && lastEnemy.gameObject.activeInHierarchy && !lastEnemy.HasChill())
+            blue.Hit(lastEnemy);
 
         if (hitCount <= 0) {
             projectile.Kill();

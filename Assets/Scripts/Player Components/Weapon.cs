@@ -19,17 +19,30 @@ public class Weapon : MonoBehaviour {
 
     // upgradeable red values
     public bool isRedActive = false;
-    public float activeRedCriticalChance;
-    public float activeRedDamageMultiplier;
-    public float activeRedExplosionSize;
-    public int activeRedChainNumber = 0;
+    public float redCriticalChance;
+    public float redDamageMultiplier;
+    public float redExplosionSize;
+    public int redChainNumber = 0;
 
     // upgradeable yellow values
     public bool isYellowActive = false;
-    public int activeYellowSpreadNumber;
-    public float activeYellowDamageMultiplier;
-    public float activeYellowTickLength;
-    public float activeYellowDuration;
+    public int yellowSpreadNumber;
+    public float yellowDamageMultiplier;
+    public float yellowTickLength;
+    public float yellowDuration;
+
+    // upgradeable blue values
+    public bool isBlueActive = false;
+    public float blueDamage;
+    public float blueSpeedModifier;
+    public float blueDuration;
+    public float blueDamageDelay;
+    public bool isBlueCountTrigger;
+
+    public int blueCount = 0;
+    public int blueTriggers = 0;
+
+    const int chillsPerTrigger = 10;
 
     private void Awake() {
         isYellowActive = false;
@@ -39,10 +52,14 @@ public class Weapon : MonoBehaviour {
         projectileCollisions = projectile.GetComponent<ProjectileCollisions>();
     }
 
-    void Update() {
-        Fire();
+    void FixedUpdate() {
+        blueTriggers = blueCount / chillsPerTrigger;
+        blueCount -= blueTriggers * 10;
     }
 
+    private void Update() {
+        Fire();
+    }
 
     // fire projectiles at set interval
     private void Fire() {
@@ -58,12 +75,12 @@ public class Weapon : MonoBehaviour {
     }
 
     public float RandomDamageMultiplier() {
-        return Random.Range(0.8f, 1.2f);
+        return Random.Range(0.8f, 1.2f) * damageMultiplier;
     }
 
     // returns damage done by the player to an enemy
     public float GetDamage() {
-        return damage * RandomDamageMultiplier() * damageMultiplier;
+        return damage * RandomDamageMultiplier();
     }
 
     public void SetDamageMultiplier(float value) {
@@ -74,4 +91,8 @@ public class Weapon : MonoBehaviour {
         rate = attributes[0];
         hitCount = attributes[1];
     }
+
+    
+
+
 }

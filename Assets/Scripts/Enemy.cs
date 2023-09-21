@@ -1,21 +1,25 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
-{
+public class Enemy : MonoBehaviour {
     [SerializeField] float health;
     [SerializeField] float damage;
-    
+
     ObjectManager objects;
 
     const int baseSpeed = 140;
     const float experienceProbability = 0.3f;
     const float criticalDamageSizeMultiplier = 2f;
+    const float slowMass = 1000f;
 
     float currentHealth;
+    float speedModifier = 1f;
 
     Transform myTransform, playerTransform;
     Rigidbody2D myRigidbody;
     Pool enemyPool, experiencePool, damagePool;
+
+    public Parasite parasite;
+    public Chill chill;
 
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
@@ -27,10 +31,13 @@ public class Enemy : MonoBehaviour
         experiencePool = objects.experiencePool.GetComponent<Pool>();
         damagePool = objects.damagePool.GetComponent<Pool>();
 
-        Reset();
-
+        parasite = GetComponentInChildren<Parasite>();
+        chill = GetComponentInChildren<Chill>();
     }
 
+    private void Start() {
+        Reset();
+    }
 
     private void FixedUpdate() {
         Move();
@@ -38,7 +45,7 @@ public class Enemy : MonoBehaviour
 
     // move towards the player at a constant speed
     private void Move() {
-        myRigidbody.velocity = baseSpeed * Time.deltaTime * (playerTransform.position - myTransform.position).normalized;
+        myRigidbody.velocity = speedModifier * baseSpeed * Time.deltaTime * (playerTransform.position - myTransform.position).normalized;
     }
 
 
@@ -48,19 +55,19 @@ public class Enemy : MonoBehaviour
 
         // display damage
         GameObject damageUI = damagePool.GetPooledObject();
-        if(damageUI != null)
+        if (damageUI != null)
             damageUI.GetComponent<Damage>().SetDamage(damage, myTransform.position, color, isCritical ? criticalDamageSizeMultiplier : 1f);
 
 
         if (currentHealth <= 0)
-            Kill(true); 
+            Kill(true);
     }
 
     // called when health <= 0
     private void Kill(bool canDropExperience) {
         if (canDropExperience && Random.value < experienceProbability) {
             GameObject experience = experiencePool.GetPooledObject();
-            if(experience != null)
+            if (experience != null)
                 experience.transform.position = myTransform.position;
         }
         KillParasite();
@@ -76,20 +83,32 @@ public class Enemy : MonoBehaviour
     public void Reset() {
         currentHealth = health;
         KillParasite();
+        RemoveChill();
     }
 
     public bool HasParasite() {
-        if (transform.childCount == 0) return false;
+        return parasite.gameObject.activeInHierarchy;
+    }
 
-        Transform child = transform.GetChild(0);
-        return child != null && child.tag == "Parasite";
+    public bool HasChill() {
+        return chill.gameObject.activeInHierarchy;
     }
 
     void KillParasite() {
-        if(HasParasite()) {
-            GetComponentInChildren<Parasite>().Kill();
-        }
+        parasite.Kill();
+        parasite.gameObject.SetActive(false);
     }
 
+    void RemoveChill() {
+        chill.Kill();
+        chill.gameObject.SetActive(false);
+    }
+
+    public void SetSpeed(float speedModifier) {
+        this.speedModifier = speedModifier;
+        if (speedModifier <= 1)
+            myRigidbody.mass = slowMass;
+        else myRigidbody.mass = 1f;
+    }
 
 }

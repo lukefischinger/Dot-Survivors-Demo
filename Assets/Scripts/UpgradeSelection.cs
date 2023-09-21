@@ -219,7 +219,7 @@ public class UpgradeSelection : MonoBehaviour {
             a[i] = a[rnd];
             a[rnd] = temp;
         }
-        return (a);
+        return a;
     }
 
 

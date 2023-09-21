@@ -334,7 +334,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3724748642770609343, guid: 33bac94c8bbdd904d85b4bc407c5817d, type: 3}
       propertyPath: upgradeTexts.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3724748642770609343, guid: 33bac94c8bbdd904d85b4bc407c5817d, type: 3}
       propertyPath: upgradeTexts.Array.data[6]
@@ -344,6 +344,10 @@ PrefabInstance:
       propertyPath: upgradeTexts.Array.data[7]
       value: 
       objectReference: {fileID: 11400000, guid: f7ed6e67903dcc94b8ee2cb59b9565a8, type: 2}
+    - target: {fileID: 3724748642770609343, guid: 33bac94c8bbdd904d85b4bc407c5817d, type: 3}
+      propertyPath: upgradeTexts.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 404b63e313d79774b87e4336a94701b5, type: 2}
     - target: {fileID: 7641776998979405118, guid: 33bac94c8bbdd904d85b4bc407c5817d, type: 3}
       propertyPath: m_Name
       value: UpgradeScreen
@@ -1146,52 +1150,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8882960848676559459, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
   m_PrefabInstance: {fileID: 1786851475}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1183096728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1183096729}
-  - component: {fileID: 1183096730}
-  m_Layer: 0
-  m_Name: ParasitePool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1183096729
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183096728}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.40600067, y: -0.33247018, z: -0.14572543}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1183096730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1183096728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cc036b44e4c9434a97a62c3a796c4e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 2502958582254256097, guid: 00d3b290c2e697d47a1a324e4cb479a4, type: 3}
-  count: 200
 --- !u!1 &1191078318
 GameObject:
   m_ObjectHideFlags: 0
@@ -1273,15 +1231,16 @@ MonoBehaviour:
   experiencePool: {fileID: 1924694159}
   damagePool: {fileID: 55623993}
   explosionPool: {fileID: 1971753514}
-  parasitePool: {fileID: 1183096728}
   experienceBar: {fileID: 2050290095}
   pauseScreen: {fileID: 1192294320}
   upgradeScreen: {fileID: 316401296}
   eventSystem: {fileID: 672633830}
   clock: {fileID: 2044373577}
-  parasiteDamageColor: {r: 0.6886792, g: 0.57389927, b: 0, a: 1}
-  basicDamageColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
-  redDamageColor: {r: 0.6226415, g: 0, b: 0, a: 1}
+  yellowDamageColor: {r: 1, g: 0.9189114, b: 0.68553454, a: 1}
+  basicDamageColor: {r: 1, g: 1, b: 1, a: 1}
+  redDamageColor: {r: 1, g: 0.572327, b: 0.572327, a: 1}
+  blueDamageColor: {r: 0.61006284, g: 0.71225315, b: 1, a: 1}
+  runInformation: {fileID: 11400000, guid: 8b696fb2135943745b808937e93daac1, type: 2}
 --- !u!1 &1192294320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,7 +1685,7 @@ GameObject:
   - component: {fileID: 1793663734}
   - component: {fileID: 1793663737}
   - component: {fileID: 1793663736}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1879,15 +1838,23 @@ MonoBehaviour:
   rate: 1.5
   hitCount: 100
   isRedActive: 0
-  activeRedCriticalChance: 0
-  activeRedDamageMultiplier: 0
-  activeRedExplosionSize: 0
-  activeRedChainNumber: 0
+  redCriticalChance: 0
+  redDamageMultiplier: 0
+  redExplosionSize: 0
+  redChainNumber: 0
   isYellowActive: 0
-  activeYellowSpreadNumber: 0
-  activeYellowDamageMultiplier: 0
-  activeYellowTickLength: 0
-  activeYellowDuration: 0
+  yellowSpreadNumber: 0
+  yellowDamageMultiplier: 0
+  yellowTickLength: 0
+  yellowDuration: 0
+  isBlueActive: 0
+  blueDamage: 0
+  blueSpeedModifier: 0
+  blueDuration: 0
+  blueDamageDelay: 0
+  isBlueCountTrigger: 0
+  blueCount: 0
+  blueTriggers: 0
 --- !u!114 &1793663734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2221,7 +2188,7 @@ MonoBehaviour:
   m_text: 0:00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
-  m_sharedMaterial: {fileID: -3767063617978151608, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
+  m_sharedMaterial: {fileID: 1352819754179511101, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2404,6 +2371,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health Bar
       objectReference: {fileID: 0}
+    - target: {fileID: 3843233743153834451, guid: b0ea1acd9bc6dfc4ab001b1bec9a3670, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3843233743567849725, guid: b0ea1acd9bc6dfc4ab001b1bec9a3670, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -2416,9 +2387,17 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3843233743567849727, guid: b0ea1acd9bc6dfc4ab001b1bec9a3670, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7406551027283693506, guid: b0ea1acd9bc6dfc4ab001b1bec9a3670, type: 3}
       propertyPath: objects
       value: 
       objectReference: {fileID: 1191078322}
+    - target: {fileID: 8674670184233843234, guid: b0ea1acd9bc6dfc4ab001b1bec9a3670, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0ea1acd9bc6dfc4ab001b1bec9a3670, type: 3}

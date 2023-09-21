@@ -17,9 +17,9 @@ MonoBehaviour:
   - Add yellow to projectiles. Yellow clings to enemies, causing damage and spreading
     to other enemies.
   - +50% base yellow damage
-  - +5 spread
+  - +2 spread
   - +50% base yellow damage
-  - +5 spread
+  - +2 spread
   - +40% duration
-  - +5 spread
+  - +2 spread
   - -50% cooldown between yellow damage
