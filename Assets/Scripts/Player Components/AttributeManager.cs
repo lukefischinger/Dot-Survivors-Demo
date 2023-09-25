@@ -36,23 +36,29 @@ public class AttributeManager : MonoBehaviour {
     private static readonly bool[] blueCountTrigger = new bool[] { false, false, false, false, false, true, true, true };
 
 
+    // secondary color variables
+    const int upgradedRedChainNumber = 3;
+
     // summary of all upgrade names/categories and max levels
-    private static readonly string[] attributeNames = new string[] { "Health", "Speed", "Healing", "Armor", "Damage", 
-                                                                     "Weapon", "Weapon", 
-                                                                     "Red", "Yellow", "Blue"};
-    private static readonly int[] maxAttributeLevels = new int[] { 3, 3, 3, 3, 3, 6, 6, 7, 7, 7};
-    int[] attributeLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, -1, -1, -1 };
+    private static readonly string[] attributeNames = new string[] { "Health", "Speed", "Healing", "Armor", "Damage",
+                                                                     "Weapon", "Weapon",
+                                                                     "Red", "Yellow", "Blue",
+                                                                     "Orange", "Purple", "Green"};
+    private static readonly int[] maxAttributeLevels = new int[] { 3, 3, 3, 3, 3, 6, 6, 7, 7, 7, 2, 2, 2 };
+    int[] attributeLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1 };
 
     float[][] attributes = new float[][] { healths, speeds, healings, armors, damageMultipliers, ratesCircle, hitCountsCircle };
 
     HealthManager healthManager;
     PlayerMovement playerMovement;
-    Weapon weapon;
+    ObjectManager objects;
 
     private void Awake() {
+        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+
         healthManager = GetComponent<HealthManager>();
         playerMovement = GetComponent<PlayerMovement>();
-        weapon = GetComponent<Weapon>();
+
         SetWeaponValues();
         healthManager.SetMaxHealth(GetAttributeValue("Health"), false);
     }
@@ -74,7 +80,7 @@ public class AttributeManager : MonoBehaviour {
                 healthManager.SetArmor(GetAttributeValue(attributeName));
                 break;
             case "Damage":
-                weapon.SetDamageMultiplier(GetAttributeValue(attributeName));
+                Weapon.SetDamageMultiplier(GetAttributeValue(attributeName));
                 break;
             case "Weapon":
                 SetWeaponValues();
@@ -88,6 +94,15 @@ public class AttributeManager : MonoBehaviour {
             case "Blue":
                 SetBlueValues();
                 break;
+            case "Orange":
+                SetOrangeValues();
+                break;
+            case "Purple":
+                SetPurpleValues();
+                break;
+            case "Green":
+                SetGreenValues();
+                break;
 
             default:
                 break;
@@ -96,18 +111,52 @@ public class AttributeManager : MonoBehaviour {
 
 
     // returns a sorted dictionary containing the names of all upgradeable attributes, paired with their next level
-    // attributes are upgradeable if they are not yet max level
+    // basic & weapon attributes are upgradeable if they are not yet max level
+    // color upgrades have additional requirements described above the methods CullColorUpgrades and CullSecondaryColorUpgrades
     public SortedList<string, int> GetAvailableUpgradeLevels() {
         SortedList<string, int> result = new SortedList<string, int>();
         foreach (string attributeName in attributeNames) {
-            if (IsUpgradeable(attributeName) && !result.ContainsKey(attributeName)) {
+            if (!IsMaxLevel(attributeName) && !result.ContainsKey(attributeName)) {
                 result.Add(attributeName, Level(attributeName) + 1);
             }
         }
 
-        return result;
+        return CullColorUpgrades(result);
     }
 
+    // only 2 color upgrades can be active at the same time
+    // checks if two colors are level > -1 and if so removes the third
+    SortedList<string, int> CullColorUpgrades(SortedList<string, int> result) {
+        bool red = Level("Red") > -1,
+            yellow = Level("Yellow") > -1,
+            blue = Level("Blue") > -1;
+
+        if (red && yellow)
+            result.Remove("Blue");
+        else if (red && blue)
+            result.Remove("Yellow");
+        else if (yellow && blue)
+            result.Remove("Red");
+
+        return CullSecondaryColorUpgrades(result);
+    }
+
+    // removes any secondary color upgrades that are not available
+    // a secondary color upgrade is only available if both of its component primary colors are max level
+    SortedList<string, int> CullSecondaryColorUpgrades(SortedList<string, int> result) {
+        bool red = IsMaxLevel("Red"),
+            yellow = IsMaxLevel("Yellow"),
+            blue = IsMaxLevel("Blue");
+
+        if (!red || !yellow)
+            result.Remove("Orange");
+        if (!red || !blue)
+            result.Remove("Purple");
+        if (!yellow || !blue)
+            result.Remove("Green");
+
+        return result;
+    }
 
 
     // returns the current level of the given attribute
@@ -128,11 +177,14 @@ public class AttributeManager : MonoBehaviour {
                 attributeLevels[i] = Mathf.Min(attributeLevels[i], MaxLevel(attributeName));
             }
         }
+
+        objects.runInformation.upgrades = attributeNames;
+        objects.runInformation.upgradeLevels = attributeLevels;
     }
 
     // returns true if the attribute is not yet at max level
-    bool IsUpgradeable(string attributeName) {
-        return (Level(attributeName) < MaxLevel(attributeName));
+    bool IsMaxLevel(string attributeName) {
+        return (Level(attributeName) == MaxLevel(attributeName));
     }
 
     // returns the value of the given attribute given that attribute's current level
@@ -144,49 +196,69 @@ public class AttributeManager : MonoBehaviour {
         return (attributes[attributeIndex][attributeLevel]);
     }
 
-    // since upgrading the weapon involves upgrading multiple different attributes, we define a separate function to take care of this case
+    // since upgrading the weapon and the various weapon color attributes involves upgrading multiple different attributes,
+    // we define separate functions to take care of these case
     void SetWeaponValues() {
-        List<float> attributeValues = new List<float>();
+        int level = Level("Weapon");
 
-        for (int i = 0; i < attributeNames.Length; i++) {
-            if(attributeNames[i] == "Weapon") {
-                attributeValues.Add(attributes[i][Level("Weapon")]);
-            }    
-        }
-
-        weapon.SetRateSpeedAndHitCount(attributeValues);
+        Weapon.rate = ratesCircle[level];
+        Weapon.hitCount = hitCountsCircle[level];
     }
 
     void SetRedValues() {
         int level = Level("Red");
-        
-        weapon.isRedActive = true;
-        weapon.redCriticalChance = redCriticalChance[level];
-        weapon.redDamageMultiplier = redDamageMultiplier[level];
-        weapon.redExplosionSize = redExplosionSize[level];
-        weapon.redChainNumber = redChainNumber[level];
+
+        Weapon.isRedActive = true;
+        Weapon.redCriticalChance = redCriticalChance[level];
+        Weapon.redDamageMultiplier = redDamageMultiplier[level];
+        Weapon.redExplosionSize = redExplosionSize[level];
+        Weapon.redChainNumber = redChainNumber[level];
     }
 
     void SetYellowValues() {
         int level = Level("Yellow");
-        
-        weapon.isYellowActive = true;
-        weapon.yellowSpreadNumber = yellowSpreadNumber[level];
-        weapon.yellowTickLength = yellowTickLength[level];
-        weapon.yellowDamageMultiplier = yellowDamageMultiplier[level];
-        weapon.yellowDuration = yellowDuration[level];
+
+        Weapon.isYellowActive = true;
+        Weapon.yellowSpreadNumber = yellowSpreadNumber[level];
+        Weapon.yellowTickLength = yellowTickLength[level];
+        Weapon.yellowDamageMultiplier = yellowDamageMultiplier[level];
+        Weapon.yellowDuration = yellowDuration[level];
     }
 
     void SetBlueValues() {
         int level = Level("Blue");
 
-        weapon.isBlueActive = true;
-        weapon.blueDamage = blueDamage[level];
-        weapon.blueDamageDelay = blueDamageDelay[level];
-        weapon.blueDuration = blueDuration[level];
-        weapon.blueSpeedModifier = blueSpeedModifier[level];
-        weapon.isBlueCountTrigger = blueCountTrigger[level];
+        Weapon.isBlueActive = true;
+        Weapon.blueDamage = blueDamage[level];
+        Weapon.blueDamageDelay = blueDamageDelay[level];
+        Weapon.blueDuration = blueDuration[level];
+        Weapon.blueSpeedModifier = blueSpeedModifier[level];
+        Weapon.isBlueCountTrigger = blueCountTrigger[level];
 
     }
 
+    void SetGreenValues() {
+        int level = Level("Green");
+        
+        Weapon.blueSpreadsWithYellow = level >= 0;
+        Weapon.yellowUsesBlueDuration = level >= 1;
+        Weapon.isBlueMultiHitActive = level >= 2;
+    }
+
+    void SetOrangeValues() {
+        int level = Level("Orange");
+
+        Weapon.yellowCanHitCritically = level >= 0;
+        Weapon.redChainNumber = (level >= 1 ? upgradedRedChainNumber : 1);
+        Weapon.explosionsAddYellow = level >= 2;
+
+    }
+
+    void SetPurpleValues() {
+        int level = Level("Purple");
+
+        Weapon.explosionsAddBlue = level >= 0;
+        Weapon.redDamageTriggersBlue = level >= 1;
+        Weapon.blueDamageTriggersExplosion = level >= 2;
+    }
 }

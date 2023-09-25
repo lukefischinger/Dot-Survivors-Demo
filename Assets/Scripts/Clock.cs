@@ -6,6 +6,7 @@ public class Clock : MonoBehaviour
 {
     public float timeAwake;
     TextMeshProUGUI text;
+    public TimeSpan timeSpan;
 
     private void Awake() {
         timeAwake = Time.time;
@@ -17,7 +18,7 @@ public class Clock : MonoBehaviour
     }
 
     void SetClock() {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(Time.time - timeAwake);
+        timeSpan = TimeSpan.FromSeconds(Time.time - timeAwake);
         string timeText = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
         text.text = timeText;
     }

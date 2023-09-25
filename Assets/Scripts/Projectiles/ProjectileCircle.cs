@@ -8,9 +8,11 @@ public class ProjectileCircle : Projectile {
     float timeToMax = 0.25f;
     float timeOffset = 0.05f;
 
+
+
     protected override void OtherAwake() {
         myCollider = GetComponent<CircleCollider2D>();
-
+        transform.localRotation = Quaternion.Euler(0, 0, Mathf.Round(Random.Range(0, 360) / 90) * 90);
     }
 
     public void OtherSet() {

@@ -1,9 +1,8 @@
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-    [SerializeField] float health;
-    [SerializeField] float damage;
-
+    
+    
     ObjectManager objects;
 
     const int baseSpeed = 140;
@@ -11,12 +10,15 @@ public class Enemy : MonoBehaviour {
     const float criticalDamageSizeMultiplier = 2f;
     const float slowMass = 1000f;
 
-    float currentHealth;
+    float health;
+    float damage;
+
     float speedModifier = 1f;
 
     Transform myTransform, playerTransform;
     Rigidbody2D myRigidbody;
     Pool enemyPool, experiencePool, damagePool;
+    SpriteRenderer mySpriteRenderer;
 
     public Parasite parasite;
     public Chill chill;
@@ -26,6 +28,8 @@ public class Enemy : MonoBehaviour {
 
         myTransform = transform;
         myRigidbody = GetComponent<Rigidbody2D>();
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
+        
         playerTransform = objects.player.transform;
         enemyPool = objects.enemyPool.GetComponent<Pool>();
         experiencePool = objects.experiencePool.GetComponent<Pool>();
@@ -33,10 +37,6 @@ public class Enemy : MonoBehaviour {
 
         parasite = GetComponentInChildren<Parasite>();
         chill = GetComponentInChildren<Chill>();
-    }
-
-    private void Start() {
-        Reset();
     }
 
     private void FixedUpdate() {
@@ -49,17 +49,18 @@ public class Enemy : MonoBehaviour {
     }
 
 
-    public void Damage(float damage, Color color, bool isCritical = false) {
+    public void Damage(float damage, string colorName = "White", bool isCritical = false) {
 
-        currentHealth -= damage;
+        health -= damage;
 
         // display damage
         GameObject damageUI = damagePool.GetPooledObject();
         if (damageUI != null)
-            damageUI.GetComponent<Damage>().SetDamage(damage, myTransform.position, color, isCritical ? criticalDamageSizeMultiplier : 1f);
+            damageUI.GetComponent<Damage>().SetDamage(damage, myTransform.position, colorName, isCritical ? criticalDamageSizeMultiplier : 1f);
 
+        objects.runInformation.IncrementDamage(damage, colorName);
 
-        if (currentHealth <= 0)
+        if (health <= 0)
             Kill(true);
     }
 
@@ -70,6 +71,9 @@ public class Enemy : MonoBehaviour {
             if (experience != null)
                 experience.transform.position = myTransform.position;
         }
+        if (canDropExperience)
+            objects.runInformation.enemiesKilled++;
+
         KillParasite();
         enemyPool.ReturnPooledObject(gameObject);
 
@@ -80,8 +84,11 @@ public class Enemy : MonoBehaviour {
         return damage;
     }
 
-    public void Reset() {
-        currentHealth = health;
+    public void ResetEnemy(float health, float damage, Sprite sprite) {
+        this.health = health;
+        this.damage = damage;
+        mySpriteRenderer.sprite = sprite;
+
         KillParasite();
         RemoveChill();
     }

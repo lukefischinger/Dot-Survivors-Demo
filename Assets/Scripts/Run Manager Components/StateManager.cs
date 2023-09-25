@@ -14,7 +14,7 @@ public class StateManager : MonoBehaviour
 
     public State state = State.Running;
     public State previousState = State.Running;
-    bool pause, upgradeActive;
+    bool clickPause, pause, upgradeActive;
 
     ObjectManager objects;
     PlayerInput uiInput;
@@ -33,7 +33,7 @@ public class StateManager : MonoBehaviour
     }
 
     private void UpdateState() {
-        pause = uiInput.UI.Pause.triggered;
+        UpdatePauseInput();
 
         switch (state) {
             case State.Running:
@@ -48,6 +48,15 @@ public class StateManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void ClickPause() {
+        clickPause = true;
+    }
+
+    void UpdatePauseInput() {
+        pause = clickPause || uiInput.UI.Pause.triggered;
+        clickPause = false;
     }
 
     void Running() {

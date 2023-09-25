@@ -157,13 +157,16 @@ public class UpgradeSelection : MonoBehaviour {
         int max = 2;
         string next;
         while (upgradeQueue.upgradeNames.Count > 0 && max > 0) {
-            max--;
             next = upgradeQueue.upgradeNames[0];
-            result.Add(next, availableUpgradeLevels[next]);
-
-            // remove this selection from both the queue and the list of available upgrades
             upgradeQueue.upgradeNames.Remove(next);
-            availableUpgradeLevels.Remove(next);
+
+            if (availableUpgradeLevels.Keys.Contains(next)) {
+                max--;
+                result.Add(next, availableUpgradeLevels[next]);
+
+                // remove this selection from both the queue and the list of available upgrades
+                availableUpgradeLevels.Remove(next);
+            }
 
             // if the queue has not already been rebuilt during this selection process, rebuild it from the available upgrades (minus those already selected)
             if (upgradeQueue.upgradeNames.Count == 0 && !queueRebuilt) {
@@ -227,4 +230,5 @@ public class UpgradeSelection : MonoBehaviour {
     void BuildQueue(List<string> available) {
         upgradeQueue.upgradeNames = ShuffleList(available);
     }
+
 }

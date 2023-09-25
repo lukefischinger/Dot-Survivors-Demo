@@ -14,9 +14,6 @@ GameObject:
   - component: {fileID: 8547911596917100288}
   - component: {fileID: -3493839172271862824}
   - component: {fileID: -1378491980146654788}
-  - component: {fileID: 383086382403369350}
-  - component: {fileID: 2497028985247485673}
-  - component: {fileID: -5772462445808583989}
   m_Layer: 6
   m_Name: ProjectileCircle
   m_TagString: Untagged
@@ -150,41 +147,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8eb2d6f47cf09a14caad8ee7f57c5f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &383086382403369350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428189409157936284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 751cf70f51188914b99270f014f970e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2497028985247485673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428189409157936284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b34dc38ed38964ca8932f419ad5a38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-5772462445808583989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428189409157936284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74f5a67a20012c44784212a42f8628d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

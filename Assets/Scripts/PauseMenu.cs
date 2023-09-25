@@ -14,8 +14,8 @@ public class PauseMenu : MonoBehaviour
         unpauseButton = transform.GetChild(0).GetComponent<Button>();
     }
 
-    public void QuitToMainMenu() {
-        SceneManager.LoadScene(0);
+    public void EndRun() {
+        SceneManager.LoadScene(2);
     }
 
     public void Unpause() {

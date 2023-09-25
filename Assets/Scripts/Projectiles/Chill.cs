@@ -5,7 +5,7 @@ using UnityEngine;
 // chill slows enemies and inflicts damage after a few seconds' delay
 public class Chill : MonoBehaviour {
     ObjectManager objects;
-    Weapon weapon;
+    Pool explosionPool;
 
     SpriteRenderer mySpriteRenderer;
     CircleCollider2D myCollider;
@@ -41,7 +41,8 @@ public class Chill : MonoBehaviour {
         hostEnemy = host.GetComponent<Enemy>();
 
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
-        weapon = objects.player.GetComponent<Weapon>();
+        explosionPool = objects.explosionPool.GetComponent<Pool>();
+
         myCollider = GetComponent<CircleCollider2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
@@ -56,6 +57,7 @@ public class Chill : MonoBehaviour {
         UpdateDuration();
         UpdateDamage();
         UpdateTriggerCount();
+
     }
 
     // kill the chill if it is time; otherwise, update the remaining chill duration
@@ -70,25 +72,33 @@ public class Chill : MonoBehaviour {
         if (!canHit)
             return;
 
-        
+
         if (damageDelayRemaining <= 0) {
-            hostEnemy.Damage(damage * weapon.RandomDamageMultiplier(), objects.blueDamageColor);
+            hostEnemy.Damage(damage * Weapon.RandomDamageMultiplier(), "Blue");
+            if (Weapon.blueDamageTriggersExplosion && Random.value < Weapon.explosionChance)
+                RedCollisions.CreateExplosion(hostEnemy, explosionPool);
+
             if (!isMultiHitActive) {
                 canHit = false;
                 return;
             }
-            else if (--triggerCount > 0)
+            else if (triggerCount > 0) {
                 damageDelayRemaining += multiHitTick;
-            else
+                triggerCount--;
+            }
+            else {
                 damageDelayRemaining += damageDelay;
-        } else {
+            }
+        }
+        else {
             damageDelayRemaining -= Time.deltaTime;
         }
+
     }
 
 
     void UpdateAnimation() {
-        if(!animationStarted) {
+        if (!animationStarted) {
             myAnimator.enabled = true;
             float offset = (Time.time - Mathf.Floor(Time.time));
             myAnimator.Play("Chill", 0, offset);
@@ -106,19 +116,20 @@ public class Chill : MonoBehaviour {
 
         SetHostSpeed();
 
+        triggerCount = 0;
         durationRemaining = duration;
         damageDelayRemaining = damageDelay;
-        
-        weapon.blueCount++;
+        canHit = damage > 0;
 
-        if (damage > 0)
-            canHit = true;
+        Weapon.blueCount++;
+
 
         myAnimator.enabled = false;
         animationStarted = false;
-        
+
 
     }
+
 
     void SetHostSpeed() {
         hostEnemy.SetSpeed(speedModifier);
@@ -131,12 +142,26 @@ public class Chill : MonoBehaviour {
     }
 
     void UpdateTriggerCount() {
-        if(isCountTrigger)
-            triggerCount += weapon.blueTriggers;
+        if (isCountTrigger)
+            triggerCount += Weapon.blueTriggers;
         // if trigger comes into effect, reduce the damage delay remaining
-        if (triggerCount > 0 && damageDelayRemaining > multiHitTick){
+        if (triggerCount > 0 && damageDelayRemaining > multiHitTick) {
             damageDelayRemaining = multiHitTick - (damageDelay - damageDelayRemaining); ;
         }
+    }
+
+    public void SpreadChill(Enemy enemy) {
+        if (enemy.chill.gameObject.activeInHierarchy) {
+            //RefreshChill(enemy);    
+            return;
+        }
+
+        enemy.chill.gameObject.SetActive(true);
+        enemy.chill.SetValues(damage, speedModifier, duration, damageDelay, isCountTrigger, isMultiHitActive);
+    }
+
+    public void AddTrigger() {
+        triggerCount++;
     }
 
 }

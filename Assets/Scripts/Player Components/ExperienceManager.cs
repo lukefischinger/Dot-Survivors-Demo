@@ -47,7 +47,7 @@ public class ExperienceManager : MonoBehaviour {
         level++;
         experience = 0;
 
-        // alert the RunManager it is time to create a new UpgradeSelection
+        // alert the StateManager it is time to create a new UpgradeSelection
         stateManager.AddUpgrade();
 
     }

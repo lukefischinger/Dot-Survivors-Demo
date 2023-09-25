@@ -35,7 +35,7 @@ public class HealthManager : MonoBehaviour {
     }
 
 
-    public void Damage(float damageAmount, Color color, bool ignoreArmor = false) {
+    public void Damage(float damageAmount, string colorName, bool ignoreArmor = false) {
         float actualDamage = Mathf.Max(0, damageAmount - (ignoreArmor ? 0 : currentArmor));
 
         currentHealth -= actualDamage;
@@ -46,7 +46,7 @@ public class HealthManager : MonoBehaviour {
         // display damage
         GameObject damageUI = damagePool.GetPooledObject();
         if(damageUI != null)
-            damageUI.GetComponent<Damage>().SetDamage(actualDamage, myTransform.position, color);
+            damageUI.GetComponent<Damage>().SetDamage(actualDamage, myTransform.position, colorName);
 
         if (currentHealth <= 0) {
             Kill();
@@ -58,15 +58,19 @@ public class HealthManager : MonoBehaviour {
         currentHealth += actualHeal;
         SetHealthBar();
 
+        // increment run information
+        objects.runInformation.healing += actualHeal;
+
+
         // display healing
         GameObject damageUI = damagePool.GetPooledObject();
         if(damageUI != null) 
-            damageUI.GetComponent<Damage>().SetDamage(actualHeal, myTransform.position, Color.green);
+            damageUI.GetComponent<Damage>().SetDamage(actualHeal, myTransform.position, "Green");
 
     }
 
     void Kill() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 
     public float GetHealth() { return currentHealth; }

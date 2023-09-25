@@ -4,45 +4,62 @@ using UnityEngine;
 // player component
 // creates projectiles of a specified type at a specified interval
 public class Weapon : MonoBehaviour {
-    float damage = 10;
 
     [SerializeField] GameObject projectilePrefab;
 
     ProjectileCircle projectile;
     ProjectileCollisions projectileCollisions;
-    float timeLastFired;
-    float damageMultiplier = 1f;
+    static float timeLastFired;
+    static float damageMultiplier = 1f;
+
+    // constants
+    public const float criticalMultiplier = 2f;
+    public const float damage = 10;
+    public const int chillsPerTrigger = 10;
+    public static float explosionChance = 0.15f;
 
     // basic upgradeable weapon attributes
-    public float rate = 1.5f;
-    public float hitCount = 100;
+    public static float rate = 1.5f;
+    public static float hitCount = 100;
 
     // upgradeable red values
-    public bool isRedActive = false;
-    public float redCriticalChance;
-    public float redDamageMultiplier;
-    public float redExplosionSize;
-    public int redChainNumber = 0;
+    public static bool isRedActive = false;
+    public static float redCriticalChance;
+    public static float redDamageMultiplier;
+    public static float redExplosionSize;
+    public static int redChainNumber = 0;
 
     // upgradeable yellow values
-    public bool isYellowActive = false;
-    public int yellowSpreadNumber;
-    public float yellowDamageMultiplier;
-    public float yellowTickLength;
-    public float yellowDuration;
+    public static bool isYellowActive = false;
+    public static int yellowSpreadNumber;
+    public static float yellowDamageMultiplier;
+    public static float yellowTickLength;
+    public static float yellowDuration;
 
     // upgradeable blue values
-    public bool isBlueActive = false;
-    public float blueDamage;
-    public float blueSpeedModifier;
-    public float blueDuration;
-    public float blueDamageDelay;
-    public bool isBlueCountTrigger;
+    public static bool isBlueActive = false;
+    public static float blueDamage;
+    public static float blueSpeedModifier;
+    public static float blueDuration;
+    public static float blueDamageDelay;
+    public static bool isBlueCountTrigger;
 
-    public int blueCount = 0;
-    public int blueTriggers = 0;
+    public static int blueCount = 0;
+    public static int blueTriggers = 0;
+    
+    // upgradeable green values
+    public static bool blueSpreadsWithYellow = false;
+    public static bool yellowUsesBlueDuration = false;
+    public static bool isBlueMultiHitActive = false;
 
-    const int chillsPerTrigger = 10;
+    // upgradeable orange values
+    public static bool yellowCanHitCritically = false;
+    public static bool explosionsAddYellow = false;
+
+    // upgradeable purple values
+    public static bool explosionsAddBlue = false;
+    public static bool redDamageTriggersBlue = false;
+    public static bool blueDamageTriggersExplosion = false;
 
     private void Awake() {
         isYellowActive = false;
@@ -54,7 +71,7 @@ public class Weapon : MonoBehaviour {
 
     void FixedUpdate() {
         blueTriggers = blueCount / chillsPerTrigger;
-        blueCount -= blueTriggers * 10;
+        blueCount -= blueTriggers * chillsPerTrigger;
     }
 
     private void Update() {
@@ -67,32 +84,26 @@ public class Weapon : MonoBehaviour {
             Vector3 startPosition = transform.position;
 
             projectile.Reset(startPosition);
-            projectileCollisions.SetProperties(hitCount);
+            projectileCollisions.SetProperties(hitCount, true, isRedActive, isBlueActive, isYellowActive, redChainNumber);
             projectile.gameObject.SetActive(true);
 
             timeLastFired = Time.time;
         }
     }
 
-    public float RandomDamageMultiplier() {
+    public static float RandomDamageMultiplier() {
         return Random.Range(0.8f, 1.2f) * damageMultiplier;
     }
 
     // returns damage done by the player to an enemy
-    public float GetDamage() {
+    public static float GetDamage() {
         return damage * RandomDamageMultiplier();
     }
 
-    public void SetDamageMultiplier(float value) {
+    public static void SetDamageMultiplier(float value) {
         damageMultiplier = value;
     }
 
-    public void SetRateSpeedAndHitCount(List<float> attributes) {
-        rate = attributes[0];
-        hitCount = attributes[1];
-    }
-
-    
 
 
 }

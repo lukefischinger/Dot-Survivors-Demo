@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: -4409248849241182190}
   - component: {fileID: 8954320827273407695}
   - component: {fileID: -2954476275281330338}
-  - component: {fileID: -2765840348117205651}
   m_Layer: 6
   m_Name: Explosion
   m_TagString: Explosion
@@ -47,7 +46,7 @@ Animator:
   m_GameObject: {fileID: 7263041919207712178}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a6c8895ba5980ca4183ca628780ecdc4, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1caa067d6271eee46b7fecfa77562868, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -99,7 +98,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.67058825}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.5647059}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -148,17 +147,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8eb2d6f47cf09a14caad8ee7f57c5f58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-2765840348117205651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7263041919207712178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 751cf70f51188914b99270f014f970e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

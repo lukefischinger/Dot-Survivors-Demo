@@ -8,7 +8,7 @@ public class Experience : MonoBehaviour {
     Pool experiencePool;
 
     Rigidbody2D myRigidbody;
-    public int experienceAmount = 1;
+    public int experienceAmount = 20;
     float movementMultiplier;
 
     void Awake() {
@@ -25,6 +25,8 @@ public class Experience : MonoBehaviour {
         if (IsPlayerClose()) {
             float magnitude = movementMultiplier * Mathf.Min(5, Mathf.Max(2.5f, (player.transform.position - transform.position).magnitude));
             myRigidbody.velocity = (player.transform.position - transform.position).normalized * magnitude * Time.deltaTime * 500f;
+        } else {
+            myRigidbody.velocity = Vector3.zero;
         }
     }
 

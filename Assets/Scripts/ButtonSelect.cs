@@ -1,15 +1,24 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonSelect : MonoBehaviour
-{
-
+public class ButtonSelect : MonoBehaviour {
+    EventSystem eventSystem;
     Button button;
 
+    public bool selected = false;
+
     private void Awake() {
-        button = GetComponent<Button>();    
+        eventSystem = GameObject.FindObjectOfType<EventSystem>();
+        button = GetComponent<Button>();
     }
-    public void OnHover() {
+    public void OnHoverEnter() {
         button.Select();
+        selected = true;
+    }
+
+    public void OnHoverExit() {
+        eventSystem.SetSelectedGameObject(null);
+        selected = false;
     }
 }

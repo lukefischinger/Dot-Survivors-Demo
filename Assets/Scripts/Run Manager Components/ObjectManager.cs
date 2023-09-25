@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.TerrainUtils;
 
 // stores all objects used in the Run scene for centralized access
 public class ObjectManager : MonoBehaviour {
@@ -15,19 +16,36 @@ public class ObjectManager : MonoBehaviour {
         explosionPool,
         experienceBar,
         pauseScreen,
+        pauseButton,
         upgradeScreen,
         eventSystem,
-        clock;
+        clock,
+        movementJoystick;
 
-    [SerializeField] public Color yellowDamageColor,
+    [SerializeField]
+    public Color yellowDamageColor,
                     basicDamageColor,
                     redDamageColor,
                     blueDamageColor;
 
 
-    [SerializeField] RunInformation runInformation;
+    [SerializeField] public RunInformation runInformation;
 
     private void Awake() {
         runInformation.ClearAll();
+    }
+
+    public void IncrementDamage(float amount, Color color) {
+        runInformation.damage += amount;
+
+        if (color == basicDamageColor)
+            runInformation.damageWhite += amount;
+        else if (color == yellowDamageColor)
+            runInformation.damageYellow += amount;
+        else if (color == redDamageColor)
+            runInformation.damageRed += amount;
+        else if (color == blueDamageColor)
+            runInformation.damageBlue += amount;
+        else runInformation.damageError += amount;
     }
 }

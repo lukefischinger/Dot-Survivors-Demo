@@ -5,8 +5,6 @@ using UnityEngine;
 // Inflicts damage over time on the host enemy, and can add additional parasites to nearby enemies
 public class Parasite : MonoBehaviour {
 
-    ObjectManager objects;
-    Weapon weapon;
 
     SpriteRenderer mySpriteRenderer;
     CircleCollider2D myCollider;
@@ -23,7 +21,7 @@ public class Parasite : MonoBehaviour {
     float timeElapsed;
     float tickRemaining;
 
-    const float damageRatioPerTick = 0.1f;
+    const float damageRatioPerTick = 0.2f;
 
     bool areComponentsEnabled = false;
 
@@ -32,8 +30,6 @@ public class Parasite : MonoBehaviour {
         host = myTransform.parent;
         hostEnemy = host.GetComponent<Enemy>();
 
-        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
-        weapon = objects.player.GetComponent<Weapon>();
         myCollider = GetComponent<CircleCollider2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
@@ -44,18 +40,28 @@ public class Parasite : MonoBehaviour {
         UpdateDelay();
     }
 
+    private void OnEnable() {
+        timeElapsed = 0;
+        myCollider.enabled = false;
+        mySpriteRenderer.enabled = false;
+        myAnimator.enabled = false;
+        areComponentsEnabled = false;
+    }
+
     public void SetValues(int spreadNumber, float damageMultiplier, float tickLength, float duration, float delay) {
         this.spreadNumber = spreadNumber;
         this.damageMultiplier = damageMultiplier;
         this.tickLength = tickLength;
         this.duration = duration;
         this.delay = delay;
+    }
 
-        timeElapsed = 0;
-        myCollider.enabled = false;
-        mySpriteRenderer.enabled = false;
-        myAnimator.enabled = false;
-        areComponentsEnabled = false;
+    public void Refresh(int spreadNumber, float damageMultiplier, float tickLength, float duration) {
+        this.spreadNumber = Mathf.Max(spreadNumber, this.spreadNumber);
+        this.damageMultiplier = Mathf.Max(damageMultiplier, this.damageMultiplier);
+        this.tickLength = Mathf.Min(tickLength, this.tickLength);
+        this.duration = Mathf.Max(duration, this.duration);
+
     }
 
     private void FixedUpdate() {
@@ -98,8 +104,9 @@ public class Parasite : MonoBehaviour {
             return;
         }
 
+        float critical = Weapon.yellowCanHitCritically && (Random.value < Weapon.redCriticalChance) ? Weapon.criticalMultiplier : 1f;
         if (tickRemaining <= 0) {
-            hostEnemy.Damage(damageMultiplier * damageRatioPerTick * weapon.GetDamage(), objects.yellowDamageColor);
+            hostEnemy.Damage(critical * damageMultiplier * damageRatioPerTick * Weapon.GetDamage(), "Yellow", critical > 1f);
             tickRemaining += tickLength;
         }
         else {
@@ -121,21 +128,23 @@ public class Parasite : MonoBehaviour {
 
     // no need to check if the collision is with an enemy,
     // as the projectile layer only has physics interactions with the enemy layer
-    void ProcessEnemyCollision(Collider2D collision) {
+    public void ProcessEnemyCollision(Collider2D collision) {
         if (spreadNumber == 0) {
             myCollider.enabled = false;
             return;
         }
-
-        Parasite enemyParasite = collision.GetComponent<Enemy>().parasite;
-        if (!enemyParasite.gameObject.activeInHierarchy) {
-            enemyParasite.gameObject.SetActive(true);
-            enemyParasite.SetValues(spreadNumber - 1, damageMultiplier, tickLength, duration, tickLength);
-
-            if (spreadNumber == 0) {
-                myCollider.enabled = false;
-            }
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+        if(enemy.HasParasite()) {
+            enemy.parasite.Refresh(spreadNumber, damageMultiplier, tickLength, duration);
+        } else {
+            enemy.parasite.gameObject.SetActive(true);
+            enemy.parasite.SetValues(spreadNumber, damageMultiplier, tickLength, duration, tickLength);
         }
+
+        // spread blue if available
+        if (Weapon.blueSpreadsWithYellow)
+           hostEnemy.chill.SpreadChill(enemy);
+            
     }
 
 }

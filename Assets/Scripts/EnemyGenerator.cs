@@ -1,8 +1,18 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // generates enemies at an increasing rate throughout a run
 public class EnemyGenerator : MonoBehaviour {
     [SerializeField] GameObject prefabEnemy;
+    [SerializeField] List<Sprite> sprites;
+
+    private static readonly float[] healths = new float[7] { 30f, 60f, 100f, 180f, 300f, 500f, 800f };
+    private static readonly float[] damages = new float[7] { 4f, 6f, 8f, 10f, 13f, 16f, 20f };
+    private static readonly float[] timings = new float[7] { 60f, 120f, 180f, 240f, 300f, 360f, Mathf.Infinity };
+
+    int level = 0;
+
     ObjectManager objects;
 
     Clock clock;
@@ -17,9 +27,8 @@ public class EnemyGenerator : MonoBehaviour {
     int numberPerInterval = 1;
     float enemyCarryOver = 0;
 
-    // constants determined through trial and error
     const float exponent = 1.25f;
-    const float rateMultiplier = 10f;//0.03f;
+    const float rateMultiplier = 0.03f;
     const float rateConstant = 1.2f;
 
     private void Awake() {
@@ -34,10 +43,17 @@ public class EnemyGenerator : MonoBehaviour {
     }
 
     private void Update() {
+        UpdateLevel();
         CalculateRate();
         CreateEnemies();
     }
 
+    void UpdateLevel() {
+        level = Array.BinarySearch(timings, (int)clock.timeSpan.TotalSeconds);
+        if (level < 0)
+            level = ~level; // apply bitwise complement operator to get first upper bound, per function documentation
+
+    }
 
     // updates "rate" field with the rate at which enemies are generated
     // rate increases over time
@@ -68,7 +84,7 @@ public class EnemyGenerator : MonoBehaviour {
         GameObject enemy = enemyPool.GetPooledObject();
         if (enemy != null) {
             enemy.transform.position = GetRandomSpawnLocation();
-            enemy.GetComponent<Enemy>().Reset();
+            enemy.GetComponent<Enemy>().ResetEnemy(healths[level], damages[level], sprites[level]);
 
         }
     }
@@ -76,9 +92,9 @@ public class EnemyGenerator : MonoBehaviour {
 
     // returns a random position in world space on the edge of the screen
     public Vector3 GetRandomSpawnLocation() {
-        int t = Random.Range(0, 2);     // 0 => randomize the y coord, 1 => randomize the x coord
-        int q = Random.Range(0, 2);     // the value of the unrandomized coord--0 is left/bottom, 1 is right/top
-        float r = Random.value;         // the value of the randomized coord
+        int t = UnityEngine.Random.Range(0, 2);     // 0 => randomize the y coord, 1 => randomize the x coord
+        int q = UnityEngine.Random.Range(0, 2);     // the value of the unrandomized coord--0 is left/bottom, 1 is right/top
+        float r = UnityEngine.Random.value;         // the value of the randomized coord
 
         Vector3 screenPosition = new Vector3((t * r + (1f - t) * q) * Screen.width, ((1f - t) * r + t * q) * Screen.height, 0f);
         Vector3 positionCreated = cam.ScreenToWorldPoint(screenPosition);
@@ -86,6 +102,6 @@ public class EnemyGenerator : MonoBehaviour {
         return (positionCreated);
     }
 
-    
+
 
 }
