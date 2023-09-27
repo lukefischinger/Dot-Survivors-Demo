@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 // player component
 // manages the various player attributes which are upgradeable
 public class AttributeManager : MonoBehaviour {
+
+
     private static readonly float[] healths = new float[] { 200, 240, 280, 350 };
     private static readonly float[] speeds = new float[] { 1f, 1.2f, 1.4f, 1.7f };
     private static readonly float[] healings = new float[] { 0, 1, 2, 4 };
@@ -17,7 +20,7 @@ public class AttributeManager : MonoBehaviour {
     private static readonly float[] hitCountsCircle = new float[] { 10f, 20f, 30f, 40f, 50f, 75f, 100f };
 
     // red attributes
-    private static readonly float[] redDamageMultiplier = new float[] { 0.5f, 1f, 1f, 1f, 1f, 1.25f, 1.25f, 1.25f };
+    private static readonly float[] redDamageMultiplier = new float[] { 0.5f, 1f, 1f, 1f, 1f, 1.5f, 1.5f, 1.5f };
     private static readonly float[] redCriticalChance = new float[] { 0.1f, 0.1f, 0.2f, 0.2f, 0.3f, 0.3f, 0.4f, 0.4f };
     private static readonly float[] redExplosionSize = new float[] { 0f, 0f, 0f, 0.25f, 0.25f, 0.25f, 0.25f, 0.5f };
     private static readonly int[] redChainNumber = new int[] { 0, 0, 0, 1, 1, 1, 1, 1 };
@@ -37,7 +40,7 @@ public class AttributeManager : MonoBehaviour {
 
 
     // secondary color variables
-    const int upgradedRedChainNumber = 3;
+    const int upgradedRedChainNumber = 2;
 
     // summary of all upgrade names/categories and max levels
     private static readonly string[] attributeNames = new string[] { "Health", "Speed", "Healing", "Armor", "Damage",
@@ -48,10 +51,14 @@ public class AttributeManager : MonoBehaviour {
     int[] attributeLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1 };
 
     float[][] attributes = new float[][] { healths, speeds, healings, armors, damageMultipliers, ratesCircle, hitCountsCircle };
+    private static readonly string[] colorNames = new string[] { "Red", "Yellow", "Blue", "Orange", "Purple", "Green" };
 
     HealthManager healthManager;
     PlayerMovement playerMovement;
     ObjectManager objects;
+
+    // Lists to maintain the order in which upgrades are encountered, used in UI
+    List<string> upgradeOrder, colorOrder;
 
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
@@ -61,11 +68,21 @@ public class AttributeManager : MonoBehaviour {
 
         SetWeaponValues();
         healthManager.SetMaxHealth(GetAttributeValue("Health"), false);
+
+        upgradeOrder = new List<string>();
+        colorOrder = new List<string>();
+
+        ResetAll();
+
     }
+   
 
     public void ApplyUpgrade(string attributeName) {
         LevelUp(attributeName);
+        SetValues(attributeName);
+    }
 
+    private void SetValues(string attributeName) {
         switch (attributeName) {
             case "Health":
                 healthManager.SetMaxHealth(GetAttributeValue(attributeName));
@@ -178,8 +195,18 @@ public class AttributeManager : MonoBehaviour {
             }
         }
 
+        if (colorNames.Contains(attributeName)) {
+            if (!colorOrder.Contains(attributeName))
+                colorOrder.Insert(0, attributeName);
+        }
+        else if (!upgradeOrder.Contains(attributeName))
+            upgradeOrder.Insert(0, attributeName);
+
         objects.runInformation.upgrades = attributeNames;
         objects.runInformation.upgradeLevels = attributeLevels;
+        objects.runInformation.upgradeOrder = upgradeOrder;
+        objects.runInformation.colorOrder = colorOrder;
+        objects.GetComponent<UIManager>().UpdateUpgradeDisplay();
     }
 
     // returns true if the attribute is not yet at max level
@@ -206,7 +233,7 @@ public class AttributeManager : MonoBehaviour {
     }
 
     void SetRedValues() {
-        int level = Level("Red");
+        int level = Mathf.Max(0, Level("Red"));
 
         Weapon.isRedActive = true;
         Weapon.redCriticalChance = redCriticalChance[level];
@@ -216,7 +243,7 @@ public class AttributeManager : MonoBehaviour {
     }
 
     void SetYellowValues() {
-        int level = Level("Yellow");
+        int level = Mathf.Max(0, Level("Yellow"));
 
         Weapon.isYellowActive = true;
         Weapon.yellowSpreadNumber = yellowSpreadNumber[level];
@@ -226,7 +253,7 @@ public class AttributeManager : MonoBehaviour {
     }
 
     void SetBlueValues() {
-        int level = Level("Blue");
+        int level = Mathf.Max(0, Level("Blue"));
 
         Weapon.isBlueActive = true;
         Weapon.blueDamage = blueDamage[level];
@@ -239,7 +266,7 @@ public class AttributeManager : MonoBehaviour {
 
     void SetGreenValues() {
         int level = Level("Green");
-        
+
         Weapon.blueSpreadsWithYellow = level >= 0;
         Weapon.yellowUsesBlueDuration = level >= 1;
         Weapon.isBlueMultiHitActive = level >= 2;
@@ -250,7 +277,7 @@ public class AttributeManager : MonoBehaviour {
 
         Weapon.yellowCanHitCritically = level >= 0;
         Weapon.redChainNumber = (level >= 1 ? upgradedRedChainNumber : 1);
-        Weapon.explosionsAddYellow = level >= 2;
+        Weapon.yellowDamageTriggersExplosion = level >= 2;
 
     }
 
@@ -260,5 +287,15 @@ public class AttributeManager : MonoBehaviour {
         Weapon.explosionsAddBlue = level >= 0;
         Weapon.redDamageTriggersBlue = level >= 1;
         Weapon.blueDamageTriggersExplosion = level >= 2;
+    }
+
+    public void ResetAll() {
+        for (int i = 0; i < attributeNames.Length; i++) {
+            SetValues(attributeNames[i]);
+        }
+
+        Weapon.isYellowActive = false;
+        Weapon.isRedActive = false;
+        Weapon.isBlueActive = false;
     }
 }

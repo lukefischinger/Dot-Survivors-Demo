@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
-{
+public class MainMenu : MonoBehaviour {
+
+    [SerializeField] GameObject options;
+    [SerializeField] Button startButton;
+
     public void StartRun() {
         SceneManager.LoadScene(1);
     }
@@ -10,5 +14,14 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame() {
         Application.Quit();
+    }
+
+    public void OpenOptionsMenu() {
+        options.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
+    private void OnEnable() {
+        startButton.Select();
     }
 }

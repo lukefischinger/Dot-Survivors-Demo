@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.TerrainUtils;
 
 // stores all objects used in the Run scene for centralized access
 public class ObjectManager : MonoBehaviour {
@@ -9,14 +8,16 @@ public class ObjectManager : MonoBehaviour {
         player,
         followCamera,
         canvas,
-        EnemyGenerator,
+        enemyGenerator,
         enemyPool,
         experiencePool,
         damagePool,
         explosionPool,
         experienceBar,
         pauseScreen,
+        optionsScreen,
         pauseButton,
+        upgradeDisplay,
         upgradeScreen,
         eventSystem,
         clock,
@@ -35,17 +36,5 @@ public class ObjectManager : MonoBehaviour {
         runInformation.ClearAll();
     }
 
-    public void IncrementDamage(float amount, Color color) {
-        runInformation.damage += amount;
 
-        if (color == basicDamageColor)
-            runInformation.damageWhite += amount;
-        else if (color == yellowDamageColor)
-            runInformation.damageYellow += amount;
-        else if (color == redDamageColor)
-            runInformation.damageRed += amount;
-        else if (color == blueDamageColor)
-            runInformation.damageBlue += amount;
-        else runInformation.damageError += amount;
-    }
 }

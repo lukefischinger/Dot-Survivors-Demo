@@ -5,6 +5,8 @@ using UnityEngine;
 // Inflicts damage over time on the host enemy, and can add additional parasites to nearby enemies
 public class Parasite : MonoBehaviour {
 
+    ObjectManager objects;
+    Pool explosionPool;
 
     SpriteRenderer mySpriteRenderer;
     CircleCollider2D myCollider;
@@ -20,7 +22,9 @@ public class Parasite : MonoBehaviour {
 
     float timeElapsed;
     float tickRemaining;
+    float collisionStayRemaining;
 
+    const float collisionStayInterval = 0.5f;
     const float damageRatioPerTick = 0.2f;
 
     bool areComponentsEnabled = false;
@@ -33,11 +37,15 @@ public class Parasite : MonoBehaviour {
         myCollider = GetComponent<CircleCollider2D>();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
+
+        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+        explosionPool = objects.explosionPool.GetComponent<Pool>();
     }
 
 
     private void Update() {
         UpdateDelay();
+        UpdateCollisionStayTimer();
     }
 
     private void OnEnable() {
@@ -61,6 +69,7 @@ public class Parasite : MonoBehaviour {
         this.damageMultiplier = Mathf.Max(damageMultiplier, this.damageMultiplier);
         this.tickLength = Mathf.Min(tickLength, this.tickLength);
         this.duration = Mathf.Max(duration, this.duration);
+        timeElapsed = 0;
 
     }
 
@@ -92,7 +101,7 @@ public class Parasite : MonoBehaviour {
     }
 
     void UpdateTimeToDestroy() {
-        timeElapsed += Time.fixedDeltaTime;
+        timeElapsed += Time.deltaTime;
         if (timeElapsed > duration) {
             Kill();
         }
@@ -107,11 +116,17 @@ public class Parasite : MonoBehaviour {
         float critical = Weapon.yellowCanHitCritically && (Random.value < Weapon.redCriticalChance) ? Weapon.criticalMultiplier : 1f;
         if (tickRemaining <= 0) {
             hostEnemy.Damage(critical * damageMultiplier * damageRatioPerTick * Weapon.GetDamage(), "Yellow", critical > 1f);
+            if (Weapon.yellowDamageTriggersExplosion && Random.value < Weapon.yellowExplosionChance)
+                RedCollisions.CreateExplosion(hostEnemy, explosionPool, Weapon.redChainNumber);
             tickRemaining += tickLength;
         }
         else {
             tickRemaining -= Time.deltaTime;
         }
+    }
+
+    void UpdateCollisionStayTimer() {
+        collisionStayRemaining -= Time.deltaTime;
     }
 
     public void Kill() {
@@ -123,7 +138,11 @@ public class Parasite : MonoBehaviour {
     }
 
     private void OnTriggerStay2D(Collider2D collision) {
+        if (collisionStayRemaining > 0)
+            return;
+
         ProcessEnemyCollision(collision);
+        collisionStayRemaining = collisionStayInterval;
     }
 
     // no need to check if the collision is with an enemy,
@@ -135,10 +154,10 @@ public class Parasite : MonoBehaviour {
         }
         Enemy enemy = collision.gameObject.GetComponent<Enemy>();
         if(enemy.HasParasite()) {
-            enemy.parasite.Refresh(spreadNumber, damageMultiplier, tickLength, duration);
+            enemy.parasite.Refresh(spreadNumber - 1, damageMultiplier, tickLength, duration - timeElapsed);
         } else {
             enemy.parasite.gameObject.SetActive(true);
-            enemy.parasite.SetValues(spreadNumber, damageMultiplier, tickLength, duration, tickLength);
+            enemy.parasite.SetValues(spreadNumber - 1, damageMultiplier, tickLength, duration - timeElapsed, tickLength);
         }
 
         // spread blue if available

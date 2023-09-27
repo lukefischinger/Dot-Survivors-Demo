@@ -19,12 +19,13 @@ public class StateManager : MonoBehaviour
     ObjectManager objects;
     PlayerInput uiInput;
     int upgradesQueued = 0;
-    GameObject upgradeSelection, pauseMenu;
+    GameObject upgradeSelection, pauseMenu, optionsMenu;
 
     private void Start() {
         objects = GetComponent<ObjectManager>();
         uiInput = objects.player.GetComponent<PlayerMovement>().myPlayerInput;
         pauseMenu = objects.pauseScreen;
+        optionsMenu = objects.optionsScreen;
         upgradeSelection = objects.upgradeScreen;
     }
 
@@ -86,7 +87,7 @@ public class StateManager : MonoBehaviour
     private void Paused() {
         Time.timeScale = 0;
         
-        if(!pauseMenu.activeInHierarchy)
+        if(!pauseMenu.activeInHierarchy && !optionsMenu.activeInHierarchy)
             pauseMenu.SetActive(true);
 
         if (pause) {
@@ -122,5 +123,6 @@ public class StateManager : MonoBehaviour
     public void Unpause() {
         state = previousState;
         pauseMenu.SetActive(false);
+        optionsMenu.SetActive(false);
     }
 }

@@ -21,22 +21,33 @@ public class ExperienceManager : MonoBehaviour {
         canvasRect = objects.canvas.GetComponent<RectTransform>();
 
         experienceBar = objects.experienceBar.GetComponent<Bar>();
-        experienceBar.SetScale(new Vector3(canvasRect.rect.width, canvasRect.rect.height / 35, 0));
+        //experienceBar.SetScale(new Vector3(canvasRect.rect.width, canvasRect.rect.height / 35, 0));
     }
 
 
+    // add experience and set the experience bar display accordingly
+    // if enough experience is gained at once, multiple level-ups may occur immediately one after the other
     public void AddExperience(int exp) {
-        int levelThreshold = CalculateLevelThreshold();
+        
+        while (exp > 0) {
 
-        if (experience + exp >= levelThreshold) {
-            if (experience + exp > levelThreshold)
-                AddExperience(experience + exp - levelThreshold);
-            LevelUp();
+            int levelThreshold = CalculateLevelThreshold();
+            int overflow = experience + exp - levelThreshold;
+
+            if (overflow >= 0) {
+                experience = 0;
+                exp = overflow;
+                experienceBar.SetFillValue(1f); // show a full experience bar during upgrade selection
+
+                LevelUp();
+            }
+            else {
+                experience += exp;
+                exp = 0;
+            }
         }
-        else {
-            experience += exp;
-            experienceBar.SetFillValue((float)experience / levelThreshold);
-        }
+
+        experienceBar.SetFillValue((float)experience / CalculateLevelThreshold());
     }
 
     int CalculateLevelThreshold() {
@@ -45,7 +56,7 @@ public class ExperienceManager : MonoBehaviour {
 
     void LevelUp() {
         level++;
-        experience = 0;
+        objects.runInformation.level = level;
 
         // alert the StateManager it is time to create a new UpgradeSelection
         stateManager.AddUpgrade();

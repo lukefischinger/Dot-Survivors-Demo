@@ -5,11 +5,12 @@ public class Experience : MonoBehaviour {
 
     ObjectManager objects;
     GameObject player;
-    Pool experiencePool;
 
     Rigidbody2D myRigidbody;
     public int experienceAmount = 20;
     float movementMultiplier;
+
+    public bool disregardDistance = false;
 
     void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
@@ -18,7 +19,6 @@ public class Experience : MonoBehaviour {
         movementMultiplier = Random.Range(0.2f, 2f);
 
         player = objects.player;
-        experiencePool = objects.experiencePool.GetComponent<Pool>();
     }
 
     void FixedUpdate() {
@@ -32,18 +32,10 @@ public class Experience : MonoBehaviour {
 
     public void SetProperties(int value) {
         experienceAmount = value;
+        disregardDistance = false;
     }
 
     bool IsPlayerClose() {
-        return ((player.transform.position - transform.position).magnitude < 10);
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D collision) {
-
-        if (collision.gameObject.tag == "Player") {
-            player.GetComponent<ExperienceManager>().AddExperience(experienceAmount);
-            experiencePool.ReturnPooledObject(gameObject);
-        }
+        return disregardDistance || ((player.transform.position - transform.position).magnitude < 10);
     }
 }

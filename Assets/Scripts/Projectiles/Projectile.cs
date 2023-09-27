@@ -20,7 +20,7 @@ public class Projectile : MonoBehaviour {
         explosionPool = objects.explosionPool.GetComponent<Pool>();
     }
 
-    protected void UpdateTimeToDestroy() {
+    protected void UpdateTimeToDisable() {
         timeElapsed += Time.fixedDeltaTime;
         if (timeElapsed > timeToDestroy) {
             Kill();
@@ -36,6 +36,7 @@ public class Projectile : MonoBehaviour {
     }
 
     public void Kill() {
+        OtherKill();
         if (tag == "Explosion") {
             explosionPool.ReturnPooledObject(gameObject);
         }
@@ -45,5 +46,7 @@ public class Projectile : MonoBehaviour {
     protected virtual void OtherAwake() { }
 
     protected virtual void OtherReset() { }
+
+    protected virtual void OtherKill() { }
 }
 

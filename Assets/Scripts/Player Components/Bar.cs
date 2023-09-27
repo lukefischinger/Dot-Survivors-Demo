@@ -6,8 +6,6 @@ public class Bar : MonoBehaviour
 
     [SerializeField] Color color;
 
-    Vector3 scale;
-
     float percentFull = 0;
     Transform parentTransform;
     RectTransform myRectTransform, fillTransform, emptyTransform;
@@ -36,8 +34,7 @@ public class Bar : MonoBehaviour
     }
     
     public void SetScale(Vector3 value) {
-        scale = value;
-        myRectTransform.localScale = scale;
+        myRectTransform.localScale = value;
     }
 
     // update the display to reflect the current value of percentFull
@@ -51,12 +48,9 @@ public class Bar : MonoBehaviour
 
     }
 
-    private void Update() {
-        Rotate();
-    }
-
-    void Rotate() {
+    public void Rotate() {
         myRectTransform.localRotation = Quaternion.Euler(0, 0, -parentTransform.eulerAngles.z);
     }
+
 
 }

@@ -122,8 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45089be68ab53c44fa131cbf5a4b072c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
-  damage: 4
   parasite: {fileID: 0}
   chill: {fileID: 0}
 --- !u!58 &-8454475017094344501

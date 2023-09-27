@@ -37,6 +37,8 @@ public class Damage : MonoBehaviour {
     public void SetDamage(float damage, Vector3 position, string colorName, float size = 1f) {
         timeElapsed = 0;
         text.text = "" + ((damage < 1f) ? Mathf.Round(damage * 10) / 10 : Mathf.Round(damage));
+        if (colorName == "Experience")
+            text.text = "+" + text.text;
         text.color = GetColor(colorName);
         myTransform.position = position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0);
         myTransform.localScale = Vector3.one * size;
@@ -54,6 +56,8 @@ public class Damage : MonoBehaviour {
                 return objects.yellowDamageColor;
             case "Green":
                 return Color.green;
+            case "Experience":
+                return new Color(194f / 255f, 214 / 255f, 1f, 1f);
             default:
                 return Color.magenta;
         }

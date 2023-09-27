@@ -10,6 +10,7 @@ public class UpgradeSelection : MonoBehaviour {
 
     [SerializeField] UpgradeText[] upgradeTexts;
     [SerializeField] UpgradeQueue upgradeQueue;
+
     string[] upgradeTextTypes;
 
     // the list of game objects choices presented to the user on this screen
@@ -18,6 +19,7 @@ public class UpgradeSelection : MonoBehaviour {
     SortedList<string, int> availableUpgradeLevels;
 
     ObjectManager objects;
+    UIManager ui;
     GameObject player;
     StateManager stateManager;
     AttributeManager attributeManager;
@@ -25,6 +27,7 @@ public class UpgradeSelection : MonoBehaviour {
 
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+        ui = objects.GetComponent<UIManager>();
         player = objects.player;
         stateManager = objects.GetComponent<StateManager>();
         attributeManager = player.GetComponent<AttributeManager>();
@@ -73,13 +76,27 @@ public class UpgradeSelection : MonoBehaviour {
 
     // fills in the text for a single upgrade choice button
     void PlaceUpgradeChoice(int i, string upgradeType, int upgradeLevel) {
+        Debug.Log(i + ": " + upgradeType + ", " + upgradeLevel);
         SetUpgradeText(i, upgradeType, GetUpgradeText(upgradeType, upgradeLevel));
+        SetUpgradeSprite(i, upgradeType);
     }
 
     void SetUpgradeText(int i, string title, string description) {
         upgradeChoices[i].SetActive(true);
         upgradeChoices[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = title;
         upgradeChoices[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = description;
+    }
+
+    // sets the appropriate sprite for the upgrade type in slot i
+    void SetUpgradeSprite(int i, string upgradeType) {
+        SpriteRenderer renderer = upgradeChoices[i].transform.GetChild(2).GetComponent<SpriteRenderer>();
+        if(ui.colorNames.Contains(upgradeType)) {
+            renderer.sprite = ui.sprites[ui.spriteNames.IndexOf("Weapon")];
+            renderer.color = ui.colors[ui.colorNames.IndexOf(upgradeType)];
+        } else {
+            renderer.sprite = ui.sprites[ui.spriteNames.IndexOf(upgradeType)];
+            renderer.color = Color.white;
+        }
     }
 
     void EraseAll() {

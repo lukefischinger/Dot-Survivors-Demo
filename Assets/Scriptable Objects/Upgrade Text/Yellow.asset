@@ -15,10 +15,10 @@ MonoBehaviour:
   upgradeType: Yellow
   upgradeTextByLevel:
   - Add yellow to projectiles. Yellow clings to enemies, causing damage and spreading
-    to other enemies.
-  - +50% base yellow damage
+    to nearby enemies
+  - +100% base yellow damage
   - +2 spread
-  - +50% base yellow damage
+  - +100% base yellow damage
   - +2 spread
   - +40% duration
   - +2 spread

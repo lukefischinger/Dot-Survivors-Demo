@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeType: Red
   upgradeTextByLevel:
-  - Add red to projectiles. Red projectiles inflict an additional hit on impact and
-    increase critical hit chance by 10%.
-  - +50% base red damage
+  - Add red to projectiles. Red projectiles inflict additional damage on impact and
+    may hit critically
+  - +100% base red damage
   - +10% critical hit chance
   - Red projectiles may explode on impact, damaging nearby enemies
   - +10% critical hit chance
-  - +25% base red damage
+  - +100% base red damage
   - +10% critical hit chance
   - +100% explosion size

@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ee07c6ccfa05a94ca8e4bef72370d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDestroy: 0.2
+  timeToDestroy: 0.4
 --- !u!23 &-5950050526584937224
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_text: 00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
-  m_sharedMaterial: {fileID: -3767063617978151608, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
+  m_sharedMaterial: {fileID: 1352819754179511101, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

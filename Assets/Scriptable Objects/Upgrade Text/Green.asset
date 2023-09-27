@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeType: Green
   upgradeTextByLevel:
-  - Blue spreads with yellow.
-  - Increases in blue duration also apply to yellow.
-  - Blue damage can trigger multiple times.
+  - Blue spreads with yellow
+  - Increases in blue duration also apply to yellow
+  - Blue damage may trigger multiple times

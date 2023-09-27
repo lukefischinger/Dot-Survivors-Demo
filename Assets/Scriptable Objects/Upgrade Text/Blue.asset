@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeType: Blue
   upgradeTextByLevel:
-  - Add blue to projectiles. Blue slows enemies.
+  - Add blue to projectiles. Blue slows enemies
   - Inflict 10 damage after 3 seconds
   - +40% duration
   - -20% speed
-  - +25 base damage on expiry
+  - +25 base damage after 3 seconds
   - Adding blue to 10 enemies triggers blue damage immediately
   - +100% duration
   - -50% time to inflict blue damage

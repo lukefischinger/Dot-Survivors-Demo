@@ -13,15 +13,22 @@ public class ProjectileCircle : Projectile {
     protected override void OtherAwake() {
         myCollider = GetComponent<CircleCollider2D>();
         transform.localRotation = Quaternion.Euler(0, 0, Mathf.Round(Random.Range(0, 360) / 90) * 90);
+        GetComponent<Animator>().enabled = false;
+        GetComponent<Animator>().enabled = true;
+
+
     }
 
-    public void OtherSet() {
+    protected override void OtherReset() {
         myCollider.radius = 0;
+    }
+
+    protected override void OtherKill() {
     }
 
     private void FixedUpdate() {
         Move();
-        UpdateTimeToDestroy();
+        UpdateTimeToDisable();
     }
 
 

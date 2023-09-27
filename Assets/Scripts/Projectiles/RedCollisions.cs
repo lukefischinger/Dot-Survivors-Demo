@@ -9,11 +9,11 @@ public class RedCollisions {
 
         float critical = CriticalMultiplier();
         enemy.Damage(
-            Weapon.redDamageMultiplier * critical * Weapon.GetDamage(), 
-            "Red", 
+            Weapon.redDamageMultiplier * critical * Weapon.GetDamage(),
+            "Red",
             critical > 1f
         );
-        
+
         if (Weapon.redDamageTriggersBlue && enemy.HasChill()) {
             enemy.chill.AddTrigger();
         }
@@ -30,8 +30,8 @@ public class RedCollisions {
             1000,                           // hit count (effectively unlimited for explosions)
             false,                          // basic active
             true,                           // red active
-            Weapon.explosionsAddYellow,     // yellow active
-            Weapon.explosionsAddBlue,        // blue active
+            Weapon.explosionsAddBlue,       // blue active
+            false,                          // yellow active
             explosionChainNumber
         );
 

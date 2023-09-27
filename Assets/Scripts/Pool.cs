@@ -11,7 +11,7 @@ public class Pool : MonoBehaviour
     [SerializeField] int count;
     ObjectManager objects;
 
-    List<GameObject> pool;
+    public List<GameObject> pool;
     Dictionary<GameObject, int> objToIndex;
 
     Transform myTransform;

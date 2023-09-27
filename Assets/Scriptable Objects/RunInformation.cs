@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // scriptable object that stores information about a run
@@ -18,6 +19,11 @@ public class RunInformation : ScriptableObject {
     public string[] upgrades;
     public int[] upgradeLevels;
 
+    public List<string> upgradeOrder;
+    public List<string> colorOrder;
+
+    public int difficultyLevel; // not cleared by ClearAll()
+
     public void ClearAll() {
         damage = 0;
         damageWhite = 0;
@@ -27,6 +33,12 @@ public class RunInformation : ScriptableObject {
         damageError = 0;
         enemiesKilled = 0;
         healing = 0;
+
+        level = 0;
+        upgrades = null;
+        upgradeLevels = null;
+        upgradeOrder = new List<string>();
+        colorOrder = new List<string>();
     }
 
 

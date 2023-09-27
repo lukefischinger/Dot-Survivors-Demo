@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-    [SerializeField] float speed = 1000;
+    [SerializeField] List<Sprite> sprites;
 
     ObjectManager objects;
     GameObject joystickAnchorObject;
@@ -16,13 +17,23 @@ public class PlayerMovement : MonoBehaviour {
 
     Rigidbody2D myRigidbody;
     Transform myTransform;
+    SpriteRenderer mySpriteRenderer;
+    Bar healthBar;
+
+    const float speed = 7.5f;
 
     float speedMultiplier = 1;
+    public bool usingJoystick;
+    float joystickCountdown = 5f;
+    float joystickCountdownRemaining;
+
 
     void Awake() {
         myPlayerInput = new PlayerInput();
         myRigidbody = GetComponent<Rigidbody2D>();
         myTransform = GetComponent<Transform>();
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
+        healthBar = GetComponentInChildren<Bar>();
 
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
         joystickAnchorObject = objects.movementJoystick;
@@ -31,17 +42,14 @@ public class PlayerMovement : MonoBehaviour {
         joystick.SetParent(joystickAnchor, false);
         cam = Camera.main;
         pauseButton = objects.pauseButton.GetComponent<ButtonSelect>();
+        usingJoystick = false;
     }
 
     void Update() {
         UpdateInputs();
-    }
-
-
-    private void FixedUpdate() {
         Move();
+        SetSpriteRenderer();
     }
-
 
     void UpdateInputs() {
         // keyboard input
@@ -49,6 +57,10 @@ public class PlayerMovement : MonoBehaviour {
 
         // use mouse or touch based inputs if currently pressed
         UpdateJoystickInputs();
+
+        // set usingJoystick to false if no touch/click within the last [joystickCountdown] seconds
+        joystickCountdownRemaining -= Time.deltaTime;
+        usingJoystick = joystickCountdownRemaining > 0;
     }
 
     void UpdateJoystickInputs() {
@@ -56,9 +68,6 @@ public class PlayerMovement : MonoBehaviour {
             joystickAnchor.gameObject.SetActive(false);
             return;
         }
-
-
-
 
         // update the joystick anchor location
         if (myPlayerInput.Player.Click.triggered) {
@@ -71,6 +80,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         joystickAnchor.gameObject.SetActive(true);
+        joystickCountdownRemaining = joystickCountdown;
 
 
         // update the joystick direction
@@ -90,13 +100,9 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void Move() {
-        myRigidbody.velocity = speed * speedMultiplier * moveInput * Time.deltaTime;
+        myRigidbody.velocity = speed * speedMultiplier * moveInput;
 
-        // set player rotation only when moveInput changes to something nonzero
-        if (moveInput != Vector2.zero) {
-            myTransform.rotation = Quaternion.Euler(0, 0, -Mathf.Sign(moveInput.x) * Mathf.Rad2Deg * Mathf.Acos(Vector2.Dot(moveInput, Vector2.up)));
-
-        }
+        
     }
 
     public void SetSpeedMultiplier(float value) {
@@ -110,6 +116,25 @@ public class PlayerMovement : MonoBehaviour {
 
     private void OnDisable() {
         myPlayerInput.Disable();
+    }
+
+    private void SetSpriteRenderer() {
+        float rawZ = Mathf.Round(-Mathf.Sign(moveInput.x) * Mathf.Rad2Deg * Mathf.Acos(Vector2.Dot(moveInput, Vector2.up)));
+        int spriteIndex = MathUtilities.Mod(Mathf.FloorToInt(rawZ / 45f), 2);
+        mySpriteRenderer.sprite = sprites[spriteIndex];
+
+        // set player rotation only when moveInput changes to something nonzero
+        if (moveInput != Vector2.zero) {
+            float rotationZ = Mathf.Floor(rawZ / 90f) * 90f;
+            if (spriteIndex == 1)
+                rotationZ += 90f;
+
+            myTransform.rotation = Quaternion.Euler(0, 0, rotationZ);
+            healthBar.Rotate();
+        }
+
+        
+        
     }
 
 

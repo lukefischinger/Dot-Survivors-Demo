@@ -7,7 +7,6 @@ public class Chill : MonoBehaviour {
     ObjectManager objects;
     Pool explosionPool;
 
-    SpriteRenderer mySpriteRenderer;
     CircleCollider2D myCollider;
     Transform host, myTransform;
     Enemy hostEnemy;
@@ -22,7 +21,7 @@ public class Chill : MonoBehaviour {
     float damageDelay;
     bool isCountTrigger;
 
-    const float multiHitTick = 0.05f;
+    const float multiHitTick = 0.1f;
 
     // timer variables
     float durationRemaining;
@@ -44,7 +43,6 @@ public class Chill : MonoBehaviour {
         explosionPool = objects.explosionPool.GetComponent<Pool>();
 
         myCollider = GetComponent<CircleCollider2D>();
-        mySpriteRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
 
     }
@@ -157,7 +155,7 @@ public class Chill : MonoBehaviour {
         }
 
         enemy.chill.gameObject.SetActive(true);
-        enemy.chill.SetValues(damage, speedModifier, duration, damageDelay, isCountTrigger, isMultiHitActive);
+        enemy.chill.SetValues(damage, speedModifier, durationRemaining, damageDelay, isCountTrigger, isMultiHitActive);
     }
 
     public void AddTrigger() {

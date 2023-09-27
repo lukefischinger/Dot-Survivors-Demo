@@ -15,9 +15,9 @@ MonoBehaviour:
   upgradeType: Weapon
   upgradeTextByLevel:
   - basic circle
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
-  - -20% cooldown, increase hit counts
+  - -20% cooldown, increase the number of enemies hit
+  - -20% cooldown, increase the number of enemies hit
+  - -20% cooldown, increase the number of enemies hit
+  - -20% cooldown, increase the number of enemies hit
+  - -20% cooldown, increase the number of enemies hit
+  - -20% cooldown, increase the number of enemies hit

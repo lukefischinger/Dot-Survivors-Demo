@@ -14,10 +14,12 @@ public class RunSummary : MonoBehaviour
 
     public void StartRun() {
         SceneManager.LoadScene(1);
+        runInformation.ClearAll();
     }
 
     public void QuitToMainMenu() {
         SceneManager.LoadScene(0);
+        runInformation.ClearAll();
     }
 
     private void PopulateStatistics() {

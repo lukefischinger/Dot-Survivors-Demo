@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 // player component
@@ -17,6 +16,7 @@ public class Weapon : MonoBehaviour {
     public const float damage = 10;
     public const int chillsPerTrigger = 10;
     public static float explosionChance = 0.15f;
+    public static float yellowExplosionChance = 0.005f;
 
     // basic upgradeable weapon attributes
     public static float rate = 1.5f;
@@ -54,7 +54,7 @@ public class Weapon : MonoBehaviour {
 
     // upgradeable orange values
     public static bool yellowCanHitCritically = false;
-    public static bool explosionsAddYellow = false;
+    public static bool yellowDamageTriggersExplosion = false;
 
     // upgradeable purple values
     public static bool explosionsAddBlue = false;
@@ -62,11 +62,11 @@ public class Weapon : MonoBehaviour {
     public static bool blueDamageTriggersExplosion = false;
 
     private void Awake() {
-        isYellowActive = false;
-        isRedActive = false;
-
         projectile = Instantiate(projectilePrefab).GetComponent<ProjectileCircle>();
         projectileCollisions = projectile.GetComponent<ProjectileCollisions>();
+
+        timeLastFired = Time.time;
+        projectile.gameObject.SetActive(false);
     }
 
     void FixedUpdate() {

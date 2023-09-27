@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeType: Orange
   upgradeTextByLevel:
-  - Yellow damage can hit critically.
-  - Explosions may trigger secondary explosions.
-  - Explosions add yellow to enemies.
+  - Yellow damage may hit critically
+  - Explosions may trigger secondary explosions
+  - Yellow damage may trigger explosions
