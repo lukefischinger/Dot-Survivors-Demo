@@ -76,7 +76,6 @@ public class UpgradeSelection : MonoBehaviour {
 
     // fills in the text for a single upgrade choice button
     void PlaceUpgradeChoice(int i, string upgradeType, int upgradeLevel) {
-        Debug.Log(i + ": " + upgradeType + ", " + upgradeLevel);
         SetUpgradeText(i, upgradeType, GetUpgradeText(upgradeType, upgradeLevel));
         SetUpgradeSprite(i, upgradeType);
     }

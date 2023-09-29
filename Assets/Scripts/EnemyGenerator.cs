@@ -105,7 +105,7 @@ public class EnemyGenerator : MonoBehaviour {
                     damages[level] * eliteDamageMultiplier * damageMultipliers[difficulty],
                     sprites[level],
                     true,
-                    (int)(eliteHealthExperienceMultiplier * (level + 1) * experienceMultipliers[difficulty]),
+                    (int)Mathf.Max((eliteHealthExperienceMultiplier * (level + 1) * experienceMultipliers[difficulty])),
                     movementSpeedMultipliers[difficulty]
                 );
                 enemy.transform.localScale = Vector3.one * eliteSizeMultiplier;
@@ -118,7 +118,7 @@ public class EnemyGenerator : MonoBehaviour {
                     damages[level] * damageMultipliers[difficulty],
                     sprites[level],
                     false,
-                    (int)((level + 1) * experienceMultipliers[difficulty]),
+                    (int)Mathf.Max(1, ((level + 1) * experienceMultipliers[difficulty])),
                     movementSpeedMultipliers[difficulty]
 
                 );

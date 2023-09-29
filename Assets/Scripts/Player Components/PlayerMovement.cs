@@ -114,10 +114,6 @@ public class PlayerMovement : MonoBehaviour {
         myPlayerInput.Enable();
     }
 
-    private void OnDisable() {
-        myPlayerInput.Disable();
-    }
-
     private void SetSpriteRenderer() {
         float rawZ = Mathf.Round(-Mathf.Sign(moveInput.x) * Mathf.Rad2Deg * Mathf.Acos(Vector2.Dot(moveInput, Vector2.up)));
         int spriteIndex = MathUtilities.Mod(Mathf.FloorToInt(rawZ / 45f), 2);

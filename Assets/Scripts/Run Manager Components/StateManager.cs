@@ -9,7 +9,7 @@ public class StateManager : MonoBehaviour
     public enum State {
         Running,
         Paused,
-        Upgrading
+        Upgrading,
     }
 
     public State state = State.Running;
@@ -17,13 +17,15 @@ public class StateManager : MonoBehaviour
     bool clickPause, pause, upgradeActive;
 
     ObjectManager objects;
+    PlayerMovement playerMovement;
     PlayerInput uiInput;
     int upgradesQueued = 0;
     GameObject upgradeSelection, pauseMenu, optionsMenu;
 
     private void Start() {
         objects = GetComponent<ObjectManager>();
-        uiInput = objects.player.GetComponent<PlayerMovement>().myPlayerInput;
+        playerMovement = objects.player.GetComponent<PlayerMovement>();
+        uiInput = playerMovement.myPlayerInput;
         pauseMenu = objects.pauseScreen;
         optionsMenu = objects.optionsScreen;
         upgradeSelection = objects.upgradeScreen;
@@ -63,12 +65,13 @@ public class StateManager : MonoBehaviour
     void Running() {
         Time.timeScale = 1;
         if (pause) {
+            playerMovement.enabled = false;
             state = State.Paused;
             previousState = State.Running;
         }
     }
 
-    // if there is no active upgrade screen, create one
+    // if there is no active upgrade screen && >0 upgrades are queued, create one
     private void Upgrading() {
         Time.timeScale = 0;
 
@@ -76,6 +79,7 @@ public class StateManager : MonoBehaviour
             state = State.Paused;
             previousState = State.Upgrading;
             upgradeSelection.SetActive(false);
+            playerMovement.enabled = false;
         } else if(!upgradeActive){
             if (upgradesQueued > 0) {
                 CreateUpgradeSelection();
@@ -90,6 +94,7 @@ public class StateManager : MonoBehaviour
         if(!pauseMenu.activeInHierarchy && !optionsMenu.activeInHierarchy)
             pauseMenu.SetActive(true);
 
+        
         if (pause) {
             Unpause();
         }
@@ -124,5 +129,6 @@ public class StateManager : MonoBehaviour
         state = previousState;
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
+        playerMovement.enabled = true;
     }
 }

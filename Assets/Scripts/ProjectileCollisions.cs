@@ -56,12 +56,12 @@ public class ProjectileCollisions : MonoBehaviour {
         if (isRedActive && lastEnemy.gameObject.activeInHierarchy)
             RedCollisions.Hit(lastEnemy, explosionPool, explosionChainNumber);
 
-        // call Hit method in YellowCollisions component, if no parasite present
-        if (isYellowActive && lastEnemy.gameObject.activeInHierarchy && !lastEnemy.HasParasite())
+        // call Hit method in YellowCollisions component
+        if (isYellowActive && lastEnemy.gameObject.activeInHierarchy)
             YellowCollisions.Hit(lastEnemy);
 
-        // call Hit method in BlueCollisions component, if no chill present
-        if (isBlueActive && lastEnemy.gameObject.activeInHierarchy && !lastEnemy.HasChill())
+        // call Hit method in BlueCollisions component
+        if (isBlueActive && lastEnemy.gameObject.activeInHierarchy)
             BlueCollisions.Hit(lastEnemy);
 
         if (hitCount <= 0) {

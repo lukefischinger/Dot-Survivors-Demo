@@ -30,7 +30,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     private void OnEnable() {
-        unpauseButton.Select();
+        unpauseButton.GetComponent<ButtonSelect>().Select();
     }
 
    

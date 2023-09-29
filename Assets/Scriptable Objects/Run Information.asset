@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23314fec7a2d0ee4da773cb8baeed6aa, type: 3}
   m_Name: Run Information
   m_EditorClassIdentifier: 
-  weapon: 
   damage: 0
   damageWhite: 0
   damageRed: 0
   damageBlue: 0
   damageYellow: 0
+  damageError: 0
   enemiesKilled: 0
   healing: 0
   level: 0
   upgrades: []
   upgradeLevels: 
+  upgradeOrder:
+  - Weapon
+  colorOrder:
+  - Red
+  difficultyLevel: 0
+  runStatus: 2

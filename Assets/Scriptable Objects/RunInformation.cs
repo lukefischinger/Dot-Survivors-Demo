@@ -6,6 +6,12 @@ using UnityEngine;
 [CreateAssetMenu]
 public class RunInformation : ScriptableObject {
 
+    public enum RunStatus {
+        won,
+        died,
+        quit
+    };
+
     public float damage;
     public float damageWhite;
     public float damageRed;
@@ -23,6 +29,8 @@ public class RunInformation : ScriptableObject {
     public List<string> colorOrder;
 
     public int difficultyLevel; // not cleared by ClearAll()
+    public RunStatus runStatus;
+
 
     public void ClearAll() {
         damage = 0;
@@ -39,6 +47,8 @@ public class RunInformation : ScriptableObject {
         upgradeLevels = null;
         upgradeOrder = new List<string>();
         colorOrder = new List<string>();
+        
+        runStatus = RunStatus.quit;
     }
 
 

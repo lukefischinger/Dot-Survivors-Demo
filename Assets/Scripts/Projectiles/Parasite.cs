@@ -66,8 +66,8 @@ public class Parasite : MonoBehaviour {
 
     public void Refresh(int spreadNumber, float damageMultiplier, float tickLength, float duration) {
         this.spreadNumber = Mathf.Max(spreadNumber, this.spreadNumber);
-        this.damageMultiplier = Mathf.Max(damageMultiplier, this.damageMultiplier);
-        this.tickLength = Mathf.Min(tickLength, this.tickLength);
+        this.damageMultiplier = damageMultiplier;
+        this.tickLength = tickLength;
         this.duration = Mathf.Max(duration, this.duration);
         timeElapsed = 0;
 
@@ -138,7 +138,7 @@ public class Parasite : MonoBehaviour {
     }
 
     private void OnTriggerStay2D(Collider2D collision) {
-        if (collisionStayRemaining > 0)
+        if (collisionStayRemaining > 0 || collision.GetComponent<Enemy>() == hostEnemy)
             return;
 
         ProcessEnemyCollision(collision);

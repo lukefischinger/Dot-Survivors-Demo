@@ -760,17 +760,33 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnHoverEnter
       objectReference: {fileID: 0}
+    - target: {fileID: 8882960847529450898, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960847529450898, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960847529450898, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960847529450898, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_text
       value: Quit to main menu
       objectReference: {fileID: 0}
     - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_fontSize
-      value: 72
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_fontSizeBase
-      value: 72
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 8882960848676559458, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_Name
@@ -846,7 +862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8882960848676559459, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -430
+      value: -442
       objectReference: {fileID: 0}
     - target: {fileID: 8882960848676559459, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1708,6 +1724,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 729603634}
     m_Modifications:
+    - target: {fileID: 8882960847529450898, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882960847529450898, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_text
       value: 'retry
@@ -1716,11 +1740,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_fontSize
-      value: 72
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 8882960847529450899, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_fontSizeBase
-      value: 72
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 8882960848676559458, guid: 43c75a49e7f1e454bbef1fec2ed86c58, type: 3}
       propertyPath: m_Name
@@ -2170,9 +2194,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'run summary
-
-'
+  m_text: you died
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}
   m_sharedMaterial: {fileID: 1352819754179511101, guid: ea5c1a79746352149bde9ddf9c8c75d3, type: 2}

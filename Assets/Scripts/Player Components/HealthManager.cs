@@ -7,6 +7,7 @@ public class HealthManager : MonoBehaviour {
 
 
     ObjectManager objects;
+    RunInformation runInformation;
     Bar healthBar;
     Pool damagePool;
     Transform myTransform;
@@ -21,6 +22,8 @@ public class HealthManager : MonoBehaviour {
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
         damagePool = objects.damagePool.GetComponent<Pool>();
+        runInformation = objects.runInformation;
+
         currentHealth = maxHealth;
         healthBar = transform.GetChild(0).GetComponent<Bar>();
         myTransform = transform;
@@ -70,6 +73,7 @@ public class HealthManager : MonoBehaviour {
     }
 
     void Kill() {
+        runInformation.runStatus = RunInformation.RunStatus.died;
         SceneManager.LoadScene(2);
     }
 
@@ -98,9 +102,7 @@ public class HealthManager : MonoBehaviour {
         currentHealing = value;
     }
 
-    public
-
-    void SetHealthBar() {
+    public void SetHealthBar() {
         healthBar.SetFillValue(currentHealth / maxHealth);
     }
 

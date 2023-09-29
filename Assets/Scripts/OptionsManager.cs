@@ -28,14 +28,6 @@ public class OptionsManager : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void SelectDifficulty() {
-        difficultyButtonText.color = new Color(255f / 255f, 221f / 255f, 73f / 255f, 1);
-    }
-
-    public void DeselectDifficulty() {
-        difficultyButtonText.color = Color.white;
-
-    }
 
     private void OnEnable() {
         Reset();   
@@ -44,7 +36,7 @@ public class OptionsManager : MonoBehaviour {
     private void Reset() {
         index = runInformation.difficultyLevel;
         difficultyButtonText.text = difficultyLevels[index];
-        difficultyButtonText.GetComponentInParent<Button>().Select();
+        difficultyButtonText.GetComponentInParent<ButtonSelect>().Select();
     }
 
 }

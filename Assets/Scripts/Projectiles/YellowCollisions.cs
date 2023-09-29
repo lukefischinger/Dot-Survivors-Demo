@@ -1,7 +1,7 @@
 public static class YellowCollisions {
   
     public static void Hit(Enemy enemy) {
-        if (enemy.parasite.gameObject.activeInHierarchy) {
+        if (enemy.HasParasite()) {
             enemy.parasite.Refresh(
                 Weapon.yellowSpreadNumber,
                 Weapon.yellowDamageMultiplier,

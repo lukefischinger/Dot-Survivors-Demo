@@ -31,12 +31,32 @@ public class RunSummary : MonoBehaviour
         GameObject.Find("Enemies Killed Amount").GetComponent<TextMeshProUGUI>().text = "" + FormatNumber(runInformation.enemiesKilled);
         GameObject.Find("Healing Done Amount").GetComponent<TextMeshProUGUI>().text = "" + FormatNumber(runInformation.healing);
 
-
-
+        SetTitle();
     }
 
     private string FormatNumber(float number) {
         return string.Format("{0:#,#}", Mathf.RoundToInt(number));
+    }
+
+    void SetTitle() {
+        TextMeshProUGUI title = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        
+        switch(runInformation.runStatus) {
+            case RunInformation.RunStatus.won:
+                title.text = "you won!";
+                title.color = Color.green;
+                break;
+            case RunInformation.RunStatus.quit:
+                title.text = "summary";
+                title.color = Color.white;
+                break;
+            case RunInformation.RunStatus.died:
+                title.text = "you died";
+                title.color = Color.red;
+            break;
+
+        }
+
     }
 
 }

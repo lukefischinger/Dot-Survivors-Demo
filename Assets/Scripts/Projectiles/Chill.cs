@@ -17,7 +17,6 @@ public class Chill : MonoBehaviour {
     // blue collision values
     float damage;
     float speedModifier;
-    float duration;
     float damageDelay;
     bool isCountTrigger;
 
@@ -107,7 +106,6 @@ public class Chill : MonoBehaviour {
     public void SetValues(float damage, float speedModifier, float duration, float damageDelay, bool isCountTrigger, bool isMultiHitActive) {
         this.damage = damage;
         this.speedModifier = speedModifier;
-        this.duration = duration;
         this.damageDelay = damageDelay;
         this.isCountTrigger = isCountTrigger;
         this.isMultiHitActive = isMultiHitActive;
@@ -128,6 +126,19 @@ public class Chill : MonoBehaviour {
 
     }
 
+    public void Refresh(float damage, float speedModifier, float duration, float damageDelay, bool isCountTrigger, bool isMultiHitActive) {
+        this.damage = Mathf.Max(this.damage, damage);
+        this.speedModifier = Mathf.Max(this.speedModifier, speedModifier);
+        this.damageDelay = Mathf.Min(this.damageDelay, damageDelay);
+        this.isCountTrigger = isCountTrigger || this.isCountTrigger;
+        this.isMultiHitActive = isMultiHitActive || this.isMultiHitActive;
+        
+        canHit = damage > 0;
+        durationRemaining = Mathf.Max(durationRemaining, duration);
+        if(damageDelayRemaining < 0)
+            damageDelayRemaining = damageDelay;
+        Weapon.blueCount++;
+    }
 
     void SetHostSpeed() {
         hostEnemy.SetSpeed(speedModifier);
@@ -149,8 +160,11 @@ public class Chill : MonoBehaviour {
     }
 
     public void SpreadChill(Enemy enemy) {
-        if (enemy.chill.gameObject.activeInHierarchy) {
-            //RefreshChill(enemy);    
+        if (durationRemaining < 0.5f)
+            return;
+
+        if (enemy.HasChill()) {
+            enemy.chill.Refresh(damage, speedModifier, durationRemaining, damageDelay, isCountTrigger, isMultiHitActive);
             return;
         }
 

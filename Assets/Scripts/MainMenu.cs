@@ -22,6 +22,6 @@ public class MainMenu : MonoBehaviour {
     }
 
     private void OnEnable() {
-        startButton.Select();
+        startButton.GetComponent<ButtonSelect>().Select();
     }
 }
