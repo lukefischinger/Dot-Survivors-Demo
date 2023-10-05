@@ -11,12 +11,14 @@ public class Damage : MonoBehaviour {
     TextMeshPro text;
     Transform myTransform;
     ObjectManager objects;
+    UIManager ui;
     Pool damagePool;
 
 
     void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
         damagePool = objects.damagePool.GetComponent<Pool>();
+        ui = objects.GetComponent<UIManager>();
 
         timeElapsed = 0;
         text = GetComponent<TextMeshPro>();
@@ -41,7 +43,7 @@ public class Damage : MonoBehaviour {
             text.text = "+" + text.text;
         text.color = GetColor(colorName);
         myTransform.position = position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0);
-        myTransform.localScale = Vector3.one * size;
+        myTransform.localScale = Vector3.one * size * ui.damageScale;
     }
 
     public Color GetColor(string colorName) {

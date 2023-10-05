@@ -6,9 +6,10 @@ public class Weapon : MonoBehaviour {
 
     [SerializeField] GameObject projectilePrefab;
 
+    ObjectManager objects;
     ProjectileCircle projectile;
     ProjectileCollisions projectileCollisions;
-    static float timeLastFired;
+    float timeLastFired;
     static float damageMultiplier = 1f;
 
     // constants
@@ -62,11 +63,17 @@ public class Weapon : MonoBehaviour {
     public static bool blueDamageTriggersExplosion = false;
 
     private void Awake() {
+        objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
         projectile = Instantiate(projectilePrefab).GetComponent<ProjectileCircle>();
         projectileCollisions = projectile.GetComponent<ProjectileCollisions>();
 
         timeLastFired = Time.time;
         projectile.gameObject.SetActive(false);
+    }
+
+    private void Start() {
+        objects.player.GetComponent<AttributeManager>().ResetAll();
+
     }
 
     void FixedUpdate() {

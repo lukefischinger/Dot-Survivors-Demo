@@ -26,17 +26,17 @@ public class AttributeManager : MonoBehaviour {
     private static readonly int[] redChainNumber = new int[] { 0, 0, 0, 1, 1, 1, 1, 1 };
 
     // yellow attributes
-    private static readonly float[] yellowDamageMultiplier = new float[] { 0.5f, 1f, 1f, 1.5f, 1.5f, 1.5f, 2.5f, 2.5f };
+    private static readonly float[] yellowDamageMultiplier = new float[] { 0.6f, 1.2f, 1.2f, 1.8f, 1.8f, 3f, 3f, 3f };
     private static readonly int[] yellowSpreadNumber = new int[] { 2, 2, 4, 4, 6, 6, 8, 8 };
     private static readonly float[] yellowTickLength = new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.1f };
-    private static readonly float[] yellowDuration = new float[] { 5f, 5f, 5f, 5f, 5f, 7f, 7f, 7f };
+    private static readonly float[] yellowDuration = new float[] { 5f, 5f, 5f, 5f, 7f, 7f, 7f, 7f };
 
     // blue attributes
     private static readonly float[] blueDamage = new float[] { 0f, 10f, 10f, 10f, 35f, 35f, 35f, 35f };
     private static readonly float[] blueSpeedModifier = new float[] { 0.7f, 0.7f, 0.7f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
     private static readonly float[] blueDuration = new float[] { 3f, 3f, 5f, 5f, 5f, 5f, 10f, 10f };
-    private static readonly float[] blueDamageDelay = new float[] { 0f, 3f, 3f, 3f, 3f, 3f, 3f, 1.5f };
-    private static readonly bool[] blueCountTrigger = new bool[] { false, false, false, false, false, true, true, true };
+    private static readonly float[] blueDamageDelay = new float[] { 0f, 3f, 3f, 3f, 3f, 1.5f, 1.5f, 1.5f };
+    private static readonly bool[] blueCountTrigger = new bool[] { false, false, false, false, false, false, false, true };
 
 
     // secondary color variables
@@ -48,7 +48,8 @@ public class AttributeManager : MonoBehaviour {
                                                                      "Red", "Yellow", "Blue",
                                                                      "Orange", "Purple", "Green"};
     private static readonly int[] maxAttributeLevels = new int[] { 3, 3, 3, 3, 3, 6, 6, 7, 7, 7, 2, 2, 2 };
-    int[] attributeLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1 };
+    readonly int[] startingAttributeLevels = new int[] { 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1 };
+    int[] attributeLevels;
 
     float[][] attributes = new float[][] { healths, speeds, healings, armors, damageMultipliers, ratesCircle, hitCountsCircle };
     private static readonly string[] colorNames = new string[] { "Red", "Yellow", "Blue", "Orange", "Purple", "Green" };
@@ -61,28 +62,22 @@ public class AttributeManager : MonoBehaviour {
     List<string> upgradeOrder, colorOrder;
 
     private void Awake() {
+
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
 
         healthManager = GetComponent<HealthManager>();
         playerMovement = GetComponent<PlayerMovement>();
 
-        SetWeaponValues();
-        healthManager.SetMaxHealth(GetAttributeValue("Health"), false);
-
-        upgradeOrder = new List<string>();
-        colorOrder = new List<string>();
-
-        ResetAll();
 
     }
    
 
     public void ApplyUpgrade(string attributeName) {
         LevelUp(attributeName);
-        SetValues(attributeName);
+        SetValue(attributeName);
     }
 
-    private void SetValues(string attributeName) {
+    private void SetValue(string attributeName) {
         switch (attributeName) {
             case "Health":
                 healthManager.SetMaxHealth(GetAttributeValue(attributeName));
@@ -178,12 +173,12 @@ public class AttributeManager : MonoBehaviour {
 
     // returns the current level of the given attribute
     int Level(string attributeName) {
-        return (attributeLevels[System.Array.IndexOf(attributeNames, attributeName)]);
+        return (attributeLevels[Array.IndexOf(attributeNames, attributeName)]);
     }
 
     // returns the max level of the given attribute
     int MaxLevel(string attributeName) {
-        return (maxAttributeLevels[System.Array.IndexOf(attributeNames, attributeName)]);
+        return (maxAttributeLevels[Array.IndexOf(attributeNames, attributeName)]);
     }
 
     // increases the current level for the given attribute (capped at max level)
@@ -233,7 +228,11 @@ public class AttributeManager : MonoBehaviour {
     }
 
     void SetRedValues() {
-        int level = Mathf.Max(0, Level("Red"));
+        int level = Level("Red");
+        if(level == -1) {
+            Weapon.isRedActive = false;
+            return;
+        }
 
         Weapon.isRedActive = true;
         Weapon.redCriticalChance = redCriticalChance[level];
@@ -243,7 +242,11 @@ public class AttributeManager : MonoBehaviour {
     }
 
     void SetYellowValues() {
-        int level = Mathf.Max(0, Level("Yellow"));
+        int level = Level("Yellow");
+        if(level == -1) {
+            Weapon.isYellowActive = false;
+            return;
+        }
 
         Weapon.isYellowActive = true;
         Weapon.yellowSpreadNumber = yellowSpreadNumber[level];
@@ -253,7 +256,11 @@ public class AttributeManager : MonoBehaviour {
     }
 
     void SetBlueValues() {
-        int level = Mathf.Max(0, Level("Blue"));
+        int level = Level("Blue");
+        if(level == -1) {
+            Weapon.isBlueActive = false;
+            return;
+        }
 
         Weapon.isBlueActive = true;
         Weapon.blueDamage = blueDamage[level];
@@ -290,12 +297,12 @@ public class AttributeManager : MonoBehaviour {
     }
 
     public void ResetAll() {
-        for (int i = 0; i < attributeNames.Length; i++) {
-            SetValues(attributeNames[i]);
-        }
+        upgradeOrder = new List<string>();
+        colorOrder = new List<string>();
+        attributeLevels = startingAttributeLevels;
 
-        Weapon.isYellowActive = false;
-        Weapon.isRedActive = false;
-        Weapon.isBlueActive = false;
+        for (int i = 0; i < attributeNames.Length; i++) {
+            SetValue(attributeNames[i]);
+        }
     }
 }

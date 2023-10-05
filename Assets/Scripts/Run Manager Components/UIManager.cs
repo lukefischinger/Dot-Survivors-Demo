@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using TMPro;
+using Cinemachine;
 
 // maintains appropriate scaling for the experience bar and upgrade screen based on the width of the screen
 // all other UI elements are scaled automatically according to the screen height
@@ -17,6 +18,7 @@ public class UIManager : MonoBehaviour {
     GameObject upgradeDisplay, pauseButton;
     RunInformation runInformation;
     PlayerMovement playerMovement;
+    CinemachineVirtualCamera followCam;
 
     Vector2
         currentDimensions,
@@ -29,6 +31,13 @@ public class UIManager : MonoBehaviour {
 
     const float barHeightRatio = 1f / 35f;
     const float referenceWidth = 1920f;
+    const float baseScreenRatio = 1920f / 1080f;
+    const float maxOrthographicSize = 18f;
+    const float baseOrthographicSize = 13f;
+    const float minOrthographicSize = 8f;
+
+    public float damageScale;
+
 
     private void Awake() {
         objects = GetComponent<ObjectManager>();
@@ -38,6 +47,7 @@ public class UIManager : MonoBehaviour {
         runInformation = objects.runInformation;
         pauseButton = objects.pauseButton;
         playerMovement = objects.player.GetComponent<PlayerMovement>();
+        followCam = objects.followCamera.GetComponent<CinemachineVirtualCamera>();
 
         canvasRect = canvas.GetComponent<RectTransform>();
         experienceBar = objects.experienceBar.GetComponent<RectTransform>();
@@ -71,12 +81,11 @@ public class UIManager : MonoBehaviour {
             upgradeScreen.localScale = Vector3.one;
 
         experienceBar.localScale = new Vector3(canvasRect.rect.width, barHeightRatio * canvasRect.rect.height, 1);
-
-        for (int i = 0; i < damagePool.Count; i++) {
-            damagePool[i].transform.localScale = Vector3.one * ratioFromReference;
-        }
+        followCam.m_Lens.OrthographicSize = CalculateCameraOrthographicSize();
+        SetDamageTextScale();
 
         currentDimensions = newDimensions;
+
     }
 
     void SetPauseButton() {
@@ -123,5 +132,14 @@ public class UIManager : MonoBehaviour {
         upgradeDisplay.transform.GetChild(2).GetChild(i).gameObject.SetActive(true);
     }
 
+    int CalculateCameraOrthographicSize() {
+        float currentScreenRatio = canvasRect.rect.width / canvasRect.rect.height;
+        return (int)Mathf.Clamp(baseOrthographicSize * Mathf.Pow(baseScreenRatio / currentScreenRatio, 0.3f), minOrthographicSize, maxOrthographicSize);
+    }
+
+    void SetDamageTextScale() {
+        damageScale = Mathf.Clamp(baseOrthographicSize / followCam.m_Lens.OrthographicSize, 0.5f, 1.2f);
+        
+    }
 
 }

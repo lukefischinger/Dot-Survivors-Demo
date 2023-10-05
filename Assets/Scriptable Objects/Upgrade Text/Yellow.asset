@@ -19,7 +19,7 @@ MonoBehaviour:
   - +100% base yellow damage
   - +2 spread
   - +100% base yellow damage
-  - +2 spread
-  - +40% duration
+  - +2 spread, +40% duration
+  - +200% base yellow damage
   - +2 spread
   - -50% cooldown between yellow damage

@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour {
 
     const int baseSpeed = 2;
     const float experienceProbability = 0.3f;
-    const float criticalDamageSizeMultiplier = 2f;
+    const float criticalDamageSizeMultiplier = 1.6f;
     const float slowMass = 1000f;
     const float offscreenTimeToReset = 8f;
 
