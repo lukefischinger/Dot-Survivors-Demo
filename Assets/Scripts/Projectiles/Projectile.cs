@@ -6,7 +6,9 @@ public class Projectile : MonoBehaviour {
 
     [SerializeField] protected float timeToDestroy;
     ObjectManager objects;
+    AudioManager audioManager;
     Pool explosionPool;
+    AudioSource audioSource;
 
     protected float timeElapsed;
 
@@ -17,7 +19,13 @@ public class Projectile : MonoBehaviour {
         myRigidbody = GetComponent<Rigidbody2D>();
         OtherAwake();
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+        audioManager = objects.GetComponent<AudioManager>();
         explosionPool = objects.explosionPool.GetComponent<Pool>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Update() {
+        audioSource.volume = audioManager.soundVolume * AudioManager.explosionVolume;
     }
 
     protected void UpdateTimeToDisable() {
@@ -27,12 +35,17 @@ public class Projectile : MonoBehaviour {
         }
     }
 
-    // scale is reduced for explosions relative to standard circular projectiles
-    public void Reset(Vector3 position, float scale = 1f) {
+   
+
+    public void ResetProjectile(Vector3 position, float scale = 1f) {
         timeElapsed = 0;
         transform.position = position;
         transform.localScale = scale * Vector3.one;
         OtherReset();
+
+        if (tag == "Explosion") {
+            PlayExplosionSound();
+        }
     }
 
     public void Kill() {
@@ -48,5 +61,15 @@ public class Projectile : MonoBehaviour {
     protected virtual void OtherReset() { }
 
     protected virtual void OtherKill() { }
+
+    void PlayExplosionSound() {
+        if (audioManager.canHearExplosion) {
+            audioSource.Play();
+            audioManager.ResetExplosionTimer();
+        }
+        else {
+            audioSource.Stop();
+        }
+    }
 }
 

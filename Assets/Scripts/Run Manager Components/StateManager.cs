@@ -18,17 +18,26 @@ public class StateManager : MonoBehaviour
 
     ObjectManager objects;
     PlayerMovement playerMovement;
+    AttributeManager attributeManager;
     PlayerInput uiInput;
     int upgradesQueued = 0;
-    GameObject upgradeSelection, pauseMenu, optionsMenu;
+    UpgradeSelection upgradeSelection;
+    Menu pauseMenu;
+    OptionsManager optionsMenu;
 
     private void Start() {
         objects = GetComponent<ObjectManager>();
         playerMovement = objects.player.GetComponent<PlayerMovement>();
         uiInput = playerMovement.myPlayerInput;
-        pauseMenu = objects.pauseScreen;
-        optionsMenu = objects.optionsScreen;
-        upgradeSelection = objects.upgradeScreen;
+        attributeManager = playerMovement.GetComponent<AttributeManager>();
+
+        upgradeSelection = objects.upgradeScreen.GetComponent<UpgradeSelection>();
+        pauseMenu = objects.pauseScreen.GetComponent<Menu>();
+        optionsMenu = objects.optionsScreen.GetComponent<OptionsManager>();
+
+        upgradeSelection.SetVisible(false);
+        pauseMenu.SetVisible(false);
+        optionsMenu.SetVisible(false);
     }
 
     private void Update() {
@@ -78,21 +87,22 @@ public class StateManager : MonoBehaviour
         if(pause) {
             state = State.Paused;
             previousState = State.Upgrading;
-            upgradeSelection.SetActive(false);
+            upgradeSelection.SetVisible(false);
             playerMovement.enabled = false;
         } else if(!upgradeActive){
-            if (upgradesQueued > 0) {
+            if (upgradesQueued > 0 && attributeManager.hasUpgradesAvailable) {
                 CreateUpgradeSelection();
             }
-        } else if(upgradeSelection != null && !upgradeSelection.activeInHierarchy)
-            upgradeSelection.SetActive(true);
+            else CompleteUpgrade();
+        } else if(upgradeSelection != null && !upgradeSelection.isVisible)
+            upgradeSelection.SetVisible(true);
     }
 
     private void Paused() {
         Time.timeScale = 0;
         
-        if(!pauseMenu.activeInHierarchy && !optionsMenu.activeInHierarchy)
-            pauseMenu.SetActive(true);
+        if(!pauseMenu.isVisible && !optionsMenu.isVisible)
+            pauseMenu.SetVisible(true);
 
         
         if (pause) {
@@ -103,7 +113,7 @@ public class StateManager : MonoBehaviour
     void CreateUpgradeSelection() {
         state = State.Upgrading;
         upgradeActive = true;
-        upgradeSelection.SetActive(true);
+        upgradeSelection.SetVisible(true);
         
     }
 
@@ -117,7 +127,7 @@ public class StateManager : MonoBehaviour
     public void CompleteUpgrade() {
         upgradesQueued = Mathf.Max(upgradesQueued - 1, 0);
         upgradeActive = false;
-        upgradeSelection.SetActive(false);
+        upgradeSelection.SetVisible(false);
 
         if(upgradesQueued == 0) {
             previousState = state;
@@ -127,8 +137,8 @@ public class StateManager : MonoBehaviour
 
     public void Unpause() {
         state = previousState;
-        pauseMenu.SetActive(false);
-        optionsMenu.SetActive(false);
+        pauseMenu.GetComponent<Menu>().SetVisible(false);
+        optionsMenu.GetComponent<OptionsManager>().SetVisible(false);
         playerMovement.enabled = true;
     }
 }

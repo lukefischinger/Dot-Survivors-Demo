@@ -57,13 +57,17 @@ public class AttributeManager : MonoBehaviour {
     HealthManager healthManager;
     PlayerMovement playerMovement;
     ObjectManager objects;
+    AudioManager audioManager;
 
     // Lists to maintain the order in which upgrades are encountered, used in UI
     List<string> upgradeOrder, colorOrder;
 
+    public bool hasUpgradesAvailable => GetAvailableUpgradeLevels().Count > 0;
+
     private void Awake() {
 
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
+        audioManager = objects.GetComponent<AudioManager>();
 
         healthManager = GetComponent<HealthManager>();
         playerMovement = GetComponent<PlayerMovement>();
@@ -75,6 +79,7 @@ public class AttributeManager : MonoBehaviour {
     public void ApplyUpgrade(string attributeName) {
         LevelUp(attributeName);
         SetValue(attributeName);
+        audioManager.areUpgradesMaxed = !hasUpgradesAvailable;
     }
 
     private void SetValue(string attributeName) {

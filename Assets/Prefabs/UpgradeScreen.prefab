@@ -440,6 +440,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: clickAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 8e70cd46b900b134d81a84f40ca2d9d9, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: selectAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: a8096f61bd233354eb48adb34d3fb91c, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: selectSprite
+      value: 
+      objectReference: {fileID: 1770325252, guid: 7c43d89fe7542c341ba5043e30d4cc73, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: defaultSprite
+      value: 
+      objectReference: {fileID: 1906895352, guid: 7c43d89fe7542c341ba5043e30d4cc73, type: 3}
     - target: {fileID: 3535433862475061857, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -537,6 +553,10 @@ PrefabInstance:
       value: Upgrade (2)
       objectReference: {fileID: 0}
     - target: {fileID: 8286301843606104648, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: m_Transition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286301843606104648, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 2
       objectReference: {fileID: 0}
@@ -547,6 +567,10 @@ PrefabInstance:
     - target: {fileID: 8315726450307369735, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
       propertyPath: m_Delegates.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8315726450307369735, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Select
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
@@ -653,6 +677,26 @@ PrefabInstance:
     - target: {fileID: 1238580464206309406, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: clickAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 8e70cd46b900b134d81a84f40ca2d9d9, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: selectAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: a8096f61bd233354eb48adb34d3fb91c, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: selectSprite
+      value: 
+      objectReference: {fileID: 366362875, guid: 5650017ba2ea6c14e959f9d4f1d03608, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: defaultSprite
+      value: 
+      objectReference: {fileID: 1983489141, guid: 5650017ba2ea6c14e959f9d4f1d03608, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: startSelected
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3535433862475061857, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
       propertyPath: m_Pivot.x
@@ -762,6 +806,10 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8315726450307369735, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Select
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
 --- !u!224 &9217340190633616636 stripped
@@ -864,6 +912,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: clickAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 8e70cd46b900b134d81a84f40ca2d9d9, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: selectAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: a8096f61bd233354eb48adb34d3fb91c, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: selectSprite
+      value: 
+      objectReference: {fileID: 366362875, guid: 5650017ba2ea6c14e959f9d4f1d03608, type: 3}
+    - target: {fileID: 1445769555305529133, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: defaultSprite
+      value: 
+      objectReference: {fileID: 1983489141, guid: 5650017ba2ea6c14e959f9d4f1d03608, type: 3}
     - target: {fileID: 3535433862475061857, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -967,6 +1031,10 @@ PrefabInstance:
     - target: {fileID: 8315726450307369735, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
       propertyPath: m_Delegates.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8315726450307369735, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Select
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9b86923ce47c3d49bca6b121e239ee1, type: 3}

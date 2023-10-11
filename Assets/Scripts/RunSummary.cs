@@ -6,10 +6,21 @@ public class RunSummary : MonoBehaviour
 {
 
     [SerializeField] RunInformation runInformation;
+    [SerializeField] AudioClip wonMusic, quitMusic, diedMusic;
+
+    AudioSource audioSource;
 
     private void Start() {
+        audioSource = GetComponent<AudioSource>();
+
+        SetTitle();
         PopulateStatistics();
-        
+        PlayMusic();
+    }
+
+
+    private void Update() {
+        audioSource.volume = runInformation.musicVolume;
     }
 
     public void StartRun() {
@@ -31,7 +42,6 @@ public class RunSummary : MonoBehaviour
         GameObject.Find("Enemies Killed Amount").GetComponent<TextMeshProUGUI>().text = "" + FormatNumber(runInformation.enemiesKilled);
         GameObject.Find("Healing Done Amount").GetComponent<TextMeshProUGUI>().text = "" + FormatNumber(runInformation.healing);
 
-        SetTitle();
     }
 
     private string FormatNumber(float number) {
@@ -45,18 +55,33 @@ public class RunSummary : MonoBehaviour
             case RunInformation.RunStatus.won:
                 title.text = "you won!";
                 title.color = Color.green;
+               
                 break;
             case RunInformation.RunStatus.quit:
                 title.text = "summary";
                 title.color = Color.white;
+                
                 break;
             case RunInformation.RunStatus.died:
                 title.text = "you died";
                 title.color = Color.red;
-            break;
+                
+                break;
 
         }
 
+    }
+
+    void PlayMusic() {
+        audioSource.clip = runInformation.runStatus switch {
+            RunInformation.RunStatus.won => wonMusic,
+            RunInformation.RunStatus.quit => quitMusic,
+            RunInformation.RunStatus.died => diedMusic,
+            _ => null
+        };
+
+        if(audioSource.clip != null)
+            audioSource.Play();
     }
 
 }

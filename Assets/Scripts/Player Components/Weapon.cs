@@ -90,7 +90,7 @@ public class Weapon : MonoBehaviour {
         if (Time.time > timeLastFired + rate) {
             Vector3 startPosition = transform.position;
 
-            projectile.Reset(startPosition);
+            projectile.ResetProjectile(startPosition);
             projectileCollisions.SetProperties(hitCount, true, isRedActive, isBlueActive, isYellowActive, redChainNumber);
             projectile.gameObject.SetActive(true);
 

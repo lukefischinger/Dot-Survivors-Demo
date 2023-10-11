@@ -41,7 +41,7 @@ public class PlayerCollisions : MonoBehaviour {
             hitCooldownRemaining = hitCooldown;
 
             float damage = collision.GetComponent<Enemy>().GetDamage();
-            health.Damage(damage, "Red");
+            health.Damage(damage, "Player Red");
 
 
         }

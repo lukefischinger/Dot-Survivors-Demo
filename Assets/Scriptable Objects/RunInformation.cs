@@ -31,6 +31,9 @@ public class RunInformation : ScriptableObject {
     public int difficultyLevel; // not cleared by ClearAll()
     public RunStatus runStatus;
 
+    public float soundVolume = 1f;
+    public float musicVolume = 1f;
+
 
     public void ClearAll() {
         damage = 0;

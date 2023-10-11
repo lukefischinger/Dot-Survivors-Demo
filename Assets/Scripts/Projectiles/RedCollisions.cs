@@ -25,7 +25,7 @@ public class RedCollisions {
             return;
         }
 
-        explosion.GetComponent<ProjectileCircle>().Reset(enemy.transform.position, Weapon.redExplosionSize);
+        explosion.GetComponent<ProjectileCircle>().ResetProjectile(enemy.transform.position, Weapon.redExplosionSize);
         explosion.GetComponent<ProjectileCollisions>().SetProperties(
             1000,                           // hit count (effectively unlimited for explosions)
             false,                          // basic active

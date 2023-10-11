@@ -16,22 +16,13 @@ public class PauseMenu : MonoBehaviour
         optionsScreen = objects.optionsScreen;
     }
 
-    public void EndRun() {
-        SceneManager.LoadScene(2);
-    }
-
-    public void Unpause() {
-        stateManager.Unpause();
-    }
+   
 
     public void OpenOptions() {
         optionsScreen.SetActive(true);
         transform.parent.gameObject.SetActive(false);
     }
 
-    private void OnEnable() {
-        unpauseButton.GetComponent<ButtonSelect>().Select();
-    }
-
+   
    
 }

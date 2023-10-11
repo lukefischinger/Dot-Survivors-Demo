@@ -3,7 +3,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
-using Unity.VisualScripting;
 using System.Linq;
 
 public class UpgradeSelection : MonoBehaviour {
@@ -25,6 +24,8 @@ public class UpgradeSelection : MonoBehaviour {
     AttributeManager attributeManager;
     Transform canvasTransform;
 
+    public bool isVisible;
+
     private void Awake() {
         objects = GameObject.Find("RunManager").GetComponent<ObjectManager>();
         ui = objects.GetComponent<UIManager>();
@@ -33,23 +34,22 @@ public class UpgradeSelection : MonoBehaviour {
         attributeManager = player.GetComponent<AttributeManager>();
         canvasTransform = objects.canvas.transform;
         transform.SetParent(canvasTransform, false);
-        
+
         PopulateUpgradeChoices();
         upgradeQueue.upgradeNames.Clear();
         EraseAll();
         upgradeTextTypes = PopulateUpgradeTextsArray(upgradeTexts);
     }
 
-    // the upgrade menu is enabled and then re-disabled for each upgrade selection throughout a run
+    // the upgrade menu is shown and re-hidden for each upgrade selection throughout a run
     // only repopulate if the upgrade selection buttons are blank
-    private void OnEnable() {
+    private void Fill() {
         if (IsBlank()) {
             SortedList<string, int> upgradeSelections = AddQueuedUpgradeChoices();
             upgradeSelections = AddRandomUpgradeChoice(upgradeSelections);
             BuildUpgradeSelection(upgradeSelections);
         }
 
-        upgradeChoices[0].GetComponent<Button>().Select();
     }
 
     // populates the existing menu buttons with the appropriate descriptive text
@@ -89,10 +89,11 @@ public class UpgradeSelection : MonoBehaviour {
     // sets the appropriate sprite for the upgrade type in slot i
     void SetUpgradeSprite(int i, string upgradeType) {
         SpriteRenderer renderer = upgradeChoices[i].transform.GetChild(2).GetComponent<SpriteRenderer>();
-        if(ui.colorNames.Contains(upgradeType)) {
+        if (ui.colorNames.Contains(upgradeType)) {
             renderer.sprite = ui.sprites[ui.spriteNames.IndexOf("Weapon")];
             renderer.color = ui.colors[ui.colorNames.IndexOf(upgradeType)];
-        } else {
+        }
+        else {
             renderer.sprite = ui.sprites[ui.spriteNames.IndexOf(upgradeType)];
             renderer.color = Color.white;
         }
@@ -112,9 +113,6 @@ public class UpgradeSelection : MonoBehaviour {
     void PopulateUpgradeChoices() {
         for (int i = 0; i < 3; i++) {
             upgradeChoices.Add(transform.GetChild(i).gameObject);
-
-            int j = i;
-            upgradeChoices[i].GetComponent<Button>().onClick.AddListener(delegate { TaskOnClick(j); });
         }
     }
 
@@ -137,7 +135,7 @@ public class UpgradeSelection : MonoBehaviour {
     }
 
     // executes when one of the upgrade buttons is clicked
-    void TaskOnClick(int i) {
+    public void TaskOnClick(int i) {
         string upgradeChoice = upgradeChoices[i].GetComponentInChildren<TextMeshProUGUI>().text;
         ApplyUpgrade(upgradeChoice);
 
@@ -147,6 +145,7 @@ public class UpgradeSelection : MonoBehaviour {
     void Kill() {
         stateManager.CompleteUpgrade();
         EraseAll();
+        SetVisible(false);
     }
 
     void ApplyUpgrade(string choice) {
@@ -161,7 +160,7 @@ public class UpgradeSelection : MonoBehaviour {
         availableUpgradeLevels = attributeManager.GetAvailableUpgradeLevels();
         if (availableUpgradeLevels.Count == 0) return result;
 
-        
+
         bool queueRebuilt = false;
 
         // build the upgrade queue from all available upgrades if it is empty
@@ -245,6 +244,30 @@ public class UpgradeSelection : MonoBehaviour {
 
     void BuildQueue(List<string> available) {
         upgradeQueue.upgradeNames = ShuffleList(available);
+    }
+
+
+    public void SetVisible(bool visible) {
+        if(visible)
+            Fill();
+
+        isVisible = visible;
+
+        foreach (SpriteRenderer sprite in GetComponentsInChildren<SpriteRenderer>()) {
+            sprite.enabled = visible;
+        }
+        foreach (Image image in GetComponentsInChildren<Image>()) {
+            image.enabled = visible;
+        }
+        foreach (TextMeshProUGUI tmp in GetComponentsInChildren<TextMeshProUGUI>()) {
+            tmp.enabled = visible;
+        }
+        foreach(Selectable selectable in GetComponentsInChildren<Selectable>()) {
+            selectable.enabled = visible;
+        }
+        foreach (ButtonSelect buttonSelect in GetComponentsInChildren<ButtonSelect>()) {
+            buttonSelect.enabled = visible;
+        }
     }
 
 }
