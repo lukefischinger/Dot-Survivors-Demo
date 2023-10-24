@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeType: Blue
   upgradeTextByLevel:
-  - Add blue to projectiles. Blue slows enemies
+  - Add blue to your beam<br>Blue slows enemies
   - Inflict 10 damage after 3 seconds
   - +40% duration
   - -20% speed

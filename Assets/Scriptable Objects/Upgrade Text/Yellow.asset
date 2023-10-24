@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeType: Yellow
   upgradeTextByLevel:
-  - Add yellow to projectiles. Yellow clings to enemies, causing damage and spreading
+  - Add yellow to your beam<br>Yellow clings to enemies, causing damage and spreading
     to nearby enemies
   - +100% base yellow damage
   - +2 spread

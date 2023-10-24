@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour {
 
     void CheckPlaylist() {
         
-        if (audioSource.time >= audioSource.clip.length || (areUpgradesMaxed && currentTrack < playlist.Count - 1)) {
+        if (!audioSource.isPlaying || audioSource.time >= audioSource.clip.length || (areUpgradesMaxed && currentTrack < playlist.Count - 1)) {
             currentTrack = GetNextTrack();
 
             audioSource.clip = playlist[currentTrack];

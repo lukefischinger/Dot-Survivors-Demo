@@ -82,10 +82,10 @@ public class AttributeManager : MonoBehaviour {
         audioManager.areUpgradesMaxed = !hasUpgradesAvailable;
     }
 
-    private void SetValue(string attributeName) {
+    private void SetValue(string attributeName, bool isReset = false) {
         switch (attributeName) {
             case "Health":
-                healthManager.SetMaxHealth(GetAttributeValue(attributeName));
+                healthManager.SetMaxHealth(GetAttributeValue(attributeName), !isReset);
                 break;
             case "Speed":
                 playerMovement.SetSpeedMultiplier(GetAttributeValue(attributeName));
@@ -307,7 +307,7 @@ public class AttributeManager : MonoBehaviour {
         attributeLevels = startingAttributeLevels;
 
         for (int i = 0; i < attributeNames.Length; i++) {
-            SetValue(attributeNames[i]);
+            SetValue(attributeNames[i], true);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -79,6 +80,8 @@ public class ButtonSelect : MonoBehaviour {
         image.sprite = clickSprite;
         eventSystem.enabled = false;
     }
+
+
 
     void PlayAudio(string name) {
         switch (name) {
